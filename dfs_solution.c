@@ -18,7 +18,7 @@ public:
         {
             for (int j = 0; j < map[0].size(); ++j)
             {
-                map[i][j] = '*';
+                map[i][j] = 'X';
             }
         }
         _maze(map, 0, 0);
@@ -29,7 +29,7 @@ public:
         for (int i = 0; i < map.size()+ 1; i++) {
           for (int j = 0; j < map[0].size()+ 1; j++) {
             if(i == 0 || j == 0 || i == map.size() || j == map[0].size()){
-              aux[i][j] = '*';
+              aux[i][j] = 'X';
             } else {
               aux[i][j] = map[i-1][j-1];
             }
@@ -57,9 +57,9 @@ public:
         if(map[i][j] == ' ') return ;
 
         //some neightbors are visited in addition to the coming direction, return
-        //this is to avoid circles in maze
+        //this is fill some circles in maze
         //cambie esto era 1 para que haya buclasos
-        if(countVisitedNeighbor(map, i, j) > 1) return ;
+        if(countVisitedNeighbor(map, i, j) > 2) return ;
 
         map[i][j] = ' '; // visited
 
