@@ -5,7 +5,13 @@ using namespace std;
 
 int main()
 {
-    Map map(2, 3);
-    cout << map;
-    return 0;
+  int height = 20;
+  int width = 20;
+
+  srand(time(0));
+  Map map(height, width);
+  cout << map;
+  map.showInfo();
+
+  return 0;
 }
