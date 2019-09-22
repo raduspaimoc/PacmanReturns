@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cell.cpp" />
+    <ClCompile Include="graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
   </ItemGroup>

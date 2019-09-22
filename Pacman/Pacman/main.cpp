@@ -1,14 +1,12 @@
 #include <iostream>
+#include <functional>
 #include <GL/glut.h>
 
 #include "map.h"
-#include <GL/glut.h>
-#define WIDTH 300
-#define HEIGHT 300
+#include "ShareDefines.h"
+#include "graphics.h"
 
 using namespace std;
-int columns, rows;
-
 
 int main(int argc, char const *argv[])
 {
@@ -29,55 +27,36 @@ int main(int argc, char const *argv[])
 
   //rows = atoi(argv[1]);
   //columns = atoi(argv[2]);
-  Map map(30, 30);
 
-  map.setWalls();
-  map.showInfo();
+    s_rows = 20;
+    s_columns = 20;
+    s_map = Map(s_columns, s_rows);
+    Graphics graph;
 
-  char fakeParam[] = "fake";
-  char *fakeargv[] = { fakeParam, NULL };
-  int fakeargc = 1;
-  glutInit(&fakeargc, fakeargv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowPosition(50, 50);
-  glutInitWindowSize(WIDTH, HEIGHT);
-  glutCreateWindow("Pac man");
-  //glutDisplayFunc();
-  //glutKeyboardFunc(keyboard);
-  glMatrixMode(GL_PROJECTION);
-  gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
-
-  glutMainLoop();
+    s_map.setWalls();
 
 
+    char fakeParam[] = "fake";
+    char *fakeargv[] = { fakeParam, NULL };
+    int fakeargc = 1;
+    glutInit(&fakeargc, fakeargv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowPosition(50, 50);
+    glutInitWindowSize(WIDTH, HEIGHT);
+    glutCreateWindow("Pac man");
 
-  return 0;
+    s_map.showInfo();
+    glutDisplayFunc(&graph.display);
+    s_map.showInfo();
+
+    //glutKeyboardFunc(keyboard);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
+
+    glutMainLoop();
+
+
+
+    return 0;
 }
-/*
-void display()
-{
-  int i,j;
 
-  glClearColor(0.0,0.0,0.0,0.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  for(i=0;i<WIDTH;i++)
-    for(j=0;j<HEIGHT;j++)
-	{
-    if(!grid[i][j].isWall()){
-      glColor3f(0.8,0.8,0.8);
-      glBegin(GL_QUADS);
-
-     glVertex2i(i*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-     glVertex2i((i+1)*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-     glVertex2i((i+1)*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
-     glVertex2i(i*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
-
-     glEnd();
-    }
-	}
-
-  glutSwapBuffers();
-
-}
-*/
