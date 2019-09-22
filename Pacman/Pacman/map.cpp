@@ -38,7 +38,7 @@ void Map::showInfo()
   printf("--------------------- \n");
 }
 
-void Map::display()
+/*void Map::display()
 {
   int i,j;
 
@@ -63,7 +63,7 @@ void Map::display()
 
   glutSwapBuffers();
 
-}
+}*/
 
 /*void Map::showGraphicMaze(){
   char fakeParam[] = "fake";
@@ -85,7 +85,17 @@ void Map::display()
 void Map::setWalls()
 {
   setWallsRec(0, 0);
+  createVerticalSymetry();
   addMiddle();
+}
+
+void Map::createVerticalSymetry(){
+  int aux = grid[0].size();
+  for (size_t i = 0; i < grid.size(); i++) {
+    for (size_t j = 0; j < aux; j++) {
+      grid[i].push_back(grid[i][j]);
+    }
+  }
 }
 
 void Map::addMiddle()

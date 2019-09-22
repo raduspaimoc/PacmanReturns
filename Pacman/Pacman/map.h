@@ -16,9 +16,11 @@ struct Map
         void addMiddle();
         void display(void);
         void showGraphicMaze();
+        void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
         std::vector<std::vector<Cell> > grid;
+        std::vector<std::vector<Cell> > final_grid;
 };

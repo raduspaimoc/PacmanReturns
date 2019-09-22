@@ -31,9 +31,9 @@ int main(int argc, char const *argv[])
   //rows = atoi(argv[1]);
   //columns = atoi(argv[2]);
 
-    s_rows = 20;
-    s_columns = 20;
-    s_map = Map(s_columns, s_rows);
+    s_rows = 21;
+    s_columns = 44;
+    s_map = Map(s_columns, s_rows/2);
     Graphics graph;
 
     s_map.setWalls();
@@ -61,4 +61,3 @@ int main(int argc, char const *argv[])
 
     return 0;
 }
-
