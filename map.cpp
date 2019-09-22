@@ -3,6 +3,10 @@
 #include <array>        // std::array
 #include <random>       // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
+#include <GL/glut.h>
+
+#define WIDTH 300
+#define HEIGHT 300
 
 #include "map.h"
 
@@ -33,6 +37,50 @@ void Map::showInfo()
 
   printf("--------------------- \n");
 }
+
+static void Map::display()
+{
+  int i,j;
+
+  glClearColor(0.0,0.0,0.0,0.0);
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  for(i=0;i<WIDTH;i++)
+    for(j=0;j<HEIGHT;j++)
+	{
+    if(isWall(i, j)){
+      glColor3f(0.8,0.8,0.8);
+      glBegin(GL_QUADS);
+
+     glVertex2i(i*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
+     glVertex2i((i+1)*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
+     glVertex2i((i+1)*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
+     glVertex2i(i*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
+
+     glEnd();
+    }
+	}
+
+  glutSwapBuffers();
+
+}
+
+/*void Map::showGraphicMaze(){
+  char fakeParam[] = "fake";
+  char *fakeargv[] = { fakeParam, NULL };
+  int fakeargc = 1;
+  glutInit(&fakeargc, fakeargv);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  glutInitWindowPosition(50, 50);
+  glutInitWindowSize(WIDTH, HEIGHT);
+  glutCreateWindow("Pac man");
+  glutDisplayFunc(&display);
+  //glutKeyboardFunc(keyboard);
+  glMatrixMode(GL_PROJECTION);
+  gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
+
+  glutMainLoop();
+}*/
 
 void Map::setWalls()
 {
