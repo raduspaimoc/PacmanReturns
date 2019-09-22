@@ -48,7 +48,7 @@ static void Map::display()
   for(i=0;i<WIDTH;i++)
     for(j=0;j<HEIGHT;j++)
 	{
-    if(isWall(i, j)){
+    if(!grid[i][j].isWall()){
       glColor3f(0.8,0.8,0.8);
       glBegin(GL_QUADS);
 
