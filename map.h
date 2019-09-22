@@ -8,6 +8,7 @@ struct Map
     void showInfo();
     void setWalls();
     void setWallsRec(int i, int j);
+    void addMiddle();
     int countVisitedNeighbor(int i, int j);
 
     friend std::ostream& operator<<(std::ostream& os, const Map& map);

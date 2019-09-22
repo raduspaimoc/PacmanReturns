@@ -37,6 +37,34 @@ void Map::showInfo()
 void Map::setWalls()
 {
   setWallsRec(0, 0);
+  addMiddle();
+}
+
+void Map::addMiddle()
+{
+    int height_middle = grid.size() / 2;
+    int width_middle = grid[0].size() / 2;
+
+
+    grid[height_middle][width_middle].setWall(false);
+    grid[height_middle - 1][width_middle].setWall(false);
+    grid[height_middle][width_middle - 1].setWall(false);
+    grid[height_middle][width_middle + 1].setWall(false);
+
+    grid[height_middle - 1][width_middle - 1].setWall(true);
+    grid[height_middle - 1][width_middle - 2].setWall(true);
+    grid[height_middle - 1][width_middle + 1].setWall(true);
+    grid[height_middle - 1][width_middle + 2].setWall(true);
+
+    //map[height_middle][width_middle] = 'X';
+    grid[height_middle][width_middle - 2].setWall(true);
+    grid[height_middle][width_middle + 2].setWall(true);
+
+    grid[height_middle + 1][width_middle - 1].setWall(true);
+    grid[height_middle + 1][width_middle - 2].setWall(true);
+    grid[height_middle + 1][width_middle].setWall(true);
+    grid[height_middle + 1][width_middle + 1].setWall(true);
+    grid[height_middle + 1][width_middle + 2].setWall(true);
 }
 
 void Map::setWallsRec(int i, int j)
