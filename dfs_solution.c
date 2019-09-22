@@ -47,7 +47,7 @@ public:
         //visited, go back the the coming direction, return
         if(map[i][j] == ' ') return ;
 
-        //some neightbors are visited in addition to the coming direction, return
+        //some neighbors are visited in addition to the coming direction, return
         //this is fill some circles in maze
         if(countVisitedNeighbor(map, i, j) > 2) return ;
 
@@ -92,7 +92,7 @@ public:
     }
 };
 
-void addBorders(vector<vector<char>>& new_map, vector<vector<char>>& map){
+void addVerticalSymmetry(vector<vector<char>>& new_map, vector<vector<char>>& map){
   for (int i = 0; i < map.size(); ++i)
   {
       for (int j = 0; j < map[0].size(); ++j)
@@ -101,6 +101,11 @@ void addBorders(vector<vector<char>>& new_map, vector<vector<char>>& map){
           new_map[i+1][new_map[0].size() - j - 1] = map[i][j];
       }
   }
+}
+
+void addBorders(vector<vector<char>>& new_map, vector<vector<char>>& map){
+
+  addVerticalSymmetry(new_map, map);
 
   for (int i = 0; i < new_map[0].size(); i++) {
     new_map[0][i] = 'X';
