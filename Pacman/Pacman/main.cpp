@@ -8,6 +8,9 @@
 
 using namespace std;
 
+int s_columns, s_rows;
+Map s_map;
+
 int main(int argc, char const *argv[])
 {
     /*
@@ -34,7 +37,6 @@ int main(int argc, char const *argv[])
     Graphics graph;
 
     s_map.setWalls();
-
 
     char fakeParam[] = "fake";
     char *fakeargv[] = { fakeParam, NULL };
