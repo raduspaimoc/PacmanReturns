@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     return 0;
   }
 
-  srand(time(0));
+  //srand(time(0));
   Map map(atoi(argv[1]), atoi(argv[2]));
   map.setWalls();
   cout << map;
