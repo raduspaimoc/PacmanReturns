@@ -14,13 +14,13 @@ struct Map
         void setWalls();
         void setWallsRec(int i, int j);
         void addMiddle();
-        void display(void);
-        void showGraphicMaze();
+        void removeTrees();
+        void reset();
         void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
+        int rows, columns;
         std::vector<std::vector<Cell> > grid;
-        std::vector<std::vector<Cell> > final_grid;
 };

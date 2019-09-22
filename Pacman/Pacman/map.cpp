@@ -9,15 +9,17 @@
 #define HEIGHT 300
 
 #include "map.h"
+#include "ShareDefines.h"
+#include "Utils.h"
 
-Map::Map(int r, int c)
+Map::Map(int r, int c) : rows(r), columns(c)
 {
   for (size_t i = 0; i < r; i++) {
 
     std::vector<Cell> v;
-    for (size_t j = 0; j < c; j++) {
+    for (size_t j = 0; j < c; j++)
       v.push_back(Cell(i, j));
-    }
+
     grid.push_back(v);
   }
 };
@@ -38,64 +40,101 @@ void Map::showInfo()
   printf("--------------------- \n");
 }
 
-/*void Map::display()
-{
-  int i,j;
-
-  glClearColor(0.0,0.0,0.0,0.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  for(i=0;i<WIDTH;i++)
-    for(j=0;j<HEIGHT;j++)
-	{
-        if (!grid[i][j].isWall()){
-            glColor3f(0.8,0.8,0.8);
-            glBegin(GL_QUADS);
-
-            glVertex2i(i*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-            glVertex2i((i+1)*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-            glVertex2i((i+1)*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
-            glVertex2i(i*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
-
-         glEnd();
-        }
-	}
-
-  glutSwapBuffers();
-
-}*/
-
-/*void Map::showGraphicMaze(){
-  char fakeParam[] = "fake";
-  char *fakeargv[] = { fakeParam, NULL };
-  int fakeargc = 1;
-  glutInit(&fakeargc, fakeargv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowPosition(50, 50);
-  glutInitWindowSize(WIDTH, HEIGHT);
-  glutCreateWindow("Pac man");
-  glutDisplayFunc(&display);
-  //glutKeyboardFunc(keyboard);
-  glMatrixMode(GL_PROJECTION);
-  gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
-
-  glutMainLoop();
-}*/
-
 void Map::setWalls()
 {
-  setWallsRec(0, 0);
-  createVerticalSymetry();
-  addMiddle();
+    setWallsRec(0, 0);
+    createVerticalSymetry();
+    addMiddle();
+
+    removeTrees();
 }
 
-void Map::createVerticalSymetry(){
-  int aux = grid[0].size();
-  for (size_t i = 0; i < grid.size(); i++) {
-    for (size_t j = 0; j < aux; j++) {
-      grid[i].push_back(grid[i][j]);
+void Map::removeTrees()
+{
+    showInfo();
+    for (int i = 0; i < grid.size(); i++)
+    {
+        for (int j = 0; j < grid[i].size(); j++)
+        {
+            if (grid[i][j].isWall())
+                continue;
+
+            int walls = 0;
+            std::vector<std::vector<int>> directc = direct;
+
+            for (auto itr = directc.begin(); itr != directc.end();)
+            {
+                int i_offset = (*itr)[0];
+                int j_offset = (*itr)[1];
+
+                if ((i_offset == -1 && i == 0) || (j_offset == -1 && j == 0)
+                    || (i_offset == 1 && i == grid.size() -1 ) || (j_offset == 1 && j == grid[i].size() - 1))
+                {
+                    itr = directc.erase(itr);
+                    walls++;
+                    continue;
+                }
+
+                if (grid[i + i_offset][j + j_offset].isWall())
+                {
+                    ++itr;
+                    walls++;
+                }
+                else
+                    itr = directc.erase(itr);
+            }
+
+            /// Check if the cell is alone WIP
+            bool alone = true;
+            for (auto const offset : direct_all)
+            {
+                int i_offset = offset[0];
+                int j_offset = offset[1];
+
+                if ((i_offset == -1 && i == 0) || (j_offset == -1 && j == 0)
+                    || (i_offset == 1 && i == grid.size() - 1) || (j_offset == 1 && j == grid[i].size() - 1))
+                {
+                    alone = false;
+                    break;
+                }
+
+                if (grid[i + i_offset][j + j_offset].isWall())
+                {
+                    alone = false;
+                    break;
+                }
+            }
+
+            if (alone)
+            {
+                grid[i][j].setWall(true);
+                grid[i][j].SetAdded(true);
+            }
+
+            if (walls <= 2)
+                continue;
+
+            Utils::RandomResize(directc, walls - 2);
+            int sizea = directc.size() - (walls - 2);
+            for (auto const& elem : directc)
+            {
+                int i_offset = elem[0];
+                int j_offset = elem[1];
+
+                grid[i + i_offset][j + j_offset].setWall(false);
+                grid[i + i_offset][j + j_offset].SetDeleted(true);
+            }
+            int cerga = 0;
+        }
     }
-  }
+}
+
+void Map::createVerticalSymetry() {
+    int aux = grid[0].size();
+    for (int i = 0; i < grid.size(); i++)
+        for (int j = aux - 1; j >= 0; j--)
+            grid[i].push_back(grid[i][j]);
+
 }
 
 void Map::addMiddle()
@@ -127,7 +166,6 @@ void Map::addMiddle()
 
 void Map::setWallsRec(int i, int j)
 {
-  int direct[][2] = {{0,1}, {0,-1}, {-1,0}, {1,0}};
   std::vector<int> visitOrder = {0, 1, 2, 3};
   //out of boundary
   if (i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size())
@@ -160,7 +198,6 @@ void Map::setWallsRec(int i, int j)
 }
 
 int Map::countVisitedNeighbor(int i, int j){
-    int direct[][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
     int count = 0;
 
     for (int k = 0; k < 4; ++k)
@@ -176,6 +213,16 @@ int Map::countVisitedNeighbor(int i, int j){
     }
 
     return count;
+}
+
+void Map::reset()
+{
+    for (auto& row : grid)
+    {
+        row.resize(s_columns/2);
+        for (auto& cell : row)
+            cell.setWall(true);
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Map& map)

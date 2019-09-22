@@ -31,9 +31,9 @@ int main(int argc, char const *argv[])
   //rows = atoi(argv[1]);
   //columns = atoi(argv[2]);
 
-    s_rows = 21;
-    s_columns = 44;
-    s_map = Map(s_columns, s_rows/2);
+    s_rows = 20;
+    s_columns = 40;
+    s_map = Map(s_rows, s_columns/2);
     Graphics graph;
 
     s_map.setWalls();
@@ -48,16 +48,13 @@ int main(int argc, char const *argv[])
     glutCreateWindow("Pac man");
 
     s_map.showInfo();
-    glutDisplayFunc(&graph.display);
-    s_map.showInfo();
+    glutDisplayFunc(graph.display);
+    glutKeyboardFunc(graph.keyboard);
 
-    //glutKeyboardFunc(keyboard);
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
+    gluOrtho2D(0, WIDTH, 0, HEIGHT);
 
     glutMainLoop();
-
-
 
     return 0;
 }

@@ -5,5 +5,5 @@ struct Graphics
     public:
         Graphics() { };
         static void display();
-        //static std::vector<std::vector<Cell> > grid;
+        static void keyboard(unsigned char c, int x, int y);
 };
