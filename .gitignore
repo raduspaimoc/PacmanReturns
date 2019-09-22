@@ -2,3 +2,6 @@ a.out
 .vs/
 Pacman/Debug
 Pacman/.vs
+Pacman/Pacman/Debug
+*.obj
+*.log
