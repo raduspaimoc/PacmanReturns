@@ -133,7 +133,11 @@ void Map::createVerticalSymetry() {
     int aux = grid[0].size();
     for (int i = 0; i < grid.size(); i++)
         for (int j = aux - 1; j >= 0; j--)
-            grid[i].push_back(grid[i][j]);
+        {
+            int new_x = i;
+            int new_y = aux + std::abs(j - aux) - 1;
+            grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
+        }
 
 }
 

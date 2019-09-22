@@ -5,6 +5,7 @@
 struct Cell
 {
     Cell(int x, int y);
+    Cell(int x, int y, bool wall);
     Cell() : Cell(0, 0) {};
 
     int x, y;
