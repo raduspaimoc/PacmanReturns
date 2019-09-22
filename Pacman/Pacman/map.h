@@ -9,7 +9,7 @@ struct Map
     void setWalls();
     void setWallsRec(int i, int j);
     void addMiddle();
-    static void display();
+    void display(void);
     void showGraphicMaze();
     int countVisitedNeighbor(int i, int j);
 

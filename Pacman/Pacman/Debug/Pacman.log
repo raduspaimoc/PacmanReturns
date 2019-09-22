@@ -1,0 +1,18 @@
+﻿  cell.cpp
+  main.cpp
+E:\PacmanReturns\Pacman\Pacman\main.cpp(45,19): error C2660:  'glutDisplayFunc': function does not take 0 arguments
+  map.cpp
+C:\Program Files\Common Files\MSVC\freeglut\include\GL\freeglut_std.h(481,26): message :  see declaration of 'glutDisplayFunc'
+E:\PacmanReturns\Pacman\Pacman\map.cpp(15,24): warning C4018:  '<': signed/unsigned mismatch
+E:\PacmanReturns\Pacman\Pacman\map.cpp(18,26): warning C4018:  '<': signed/unsigned mismatch
+E:\PacmanReturns\Pacman\Pacman\map.cpp(52,34): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+E:\PacmanReturns\Pacman\Pacman\map.cpp(123,27): warning C4018:  '>=': signed/unsigned mismatch
+E:\PacmanReturns\Pacman\Pacman\map.cpp(123,47): warning C4018:  '>=': signed/unsigned mismatch
+E:\PacmanReturns\Pacman\Pacman\map.cpp(139,17): warning C4244:  'initializing': conversion from '_Rep' to 'unsigned int', possible loss of data
+E:\PacmanReturns\Pacman\Pacman\map.cpp(139,17): warning C4244:         with
+E:\PacmanReturns\Pacman\Pacman\map.cpp(139,17): warning C4244:         [
+E:\PacmanReturns\Pacman\Pacman\map.cpp(139,17): warning C4244:             _Rep=std::chrono::system_clock::rep
+E:\PacmanReturns\Pacman\Pacman\map.cpp(139,17): warning C4244:         ]
+E:\PacmanReturns\Pacman\Pacman\map.cpp(161,36): warning C4018:  '>=': signed/unsigned mismatch
+  Generating Code...
+E:\PacmanReturns\Pacman\Pacman\map.cpp(161,57): warning C4018:  '>=': signed/unsigned mismatch

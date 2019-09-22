@@ -1,4 +1,6 @@
 #include <iostream>
+#include <GL/glut.h>
+
 #include "map.h"
 #include <GL/glut.h>
 #define WIDTH 300
@@ -10,6 +12,7 @@ int columns, rows;
 
 int main(int argc, char const *argv[])
 {
+    /*
   if (argc < 2)
   {
     printf("Not enough arguments\n");
@@ -20,14 +23,15 @@ int main(int argc, char const *argv[])
   {
     printf("Min dimension is 10x10\n");
     return 0;
-  }
+  }*/
 
   //srand(time(0));
-  rows = atoi(argv[1]);
-  columns = atoi(argv[2]);
-  Map map(rows, columns);
+
+  //rows = atoi(argv[1]);
+  //columns = atoi(argv[2]);
+  Map map(30, 30);
+
   map.setWalls();
-  cout << map;
   map.showInfo();
 
   char fakeParam[] = "fake";
@@ -38,7 +42,7 @@ int main(int argc, char const *argv[])
   glutInitWindowPosition(50, 50);
   glutInitWindowSize(WIDTH, HEIGHT);
   glutCreateWindow("Pac man");
-  glutDisplayFunc(map.display);
+  //glutDisplayFunc();
   //glutKeyboardFunc(keyboard);
   glMatrixMode(GL_PROJECTION);
   gluOrtho2D(0,WIDTH-1,0,HEIGHT-1);
@@ -49,7 +53,7 @@ int main(int argc, char const *argv[])
 
   return 0;
 }
-
+/*
 void display()
 {
   int i,j;
@@ -76,3 +80,4 @@ void display()
   glutSwapBuffers();
 
 }
+*/

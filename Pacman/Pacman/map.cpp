@@ -38,7 +38,7 @@ void Map::showInfo()
   printf("--------------------- \n");
 }
 
-static void Map::display()
+void Map::display()
 {
   int i,j;
 
@@ -48,17 +48,17 @@ static void Map::display()
   for(i=0;i<WIDTH;i++)
     for(j=0;j<HEIGHT;j++)
 	{
-    if(!grid[i][j].isWall()){
-      glColor3f(0.8,0.8,0.8);
-      glBegin(GL_QUADS);
+        if (!grid[i][j].isWall()){
+            glColor3f(0.8,0.8,0.8);
+            glBegin(GL_QUADS);
 
-     glVertex2i(i*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-     glVertex2i((i+1)*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
-     glVertex2i((i+1)*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
-     glVertex2i(i*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
+            glVertex2i(i*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
+            glVertex2i((i+1)*WIDTH/grid.size(),j*HEIGHT/grid[0].size());
+            glVertex2i((i+1)*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
+            glVertex2i(i*WIDTH/grid.size(),(j+1)*HEIGHT/grid[0].size());
 
-     glEnd();
-    }
+         glEnd();
+        }
 	}
 
   glutSwapBuffers();
