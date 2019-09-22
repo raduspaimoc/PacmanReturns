@@ -1,4 +1,9 @@
-//#include "cell.h"
+#include <iostream>     // std::cout
+#include <algorithm>    // std::shuffle
+#include <array>        // std::array
+#include <random>       // std::default_random_engine
+#include <chrono>       // std::chrono::system_clock
+
 #include "map.h"
 
 Map::Map(int r, int c)
@@ -17,6 +22,63 @@ Map::Map(int r, int c)
 void Map::showInfo()
 {
   printf("Rows: %zu Columns: %zu \n", grid.size(), grid[0].size());
+}
+
+void Map::setWalls()
+{
+  setWallsRec(0, 0);
+}
+
+void Map::setWallsRec(int i, int j)
+{
+  int direct[][2] = {{0,1}, {0,-1}, {-1,0}, {1,0}};
+  std::vector<int> visitOrder = {0, 1, 2, 3};
+  //out of boundary
+  if (i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size())
+    return;
+
+  //visited, go back the the coming direction, return
+  if (!grid[i][j].isWall())
+    return;
+
+  //some neightbors are visited in addition to the coming direction, return
+  //this is fill some circles in maze
+  if (countVisitedNeighbor(i, j) > 2) return ;
+
+  grid[i][j].setWall(true);
+
+  //shuffle the visitOrder
+
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  shuffle (visitOrder.begin(), visitOrder.end(), std::default_random_engine(seed));
+
+//  shuffle(visitOrder, 4);
+
+  for (int k = 0; k < 4; ++k)
+  {
+      int ni = i + direct[visitOrder[k]][0];
+      int nj = j + direct[visitOrder[k]][1];
+      setWallsRec(ni, nj);
+  }
+}
+
+int Map::countVisitedNeighbor(int i, int j){
+    int direct[][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    int count = 0;
+
+    for (int k = 0; k < 4; ++k)
+    {
+        int ni = i + direct[k][0];
+        int nj = j + direct[k][1];
+        //out of boundary
+        if (ni < 0 || nj < 0 || ni >= grid.size() || nj >= grid[0].size())
+          continue;
+
+        if (!grid[ni][nj].isWall())
+          count++;
+    }
+
+    return count;
 }
 
 std::ostream& operator<<(std::ostream& os, const Map& map)
