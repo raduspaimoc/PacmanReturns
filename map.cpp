@@ -8,7 +8,6 @@
 
 Map::Map(int r, int c)
 {
-  printf("%d, %d\n", r, c);
   for (size_t i = 0; i < r; i++) {
 
     std::vector<Cell> v;
@@ -22,6 +21,17 @@ Map::Map(int r, int c)
 void Map::showInfo()
 {
   printf("Rows: %zu Columns: %zu \n", grid.size(), grid[0].size());
+  printf("Map: \n");
+
+  for (auto row : grid)
+  {
+      for (auto column : row)
+          std::cout << column;
+
+      std::cout << std::endl;
+  }
+
+  printf("--------------------- \n");
 }
 
 void Map::setWalls()
@@ -43,9 +53,10 @@ void Map::setWallsRec(int i, int j)
 
   //some neightbors are visited in addition to the coming direction, return
   //this is fill some circles in maze
-  if (countVisitedNeighbor(i, j) > 2) return ;
+  if (countVisitedNeighbor(i, j) > 2)
+      return;
 
-  grid[i][j].setWall(true);
+  grid[i][j].setWall(false);
 
   //shuffle the visitOrder
 
