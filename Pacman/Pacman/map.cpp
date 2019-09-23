@@ -43,10 +43,29 @@ void Map::showInfo()
 void Map::setWalls()
 {
     setWallsRec(0, 0);
+    addWalls();
+    removeTrees();
     createVerticalSymetry();
     addMiddle();
+}
 
-    removeTrees();
+void Map::addWalls(){
+  for (size_t i = 0; i < grid.size(); i++) {
+    for (size_t j = 0; j < grid[0].size(); j++) {
+      if((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()))
+        continue;
+      if(grid[i][j].isWall() && grid[i][j+2].isWall())
+        grid[i][j+1].setWall(true);
+
+      /*Abussive
+      if((i + 1 == grid.size()) || (i + 2) >= grid.size())
+        continue;
+
+      if(grid[i][j].isWall() && grid[i+2][j].isWall())
+        grid[i+1][j].setWall(true);*/
+
+    }
+  }
 }
 
 void Map::removeTrees()
@@ -56,6 +75,8 @@ void Map::removeTrees()
     {
         for (int j = 0; j < grid[i].size(); j++)
         {
+            if (isMiddle(i, j))
+                continue;
             if (grid[i][j].isWall())
                 continue;
 
@@ -67,8 +88,10 @@ void Map::removeTrees()
                 int i_offset = (*itr)[0];
                 int j_offset = (*itr)[1];
 
-                if ((i_offset == -1 && i == 0) || (j_offset == -1 && j == 0)
-                    || (i_offset == 1 && i == grid.size() -1 ) || (j_offset == 1 && j == grid[i].size() - 1))
+                if ((i_offset == -1 && i == 0) ||
+                    (j_offset == -1 && j == 0) ||
+                    (i_offset == 1 && i == grid.size() -1 ) ||
+                    (j_offset == 1 && j == grid[i].size() - 1))
                 {
                     itr = directc.erase(itr);
                     walls++;
@@ -91,25 +114,31 @@ void Map::removeTrees()
                 int i_offset = offset[0];
                 int j_offset = offset[1];
 
-                if ((i_offset == -1 && i == 0) || (j_offset == -1 && j == 0)
-                    || (i_offset == 1 && i == grid.size() - 1) || (j_offset == 1 && j == grid[i].size() - 1))
+                if ((i_offset == -1 && i == 0) ||
+                    (j_offset == -1 && j == 0) ||
+                    (i_offset == 1 && i == grid.size() - 1) ||
+                    (j_offset == 1 && j == grid[i].size() - 1))
                 {
+                    //printf("i: %d, j: %d, i_: %d, j_: %d, isWall:Border %d\n", i, j, i+i_offset, j_offset);
                     alone = false;
                     break;
                 }
-
                 if (grid[i + i_offset][j + j_offset].isWall())
                 {
+                    //printf("i: %d, j: %d, i_: %d, j_: %d, isWall: %d\n", i, j, i+i_offset, j_offset, grid[i + i_offset][j + j_offset].isWall());
                     alone = false;
                     break;
                 }
             }
 
-            if (alone)
+            /*if (alone)
             {
+                printf("Entro en el alone, pos i: %d, j: %d\n", i, j);
                 grid[i][j].setWall(true);
                 grid[i][j].SetAdded(true);
-            }
+                //a ver si funka
+                //walls++;
+            }*/
 
             if (walls <= 2)
                 continue;
@@ -141,6 +170,32 @@ void Map::createVerticalSymetry() {
 
 }
 
+bool Map::isMiddle(int i, int j){
+  int height_middle = grid.size() / 2;
+  int width_middle = grid[0].size() / 2;
+
+  if((i == height_middle && j == width_middle) ||
+     (i == height_middle - 1 && j == width_middle) ||
+     (i == height_middle - 2 && j == width_middle) ||
+     (i == height_middle && j == width_middle + 1) ||
+     (i == height_middle && j == width_middle - 1) ||
+     (i == height_middle && j == width_middle - 2) ||
+     (i == height_middle && j == width_middle + 2) ||
+     (i == height_middle - 1 && j == width_middle - 1) ||
+     (i == height_middle - 1 && j == width_middle - 2) ||
+     (i == height_middle - 1 && j == width_middle + 1) ||
+     (i == height_middle - 1 && j == width_middle + 2) ||
+     (i == height_middle + 1 && j == width_middle - 1) ||
+     (i == height_middle + 1 && j == width_middle - 2) ||
+     (i == height_middle + 1 && j == width_middle) ||
+     (i == height_middle + 1 && j == width_middle + 1) ||
+     (i == height_middle + 1 && j == width_middle + 2))
+     {
+       return true;
+     }
+  return false;
+}
+
 void Map::addMiddle()
 {
     int height_middle = grid.size() / 2;
@@ -149,6 +204,7 @@ void Map::addMiddle()
 
     grid[height_middle][width_middle].setWall(false);
     grid[height_middle - 1][width_middle].setWall(false);
+    grid[height_middle - 2][width_middle].setWall(false);
     grid[height_middle][width_middle - 1].setWall(false);
     grid[height_middle][width_middle + 1].setWall(false);
 
