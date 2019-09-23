@@ -44,16 +44,20 @@ void Map::setWalls()
 {
     setWallsRec(0, 0);
     addWalls();
-    removeTrees();
     createVerticalSymetry();
     addMiddle();
+    removeTrees();
+    // to kill flies with machine guns
+    removeTrees();
 }
 
 void Map::addWalls(){
   for (size_t i = 0; i < grid.size(); i++) {
     for (size_t j = 0; j < grid[0].size(); j++) {
-      if((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()))
+      if((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()) || (j + 3 >= grid[0].size()))
         continue;
+      if(grid[i][j].isWall() && grid[i][j+3].isWall())
+        grid[i][j+2].setWall(true);
       if(grid[i][j].isWall() && grid[i][j+2].isWall())
         grid[i][j+1].setWall(true);
 
@@ -91,7 +95,8 @@ void Map::removeTrees()
                 if ((i_offset == -1 && i == 0) ||
                     (j_offset == -1 && j == 0) ||
                     (i_offset == 1 && i == grid.size() -1 ) ||
-                    (j_offset == 1 && j == grid[i].size() - 1))
+                    (j_offset == 1 && j == grid[i].size() - 1) ||
+                    isMiddle(i_offset, j_offset))
                 {
                     itr = directc.erase(itr);
                     walls++;
@@ -108,7 +113,7 @@ void Map::removeTrees()
             }
 
             /// Check if the cell is alone WIP
-            bool alone = true;
+            /*bool alone = true;
             for (auto const offset : direct_all)
             {
                 int i_offset = offset[0];
@@ -129,7 +134,7 @@ void Map::removeTrees()
                     alone = false;
                     break;
                 }
-            }
+            }*/
 
             /*if (alone)
             {
@@ -149,9 +154,11 @@ void Map::removeTrees()
             {
                 int i_offset = elem[0];
                 int j_offset = elem[1];
-
-                grid[i + i_offset][j + j_offset].setWall(false);
-                grid[i + i_offset][j + j_offset].SetDeleted(true);
+                /*Maybe not*/
+                if(!isMiddle(i+i_offset, j+j_offset)){
+                  grid[i + i_offset][j + j_offset].setWall(false);
+                  grid[i + i_offset][j + j_offset].SetDeleted(true);
+                }
             }
             int cerga = 0;
         }
