@@ -48,7 +48,7 @@ void Map::setWalls()
     addMiddle();
     removeTrees();
     // to kill flies with machine guns
-    removeTrees();
+    //removeTrees();
 }
 
 void Map::addWalls(){
@@ -81,8 +81,8 @@ void Map::removeTrees()
         {
             if (isMiddle(i, j))
                 continue;
-            if (grid[i][j].isWall())
-                continue;
+            //if (grid[i][j].isWall())
+            //    continue;
 
             int walls = 0;
             std::vector<std::vector<int>> directc = direct;
