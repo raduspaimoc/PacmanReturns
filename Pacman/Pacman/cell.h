@@ -12,10 +12,7 @@ struct Cell
     bool wall, deleted, added;
 
 public:
-    void setWall(bool apply) {
-        wall = apply;
-        SetDeleted(!apply);
-    };
+    void setWall(bool apply) { wall = apply; };
     bool isWall();
     bool isDeleted() { return deleted; };
     bool isAdded() { return added; };

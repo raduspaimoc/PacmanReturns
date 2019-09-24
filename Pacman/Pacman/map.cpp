@@ -152,7 +152,13 @@ void Map::removeTrees()
                 Cell* pair = getPairCell(toDelete);
 
                 toDelete.setWall(false);
-                pair->setWall(false);
+                toDelete.SetDeleted(true);
+
+                if (!isMiddle(pair->x, pair->y))
+                {
+                    pair->setWall(false);
+                    pair->SetDeleted(true);
+                }
             }
         }
     }
