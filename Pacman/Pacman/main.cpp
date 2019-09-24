@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
     glutKeyboardFunc(graph.keyboard);
 
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(0, WIDTH, 0, HEIGHT);
+    gluOrtho2D(0, WIDTH + (WIDTH / s_columns), 0, HEIGHT);
 
     glutMainLoop();
 
