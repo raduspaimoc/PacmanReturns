@@ -52,24 +52,20 @@ void Map::setWalls()
 }
 
 void Map::addWalls(){
-  for (size_t i = 0; i < grid.size(); i++) {
-    for (size_t j = 0; j < grid[0].size(); j++) {
-      if((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()) || (j + 3 >= grid[0].size()))
-        continue;
-      if(grid[i][j].isWall() && grid[i][j+3].isWall())
-        grid[i][j+2].setWall(true);
-      if(grid[i][j].isWall() && grid[i][j+2].isWall())
-        grid[i][j+1].setWall(true);
+    for (size_t i = 0; i < grid.size(); i++)
+    {
+        for (size_t j = 0; j < grid[0].size(); j++)
+        {
+            if ((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()) || (j + 3 >= grid[0].size()))
+                continue;
 
-      /*Abussive
-      if((i + 1 == grid.size()) || (i + 2) >= grid.size())
-        continue;
+            if (grid[i][j].isWall() && grid[i][j + 3].isWall())
+                grid[i][j + 2].setWall(true);
 
-      if(grid[i][j].isWall() && grid[i+2][j].isWall())
-        grid[i+1][j].setWall(true);*/
-
+            if (grid[i][j].isWall() && grid[i][j + 2].isWall())
+                grid[i][j + 1].setWall(true);
+        }
     }
-  }
 }
 
 void Map::removeTrees()
@@ -81,8 +77,6 @@ void Map::removeTrees()
         {
             if (isMiddle(i, j))
                 continue;
-            //if (grid[i][j].isWall())
-            //    continue;
 
             int walls = 0;
             std::vector<std::vector<int>> directc = direct;
@@ -96,7 +90,7 @@ void Map::removeTrees()
                     (j_offset == -1 && j == 0) ||
                     (i_offset == 1 && i == grid.size() -1 ) ||
                     (j_offset == 1 && j == grid[i].size() - 1) ||
-                    isMiddle(i_offset, j_offset))
+                    isMiddle(i + i_offset, j + j_offset))
                 {
                     itr = directc.erase(itr);
                     walls++;
@@ -155,26 +149,10 @@ void Map::removeTrees()
                 int i_offset = elem[0];
                 int j_offset = elem[1];
                 int aux = grid[0].size();
-                /*Maybe not*/
-                if(!isMiddle(i+i_offset, j+j_offset)){
-                  grid[i + i_offset][j + j_offset].setWall(false);
-                  grid[i + i_offset][j + j_offset].SetDeleted(true);
 
-                  int new_y = aux - (j + j_offset) - 1;
-                  if(!isMiddle(i+i_offset, new_y)){
-                    grid[i + i_offset][new_y].setWall(false);
-                    grid[i + i_offset][new_y].SetDeleted(true);                  
-                  }
-
-                  /*To maintain symetry */
-                  //int new_x = i;
-                  //
-                  //grid[new_x + i_offset][new_y + j_offset].setWall(false);
-                  //grid[new_x + i_offset][new_y + j_offset].SetDeleted(true);
-                  //grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
-                }
+                grid[i + i_offset][j + j_offset].setWall(false);
+                grid[i + i_offset][j + j_offset].SetDeleted(true);
             }
-            int cerga = 0;
         }
     }
 }
