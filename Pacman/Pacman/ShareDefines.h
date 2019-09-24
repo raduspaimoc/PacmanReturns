@@ -1,7 +1,7 @@
 #include "map.h"
 
-#define WIDTH 500
-#define HEIGHT 300
+#define WIDTH 1000
+#define HEIGHT 500
 
 extern int s_columns, s_rows;
 extern Map s_map;

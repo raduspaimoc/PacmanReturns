@@ -5,9 +5,6 @@
 #include <chrono>       // std::chrono::system_clock
 #include <GL/glut.h>
 
-#define WIDTH 300
-#define HEIGHT 300
-
 #include "map.h"
 #include "ShareDefines.h"
 #include "Utils.h"
