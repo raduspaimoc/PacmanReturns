@@ -13,24 +13,6 @@ Map s_map;
 
 int main(int argc, char const *argv[])
 {
-    /*
-  if (argc < 2)
-  {
-    printf("Not enough arguments\n");
-    return 0;
-  }
-
-  if (atoi(argv[1]) < 10 || atoi(argv[2]) < 10)
-  {
-    printf("Min dimension is 10x10\n");
-    return 0;
-  }*/
-
-  //srand(time(0));
-
-  //rows = atoi(argv[1]);
-  //columns = atoi(argv[2]);
-
     cout << "Enter the number of columns: ";
     cin >> s_columns;
     cout << "Enter the number of rows: ";
@@ -42,8 +24,6 @@ int main(int argc, char const *argv[])
         return 0;
     }
 
-    s_rows = 20;
-    s_columns = 41;
     s_map = Map(s_rows, s_columns/2);
     Graphics graph;
 
