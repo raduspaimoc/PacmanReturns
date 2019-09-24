@@ -12,10 +12,8 @@ void Graphics::display()
 
     s_map.showInfo();
 
-    int realColumns = s_columns;
-    int realRows = s_rows + 1;
-    int cell_width = WIDTH / realColumns;
-    int cell_height = HEIGHT / realRows;
+    int cell_width = WIDTH / s_columns;
+    int cell_height = HEIGHT / s_rows;
 
     for (int i = 0; i < s_rows; i++)
     {
@@ -35,6 +33,7 @@ void Graphics::display()
                 glColor3f(0.0, 1.0, 0.5);
             else
                 glColor3f(0.8, 0.8, 0.8);
+
             glBegin(GL_QUADS);
 
             int canvas_x = j + 1;
