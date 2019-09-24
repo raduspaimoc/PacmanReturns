@@ -47,8 +47,6 @@ void Map::setWalls()
     createVerticalSymetry();
     addMiddle();
     removeTrees();
-    // to kill flies with machine guns
-    //removeTrees();
 }
 
 void Map::addWalls(){
@@ -160,13 +158,21 @@ void Map::removeTrees()
 void Map::createVerticalSymetry() {
     int aux = grid[0].size();
     for (int i = 0; i < grid.size(); i++)
+    {
+        if (s_columns % 2 != 0)
+            grid[i].push_back(Cell(i, aux, false));
+
         for (int j = aux - 1; j >= 0; j--)
         {
             int new_x = i;
             int new_y = aux + std::abs(j - aux) - 1;
+
+            if (s_columns % 2 != 0)
+                new_x++;
+
             grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
         }
-
+    }
 }
 
 bool Map::isMiddle(int i, int j){
