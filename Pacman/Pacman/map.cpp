@@ -154,10 +154,24 @@ void Map::removeTrees()
             {
                 int i_offset = elem[0];
                 int j_offset = elem[1];
+                int aux = grid[0].size();
                 /*Maybe not*/
                 if(!isMiddle(i+i_offset, j+j_offset)){
                   grid[i + i_offset][j + j_offset].setWall(false);
                   grid[i + i_offset][j + j_offset].SetDeleted(true);
+
+                  int new_y = aux - (j + j_offset) - 1;
+                  if(!isMiddle(i+i_offset, new_y)){
+                    grid[i + i_offset][new_y].setWall(false);
+                    grid[i + i_offset][new_y].SetDeleted(true);                  
+                  }
+
+                  /*To maintain symetry */
+                  //int new_x = i;
+                  //
+                  //grid[new_x + i_offset][new_y + j_offset].setWall(false);
+                  //grid[new_x + i_offset][new_y + j_offset].SetDeleted(true);
+                  //grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
                 }
             }
             int cerga = 0;

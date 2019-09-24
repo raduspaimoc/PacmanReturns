@@ -23,6 +23,9 @@ void Graphics::display()
         {
             int real_i = s_rows - i - 1;
 
+            /*if (i == 0 || i == s_rows - 1 || j == 0 || j == s_columns - 1)
+                continue;*/
+
             if (grid[real_i][j].isWall())
                 continue;
 
