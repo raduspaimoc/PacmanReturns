@@ -26,7 +26,7 @@ void Graphics::display()
             /*if (i == 0 || i == s_rows - 1 || j == 0 || j == s_columns - 1)
                 continue;*/
 
-            if (grid[real_i][j].isWall())
+            if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded())
                 continue;
 
             if(grid[real_i][j].isDeleted())

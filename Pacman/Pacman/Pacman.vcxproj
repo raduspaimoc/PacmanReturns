@@ -133,6 +133,7 @@
     <ClInclude Include="cell.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="ShareDefines.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>

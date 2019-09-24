@@ -101,38 +101,31 @@ void Map::removeTrees()
                     itr = directc.erase(itr);
             }
 
-            /// Check if the cell is alone WIP
-            /*bool alone = true;
-            for (auto const offset : direct_all)
+            /// Check if the cell is alone
+            bool alone = true;
+            for (auto itr = direct_all.begin(); itr != direct_all.end();)
             {
-                int i_offset = offset[0];
-                int j_offset = offset[1];
+                int i_offset = (*itr)[0];
+                int j_offset = (*itr)[1];
+                ++itr;
 
-                if ((i_offset == -1 && i == 0) ||
-                    (j_offset == -1 && j == 0) ||
-                    (i_offset == 1 && i == grid.size() - 1) ||
-                    (j_offset == 1 && j == grid[i].size() - 1))
+                if ((i_offset + i < 0) || (j_offset + j < 0) || (i_offset + i >= grid.size()) || (j_offset + j >= grid[i].size()))
                 {
-                    //printf("i: %d, j: %d, i_: %d, j_: %d, isWall:Border %d\n", i, j, i+i_offset, j_offset);
                     alone = false;
                     break;
                 }
-                if (grid[i + i_offset][j + j_offset].isWall())
+                if ((j_offset + j != s_columns / 2 ) && grid[i + i_offset][j + j_offset].isWall())
                 {
-                    //printf("i: %d, j: %d, i_: %d, j_: %d, isWall: %d\n", i, j, i+i_offset, j_offset, grid[i + i_offset][j + j_offset].isWall());
                     alone = false;
                     break;
                 }
-            }*/
+            }
 
-            /*if (alone)
+            if (alone && !grid[i][j].isWall())
             {
-                printf("Entro en el alone, pos i: %d, j: %d\n", i, j);
                 grid[i][j].setWall(true);
                 grid[i][j].SetAdded(true);
-                //a ver si funka
-                //walls++;
-            }*/
+            }
 
             if (walls <= 2)
                 continue;
@@ -297,7 +290,10 @@ void Map::reset()
     {
         row.resize(s_columns/2);
         for (auto& cell : row)
+        {
             cell.setWall(true);
+            cell.SetAdded(false);
+        }
     }
 }
 
