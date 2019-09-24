@@ -3,5 +3,7 @@ a.out
 Pacman/Debug
 Pacman/.vs
 Pacman/Pacman/Debug
+.idea/
+Pacman/Pacman/cmake-build-debug
 *.obj
 *.log
