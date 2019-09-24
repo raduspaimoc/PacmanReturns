@@ -44,6 +44,7 @@ void Map::setWalls()
     createVerticalSymetry();
     addMiddle();
     removeTrees();
+    addAloneWalls();
 }
 
 void Map::addWalls(){
@@ -61,6 +62,43 @@ void Map::addWalls(){
                 grid[i][j + 1].setWall(true);
         }
     }
+}
+
+void Map::addAloneWalls(){
+  for (int i = 0; i < grid.size(); i++)
+  {
+      for (int j = 0; j < grid[i].size(); j++)
+      {
+          if (isMiddle(i, j))
+              continue;
+
+          bool alone = true;
+          for (auto itr = direct_all.begin(); itr != direct_all.end();)
+          {
+              int i_offset = (*itr)[0];
+              int j_offset = (*itr)[1];
+              ++itr;
+
+              if ((i_offset + i < 0) || (j_offset + j < 0) || (i_offset + i >= grid.size()) || (j_offset + j >= grid[i].size()))
+              {
+                  alone = false;
+                  break;
+              }
+              if ((j_offset + j != s_columns / 2 ) && grid[i + i_offset][j + j_offset].isWall())
+              {
+                  alone = false;
+                  break;
+              }
+          }
+
+          if (alone && !grid[i][j].isWall())
+          {
+              grid[i][j].setWall(true);
+              grid[i][j].SetAdded(true);
+          }
+
+      }
+  }
 }
 
 void Map::removeTrees()
@@ -101,32 +139,6 @@ void Map::removeTrees()
                     itr = directc.erase(itr);
             }
 
-            /// Check if the cell is alone
-            bool alone = true;
-            for (auto itr = direct_all.begin(); itr != direct_all.end();)
-            {
-                int i_offset = (*itr)[0];
-                int j_offset = (*itr)[1];
-                ++itr;
-
-                if ((i_offset + i < 0) || (j_offset + j < 0) || (i_offset + i >= grid.size()) || (j_offset + j >= grid[i].size()))
-                {
-                    alone = false;
-                    break;
-                }
-                if ((j_offset + j != s_columns / 2 ) && grid[i + i_offset][j + j_offset].isWall())
-                {
-                    alone = false;
-                    break;
-                }
-            }
-
-            if (alone && !grid[i][j].isWall())
-            {
-                grid[i][j].setWall(true);
-                grid[i][j].SetAdded(true);
-            }
-
             if (walls <= 2)
                 continue;
 
@@ -135,8 +147,7 @@ void Map::removeTrees()
             for (auto const& elem : directc)
             {
                 int i_offset = elem[0];
-                int j_offset = elem[1];
-                int aux = grid[0].size();
+                int j_offset = elem[1];                
 
                 Cell& toDelete = grid[i + i_offset][j + j_offset];
                 Cell* pair = getPairCell(toDelete);

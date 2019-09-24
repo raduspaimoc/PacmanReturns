@@ -12,8 +12,9 @@ void Graphics::display()
 
     s_map.showInfo();
 
-    int cell_width = WIDTH / s_columns;
-    int cell_height = HEIGHT / s_rows;
+    float cell_width = (float)WIDTH / (float)s_columns;
+    float cell_height = (float)HEIGHT / (float)s_rows;
+
 
     for (int i = 0; i < s_rows; i++)
     {
@@ -21,18 +22,18 @@ void Graphics::display()
         {
             int real_i = s_rows - i - 1;
 
-            /*if (i == 0 || i == s_rows - 1 || j == 0 || j == s_columns - 1)
-                continue;*/
-
             if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded())
                 continue;
 
-            if(grid[real_i][j].isDeleted())
+            // Scope: debug the steps to prune trees and walls added
+            /*if(grid[real_i][j].isDeleted())
                 glColor3f(0.5, 0.5, 0.5);
             else if (grid[real_i][j].isAdded())
                 glColor3f(0.0, 1.0, 0.5);
             else
-                glColor3f(0.8, 0.8, 0.8);
+                glColor3f(0.8, 0.8, 0.8);*/
+
+            glColor3f(0.8, 0.8, 0.8);
 
             glBegin(GL_QUADS);
 

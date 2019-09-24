@@ -17,6 +17,7 @@ struct Map
         void removeTrees();
         void reset();
         void addWalls();
+        void addAloneWalls();
         bool isMiddle(int i, int j);
         void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
