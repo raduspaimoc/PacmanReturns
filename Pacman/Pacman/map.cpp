@@ -194,26 +194,22 @@ bool Map::isMiddle(int i, int j){
   int height_middle = grid.size() / 2;
   int width_middle = grid[0].size() / 2;
 
-  if((i == height_middle && j == width_middle) ||
-     (i == height_middle - 1 && j == width_middle) ||
-     (i == height_middle - 2 && j == width_middle) ||
-     (i == height_middle && j == width_middle + 1) ||
-     (i == height_middle && j == width_middle - 1) ||
-     (i == height_middle && j == width_middle - 2) ||
-     (i == height_middle && j == width_middle + 2) ||
-     (i == height_middle - 1 && j == width_middle - 1) ||
-     (i == height_middle - 1 && j == width_middle - 2) ||
-     (i == height_middle - 1 && j == width_middle + 1) ||
-     (i == height_middle - 1 && j == width_middle + 2) ||
-     (i == height_middle + 1 && j == width_middle - 1) ||
-     (i == height_middle + 1 && j == width_middle - 2) ||
-     (i == height_middle + 1 && j == width_middle) ||
-     (i == height_middle + 1 && j == width_middle + 1) ||
-     (i == height_middle + 1 && j == width_middle + 2))
-     {
-       return true;
-     }
-  return false;
+    return (i == height_middle && j == width_middle) ||
+           (i == height_middle - 1 && j == width_middle) ||
+           (i == height_middle - 2 && j == width_middle) ||
+           (i == height_middle && j == width_middle + 1) ||
+           (i == height_middle && j == width_middle - 1) ||
+           (i == height_middle && j == width_middle - 2) ||
+           (i == height_middle && j == width_middle + 2) ||
+           (i == height_middle - 1 && j == width_middle - 1) ||
+           (i == height_middle - 1 && j == width_middle - 2) ||
+           (i == height_middle - 1 && j == width_middle + 1) ||
+           (i == height_middle - 1 && j == width_middle + 2) ||
+           (i == height_middle + 1 && j == width_middle - 1) ||
+           (i == height_middle + 1 && j == width_middle - 2) ||
+           (i == height_middle + 1 && j == width_middle) ||
+           (i == height_middle + 1 && j == width_middle + 1) ||
+           (i == height_middle + 1 && j == width_middle + 2);
 }
 
 void Map::addMiddle()
