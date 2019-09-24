@@ -20,6 +20,7 @@ struct Map
         bool isMiddle(int i, int j);
         void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
+        Cell* getPairCell(Cell cell);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 

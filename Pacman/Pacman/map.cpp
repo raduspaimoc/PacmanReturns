@@ -148,8 +148,11 @@ void Map::removeTrees()
                 int j_offset = elem[1];
                 int aux = grid[0].size();
 
-                grid[i + i_offset][j + j_offset].setWall(false);
-                grid[i + i_offset][j + j_offset].SetDeleted(true);
+                Cell& toDelete = grid[i + i_offset][j + j_offset];
+                Cell* pair = getPairCell(toDelete);
+
+                toDelete.setWall(false);
+                pair->setWall(false);
             }
         }
     }
@@ -173,6 +176,11 @@ void Map::createVerticalSymetry() {
             grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
         }
     }
+}
+
+Cell* Map::getPairCell(Cell cell)
+{
+    return &grid[cell.x][s_columns - cell.y - 1];
 }
 
 bool Map::isMiddle(int i, int j){
