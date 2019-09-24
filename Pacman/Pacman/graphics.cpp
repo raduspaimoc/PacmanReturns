@@ -26,14 +26,14 @@ void Graphics::display()
                 continue;
 
             // Scope: debug the steps to prune trees and walls added
-            /*if(grid[real_i][j].isDeleted())
+            if(grid[real_i][j].isDeleted())
                 glColor3f(0.5, 0.5, 0.5);
             else if (grid[real_i][j].isAdded())
                 glColor3f(0.0, 1.0, 0.5);
             else
-                glColor3f(0.8, 0.8, 0.8);*/
+                glColor3f(0.8, 0.8, 0.8);
 
-            glColor3f(0.8, 0.8, 0.8);
+            //glColor3f(0.8, 0.8, 0.8);
 
             glBegin(GL_QUADS);
 

@@ -60,6 +60,14 @@ void Map::addWalls(){
 
             if (grid[i][j].isWall() && grid[i][j + 2].isWall())
                 grid[i][j + 1].setWall(true);
+
+
+           /*if((i + 1 == grid.size()- 1) || (i + 2) >= grid.size() || (i + 3 >= grid.size()))
+             continue;
+           if(grid[i][j].isWall() && grid[i+3][j].isWall())
+                grid[i+1][j].setWall(true);
+           if(grid[i][j].isWall() && grid[i+2][j].isWall())
+                grid[i+1][j].setWall(true);*/
         }
     }
 }
@@ -111,6 +119,9 @@ void Map::removeTrees()
             if (isMiddle(i, j))
                 continue;
 
+            //if(grid[i][j].isWall())
+            //  continue;
+
             int walls = 0;
             std::vector<std::vector<int>> directc = direct;
 
@@ -139,7 +150,7 @@ void Map::removeTrees()
                     itr = directc.erase(itr);
             }
 
-            if (walls <= 2)
+            if (walls < 3)
                 continue;
 
             Utils::RandomResize(directc, walls - 2);
@@ -147,7 +158,7 @@ void Map::removeTrees()
             for (auto const& elem : directc)
             {
                 int i_offset = elem[0];
-                int j_offset = elem[1];                
+                int j_offset = elem[1];
 
                 Cell& toDelete = grid[i + i_offset][j + j_offset];
                 Cell* pair = getPairCell(toDelete);
@@ -158,7 +169,7 @@ void Map::removeTrees()
                 if (!isMiddle(pair->x, pair->y))
                 {
                     pair->setWall(false);
-                    pair->SetDeleted(true);
+                    //pair->SetDeleted(true);
                 }
             }
         }
@@ -257,7 +268,7 @@ void Map::setWallsRec(int i, int j)
 
   //some neightbors are visited in addition to the coming direction, return
   //this is fill some circles in maze
-  if (countVisitedNeighbor(i, j) > 2)
+  if (countVisitedNeighbor(i, j) > 1)
       return;
 
   grid[i][j].setWall(false);
