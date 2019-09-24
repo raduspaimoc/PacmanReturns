@@ -36,14 +36,11 @@ void Graphics::display()
 
             glBegin(GL_QUADS);
 
-            int canvas_x = j + 1;
-            int canvas_y = i + 1;
+            glVertex2i(j * cell_width + MARGIN, i * cell_height + MARGIN);
+            glVertex2i((j + 1) * cell_width + MARGIN, i * cell_height + MARGIN);
 
-            glVertex2i(canvas_x * cell_width, canvas_y * cell_height);
-            glVertex2i((canvas_x + 1) * cell_width, canvas_y * cell_height);
-
-            glVertex2i((canvas_x + 1) * cell_width, (canvas_y + 1) * cell_height);
-            glVertex2i(canvas_x * cell_width, (canvas_y + 1) * cell_height);
+            glVertex2i((j + 1) * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
+            glVertex2i(j * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
 
             glEnd();
         }

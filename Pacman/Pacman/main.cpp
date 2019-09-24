@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
     glutInit(&fakeargc, fakeargv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowPosition(50, 50);
-    glutInitWindowSize(WIDTH + 2 * (WIDTH / s_columns), HEIGHT + 2 * (HEIGHT / s_columns));
+    glutInitWindowSize(WIDTH + MARGIN_2, HEIGHT + MARGIN_2);
     glutCreateWindow("Pac man");
 
     s_map.showInfo();
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
     glutKeyboardFunc(graph.keyboard);
 
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(0, WIDTH + 2 * (WIDTH / s_columns), 0, HEIGHT + 2 * (HEIGHT / s_columns));
+    gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
 
     glutMainLoop();
 

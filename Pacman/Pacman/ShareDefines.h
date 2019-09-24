@@ -2,6 +2,10 @@
 
 #define WIDTH 1000
 #define HEIGHT 500
+#define WIDTH_2 WIDTH * 2
+#define HEIGHT_2 HEIGHT * 2
+#define MARGIN 20
+#define MARGIN_2 MARGIN * 2
 
 extern int s_columns, s_rows;
 extern Map s_map;
