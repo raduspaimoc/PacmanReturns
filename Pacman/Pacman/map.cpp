@@ -45,6 +45,8 @@ void Map::setWalls()
     addMiddle();
     removeTrees();
     addAloneWalls();
+    printf("Second iteration ---------\n" );
+    addAloneWalls();
 }
 
 void Map::addWalls(){
@@ -103,6 +105,21 @@ void Map::addAloneWalls(){
           {
               grid[i][j].setWall(true);
               grid[i][j].SetAdded(true);
+              printf("Añado i: %d, j: %d\n", i, j);
+
+              Cell& toDelete = grid[i][j];
+              Cell* pair = getPairCell(toDelete);
+              printf("Miro par i: %d, j: %d\n", pair->x, pair->y);
+
+              //toDelete.setWall(false);
+              //toDelete.SetDeleted(true);
+              if (!isMiddle(pair->x, pair->y) && !grid[pair->x][pair->y].isWall())
+              {
+                  grid[pair->x][pair->y].setWall(true);
+                  grid[pair->x][pair->y].SetAdded(true);
+                  //pair->setWall(false);
+                  //pair->SetDeleted(true);
+              }
           }
 
       }
