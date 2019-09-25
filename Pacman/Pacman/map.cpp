@@ -384,7 +384,7 @@ void Map::createVerticalSymetry() {
     for (int i = 0; i < grid.size(); i++)
     {
         if (s_columns % 2 != 0)
-            grid[i].push_back(Cell(i, aux, true)); ///< change
+            grid[i].push_back(Cell(i, aux, false));
 
         for (int j = aux - 1; j >= 0; j--)
         {
