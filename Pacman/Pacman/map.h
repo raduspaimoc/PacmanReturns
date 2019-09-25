@@ -25,6 +25,7 @@ struct Map
         Cell* getPairCell(Cell cell);
         Cell* getPairCell(Cell* cell);
         int getWallCount(Cell* cell);
+        void CheckTreesRec(Cell* cell);
 
         float countWalls();
         void finalVerticalSymetryCheck();

@@ -49,7 +49,7 @@ void Map::setWalls()
 {
     DFS(0, 0);
     createVerticalSymetry();
-    //removeTrees();
+    removeTrees();
     addMiddle();
     // setWallsRec(0, 0);
   /*
@@ -301,6 +301,7 @@ void Map::removeTrees()
 
                 toDelete->setWall(false);
                 toDelete->SetDeleted(true);
+                CheckTreesRec(toDelete);
 
                 if (!isMiddle(pair->x, pair->y))
                 {
@@ -308,6 +309,61 @@ void Map::removeTrees()
                     //pair->SetDeleted(true);
                 }
             }
+        }
+    }
+}
+
+void Map::CheckTreesRec(Cell* cell)
+{
+    if (isMiddle(cell->x, cell->y))
+        return;
+
+    if (cell->isWall())
+        return;
+
+    int walls = 0;
+    std::vector<std::vector<int>> directc = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+    std::vector<Cell*> good;
+
+    for (auto& direction : directc)
+    {
+        int i_offset = direction[0];
+        int j_offset = direction[1];
+
+        if ((i_offset == -1 && cell->x == 0) ||
+            (j_offset == -1 && cell->y == 0) ||
+            (i_offset == 1 && cell->x == grid.size() - 1) ||
+            (j_offset == 1 && cell->y == grid[cell->y].size() - 1) ||
+            isMiddle(cell->x + i_offset, cell->y + j_offset))
+        {
+            walls++;
+            continue;
+        }
+
+        if (grid[cell->x + i_offset][cell->y + j_offset].isWall())
+        {
+            good.push_back(&grid[cell->x + i_offset][cell->y + j_offset]);
+            walls++;
+        }
+    }
+
+    if (walls < 3)
+        return;
+
+    Utils::RandomResize(good, walls - 2);
+    int sizea = good.size() - (walls - 2);
+    for (auto& toDelete : good)
+    {
+        Cell* pair = getPairCell(toDelete);
+
+        toDelete->setWall(false);
+        toDelete->SetDeleted(true);
+        CheckTreesRec(toDelete);
+
+        if (!isMiddle(pair->x, pair->y))
+        {
+            pair->setWall(false);
+            //pair->SetDeleted(true);
         }
     }
 }
