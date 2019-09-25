@@ -185,7 +185,6 @@ void Map::DFS(int i, int j)
         return;
 
     grid[i][j].setVisited(true);
-    grid[i][j].SetDeleted(true);
 
     std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
     std::vector<Cell*> cells;
@@ -215,25 +214,24 @@ void Map::DFS(int i, int j)
         ++itr;
     }
 
-    if (!cells.empty())
+    for (int k = 0; k < cells.size(); k++)
     {
-        grid[i][j].setWall(false);
-        cells[0]->setWall(true);
-        cells[0]->setVisited(true);
-    }
-
-    for (auto& cell : cells)
-    {
-        if (cell->isWall())
-            continue;
-
-        cell->setWall(false);
-        cell->setVisited(false);
-        DFS(cell->x, cell->y);
+        Cell* cell = cells[k];
+        cell->setWall(true);
+        cell->setVisited(true);
     }
 
     if (!walls.empty())
         walls[0]->setWall(false);
+
+    if (!cells.empty())
+    {
+        grid[i][j].setWall(false);
+        cells[0]->setWall(false);
+        cells[0]->setVisited(false);
+
+        DFS(cells[0]->x, cells[0]->y);
+    }
 
     for (auto const& wall : walls)
         DFS(wall->x, wall->y);

@@ -25,15 +25,17 @@ void Graphics::display()
             if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded())
                 continue;
 
+            glColor3f(0.0, 0.0, 0.0);
+
             // Scope: debug the steps to prune trees and walls added
-            if(grid[real_i][j].isVisited())
+            /*if(grid[real_i][j].isVisited())
                 glColor3f(0.5, 0.5, 0.5);
             else
                 glColor3f(0.0, 0.0, 0.0);
 
             if (grid[real_i][j].isDeleted())
                 glColor3f(0.0, 1.0, 0.5);
-
+                */
             /*else if (grid[real_i][j].isAdded())
                 glColor3f(0.0, 1.0, 0.5);
             else
