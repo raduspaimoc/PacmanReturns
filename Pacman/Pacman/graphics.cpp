@@ -22,10 +22,16 @@ void Graphics::display()
         {
             int real_i = s_rows - i - 1;
 
-            if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded())
+            Cell* cell = &grid[real_i][j];
+            if (cell->isWall() && !cell->isAdded())
                 continue;
 
-            glColor3f(0.0, 0.0, 0.0);
+            //if (cell->isVisited() && !cell->isWall())
+                //glColor3f(0.5, 0.5, 0.5);
+            //else if (!cell->isVisited() && !cell->isWall())
+                glColor3f(0.0, 0.0, 0.0);
+//            else if (cell->isAdded())
+  //              glColor3f(0.0, 1.0, 0.5);
 
             // Scope: debug the steps to prune trees and walls added
             /*if(grid[real_i][j].isVisited())
