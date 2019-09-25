@@ -49,7 +49,7 @@ void Map::setWalls()
 {
     DFS(0, 0);
     createVerticalSymetry();
-    removeTrees();
+    //removeTrees();
     addMiddle();
     // setWallsRec(0, 0);
   /*
@@ -185,10 +185,12 @@ void Map::DFS(int i, int j)
         return;
 
     grid[i][j].setVisited(true);
+    grid[i][j].SetDeleted(true);
 
     std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
     std::vector<Cell*> cells;
     std::vector<Cell*> walls;
+
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     shuffle(spaces.begin(), spaces.end(), std::default_random_engine(seed));
 
@@ -198,9 +200,9 @@ void Map::DFS(int i, int j)
         int new_i = (*itr)[0] + i;
         int new_j = (*itr)[1] + j;
 
-        if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size())
+        if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
         {
-            itr = spaces.erase(itr);
+            ++itr;
             continue;
         }
 
@@ -213,17 +215,21 @@ void Map::DFS(int i, int j)
         ++itr;
     }
 
-    for (auto& cell : cells)
-    {
-        cell->setWall(true);
-        cell->setVisited(true);
-    }
-
     if (!cells.empty())
     {
-        cells[0]->setWall(false);
-        cells[0]->setVisited(false);
-        DFS(cells[0]->x, cells[0]->y);
+        grid[i][j].setWall(false);
+        cells[0]->setWall(true);
+        cells[0]->setVisited(true);
+    }
+
+    for (auto& cell : cells)
+    {
+        if (cell->isWall())
+            continue;
+
+        cell->setWall(false);
+        cell->setVisited(false);
+        DFS(cell->x, cell->y);
     }
 
     if (!walls.empty())
@@ -243,19 +249,17 @@ void Map::removeTrees()
             if (isMiddle(i, j))
                 continue;
 
-
-            //if(grid[i][j].isWall())
-            //  continue;
+            if (grid[i][j].isWall())
+                continue;
 
             int walls = 0;
-            std::vector<std::vector<int>> directc;
-            for(auto const& elem : directc)
-                directc.push_back(elem);
+            std::vector<std::vector<int>> directc = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+            std::vector<Cell*> good;
 
-            for (auto itr = directc.begin(); itr != directc.end();)
+            for (auto& direction : directc)
             {
-                int i_offset = (*itr)[0];
-                int j_offset = (*itr)[1];
+                int i_offset = direction[0];
+                int j_offset = direction[1];
 
                 if ((i_offset == -1 && i == 0) ||
                     (j_offset == -1 && j == 0) ||
@@ -263,35 +267,28 @@ void Map::removeTrees()
                     (j_offset == 1 && j == grid[i].size() - 1) ||
                     isMiddle(i + i_offset, j + j_offset))
                 {
-                    itr = directc.erase(itr);
                     walls++;
                     continue;
                 }
 
                 if (grid[i + i_offset][j + j_offset].isWall())
                 {
-                    ++itr;
+                    good.push_back(&grid[i + i_offset][j + j_offset]);
                     walls++;
                 }
-                else
-                    itr = directc.erase(itr);
             }
 
             if (walls < 3)
                 continue;
 
-            Utils::RandomResize(directc, walls - 2);
-            int sizea = directc.size() - (walls - 2);
-            for (auto const& elem : directc)
+            Utils::RandomResize(good, walls - 2);
+            int sizea = good.size() - (walls - 2);
+            for (auto& toDelete : good)
             {
-                int i_offset = elem[0];
-                int j_offset = elem[1];
-
-                Cell& toDelete = grid[i + i_offset][j + j_offset];
                 Cell* pair = getPairCell(toDelete);
 
-                toDelete.setWall(false);
-                toDelete.SetDeleted(true);
+                toDelete->setWall(false);
+                toDelete->SetDeleted(true);
 
                 if (!isMiddle(pair->x, pair->y))
                 {
@@ -338,6 +335,12 @@ Cell* Map::getPairCell(Cell cell)
 {
     return &grid[cell.x][s_columns - cell.y - 1];
 }
+
+Cell* Map::getPairCell(Cell* cell)
+{
+    return &grid[cell->x][s_columns - cell->y - 1];
+}
+
 
 bool Map::isMiddle(int i, int j)
 {

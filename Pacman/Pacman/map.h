@@ -21,7 +21,10 @@ struct Map
         bool isMiddle(int i, int j);
         void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
+
         Cell* getPairCell(Cell cell);
+        Cell* getPairCell(Cell* cell);
+
         float countWalls();
         void finalVerticalSymetryCheck();
         void DFS(int i, int j);

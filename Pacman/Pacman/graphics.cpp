@@ -5,7 +5,7 @@
 
 void Graphics::display()
 {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0, 0, 255, 255);
     glClear(GL_COLOR_BUFFER_BIT);
 
     std::vector<std::vector<Cell> > grid = s_map.grid;
@@ -29,10 +29,11 @@ void Graphics::display()
             if(grid[real_i][j].isVisited())
                 glColor3f(0.5, 0.5, 0.5);
             else
-                glColor3f(0, 0, 255);
+                glColor3f(0.0, 0.0, 0.0);
 
-            //if(grid[real_i][j].isVisited() && grid[real_i][j].isWall())
-              //  glColor3f(0.0, 1.0, 0.5);
+            if (grid[real_i][j].isDeleted())
+                glColor3f(0.0, 1.0, 0.5);
+
             /*else if (grid[real_i][j].isAdded())
                 glColor3f(0.0, 1.0, 0.5);
             else
