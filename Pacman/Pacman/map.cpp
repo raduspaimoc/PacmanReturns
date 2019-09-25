@@ -173,16 +173,25 @@ void Map::addAloneWalls(){
   }
 }
 
-void Map::DFS(int i, int j, std::vector<std::vector<int>> const& array)
+void Map::DFS(int i, int j)
 {
+    // Solo el DFS que te visita y quita muros de todos lados
     if (i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
         return;
 
     grid[i][j].setVisited(true);
     grid[i][j].setWall(false);
 
-    std::vector<std::vector<int>> spaces = array;
+    std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
 
+    for (auto itr = spaces.begin(); itr != spaces.end();)
+    {
+        int new_i = (*itr)[0] + i;
+        int new_j = (*itr)[1] + j;
+        DFS(new_i, new_j);
+    }
+
+    /* La fantasia
     for (auto itr = spaces.begin(); itr != spaces.end();)
     {
         int new_i = (*itr)[0] + i;
@@ -210,7 +219,7 @@ void Map::DFS(int i, int j, std::vector<std::vector<int>> const& array)
         int new_j = direct[0][1] + j;
 
         DFS(new_i, new_j);
-    }
+    }*/
 }
 
 void Map::removeTrees()
