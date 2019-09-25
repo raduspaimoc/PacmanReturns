@@ -179,6 +179,9 @@ void Map::DFS(int i, int j)
     if (i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
         return;
 
+    if (grid[i][j].isVisited())
+        return;
+
     grid[i][j].setVisited(true);
     grid[i][j].setWall(false);
 
