@@ -4,7 +4,7 @@
 #include <cstdarg>
 
 
-Cell::Cell(int x, int y) : x(x), y(y), wall(true), deleted(false), added(false) { }
+Cell::Cell(int x, int y) : x(x), y(y), wall(true), deleted(false), added(false), visited(false) { }
 Cell::Cell(int x, int y, bool wall) : x(x), y(y), wall(wall), deleted(false), added(false) { }
 
 bool Cell::isWall() { return wall; };
