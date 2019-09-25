@@ -86,6 +86,9 @@ void Map::addWalls(){
     {
         for (size_t j = 0; j < grid[0].size(); j++)
         {
+            if (isMiddle(i, j))
+                continue;
+
             if ((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()) || (j + 3 >= grid[0].size()))
                 continue;
 
@@ -230,7 +233,8 @@ void Map::finalVerticalSymetryCheck(){
     for (size_t j = 0; j < grid[0].size()/2; j++) {
       Cell& cell = grid[i][j];
       Cell* pair = getPairCell(cell);
-      pair->setWall(cell.isWall());
+      if(!isMiddle(pair->x, pair->y))
+        pair->setWall(cell.isWall());
     }
   }
 }
