@@ -232,7 +232,7 @@ void Map::removeTrees()
             if (isMiddle(i, j))
                 continue;
 
-            printf("%d", s_verga);
+
             //if(grid[i][j].isWall())
             //  continue;
 
