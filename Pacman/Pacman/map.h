@@ -24,6 +24,7 @@ struct Map
         Cell* getPairCell(Cell cell);
         float countWalls();
         void finalVerticalSymetryCheck();
+        void DFS(int i, int j);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 

@@ -15,7 +15,15 @@ Map::Map(int r, int c) : rows(r), columns(c)
 
     std::vector<Cell> v;
     for (size_t j = 0; j < c; j++)
-      v.push_back(Cell(i, j));
+    {
+        bool wall = true;
+        if (i % 2 == 0 && j % 2 == 0)
+            wall = false;
+        if (i % 2 == 1 && j % 2 ==1)
+            wall = false;
+
+        v.emplace_back(i, j, wall);
+    }
 
     grid.push_back(v);
   }
@@ -39,8 +47,11 @@ void Map::showInfo()
 
 void Map::setWalls()
 {
-    setWallsRec(0, 0);
-    addWalls();
+    DFS(0, 0);
+    createVerticalSymetry();
+    // setWallsRec(0, 0);
+  /*
+   * addWalls();
     createVerticalSymetry();
     addMiddle();
     removeTrees();
@@ -61,6 +72,7 @@ void Map::setWalls()
     }
     //addAloneWalls();
     //countAll();
+    */
 }
 
 float Map::countWalls(){
@@ -161,6 +173,46 @@ void Map::addAloneWalls(){
   }
 }
 
+void Map::DFS(int i, int j, std::vector<std::vector<int>> const& array)
+{
+    if (i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
+        return;
+
+    grid[i][j].setVisited(true);
+    grid[i][j].setWall(false);
+
+    std::vector<std::vector<int>> spaces = array;
+
+    for (auto itr = spaces.begin(); itr != spaces.end();)
+    {
+        int new_i = (*itr)[0] + i;
+        int new_j = (*itr)[1] + j;
+        if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size())
+        {
+            itr = spaces.erase(itr);
+            continue;
+        }
+
+        if (grid[new_i][new_j].isWall())
+        {
+            itr = spaces.erase(itr);
+        } else
+        {
+            itr++;
+            DFS(new_i, new_j);
+        }
+
+    }
+
+    if (spaces.empty())
+    {
+        int new_i = direct[0][0] + i;
+        int new_j = direct[0][1] + j;
+
+        DFS(new_i, new_j);
+    }
+}
+
 void Map::removeTrees()
 {
     showInfo();
@@ -171,11 +223,14 @@ void Map::removeTrees()
             if (isMiddle(i, j))
                 continue;
 
+            printf("%d", s_verga);
             //if(grid[i][j].isWall())
             //  continue;
 
             int walls = 0;
-            std::vector<std::vector<int>> directc = direct;
+            std::vector<std::vector<int>> directc;
+            for(auto const& elem : directc)
+                directc.push_back(elem);
 
             for (auto itr = directc.begin(); itr != directc.end();)
             {
@@ -364,8 +419,15 @@ void Map::reset()
         row.resize(s_columns/2);
         for (auto& cell : row)
         {
-            cell.setWall(true);
+            bool wall = true;
+            if (cell.y % 2 == 0 && cell.x % 2 == 0)
+                wall = false;
+            if (cell.y % 2 == 1 && cell.x % 2 ==1)
+                wall = false;
+
+            cell.setWall(wall);
             cell.SetAdded(false);
+            cell.setVisited(false);
         }
     }
 }

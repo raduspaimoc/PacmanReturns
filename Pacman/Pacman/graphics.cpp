@@ -22,18 +22,23 @@ void Graphics::display()
         {
             int real_i = s_rows - i - 1;
 
-            if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded())
+            if (grid[real_i][j].isWall() && !grid[real_i][j].isAdded() && !grid[real_i][j].isVisited())
                 continue;
 
             // Scope: debug the steps to prune trees and walls added
-            /*if(grid[real_i][j].isDeleted())
+            if(grid[real_i][j].isVisited())
                 glColor3f(0.5, 0.5, 0.5);
-            else if (grid[real_i][j].isAdded())
+            else
+                glColor3f(0.8, 0.8, 0.8);
+
+            if(grid[real_i][j].isVisited() && grid[real_i][j].isWall())
+                glColor3f(0.0, 1.0, 0.5);
+            /*else if (grid[real_i][j].isAdded())
                 glColor3f(0.0, 1.0, 0.5);
             else
                 glColor3f(0.8, 0.8, 0.8);*/
 
-            glColor3f(0.8, 0.8, 0.8);
+
 
             glBegin(GL_QUADS);
 

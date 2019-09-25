@@ -8,6 +8,7 @@
 #define MARGIN_2 MARGIN * 2
 
 extern int s_columns, s_rows;
+extern int s_verga;
 extern Map s_map;
 static std::vector<std::vector<int>> direct = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
 static std::vector<std::vector<int>> direct_all = { {0, 1}, {1, 0}, {1, 1}, {0, -1}, {-1, 0}, {-1, -1}, {1, -1}, {-1, 1} };
