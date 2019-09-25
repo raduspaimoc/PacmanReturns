@@ -49,6 +49,8 @@ void Map::setWalls()
 {
     DFS(0, 0);
     createVerticalSymetry();
+    removeTrees();
+    addMiddle();
     // setWallsRec(0, 0);
   /*
    * addWalls();
@@ -183,46 +185,52 @@ void Map::DFS(int i, int j)
         return;
 
     grid[i][j].setVisited(true);
-    grid[i][j].setWall(false);
 
     std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+    std::vector<Cell*> cells;
+    std::vector<Cell*> walls;
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    shuffle(spaces.begin(), spaces.end(), std::default_random_engine(seed));
 
+    int next_i = -1, next_j = -1;
     for (auto itr = spaces.begin(); itr != spaces.end();)
     {
         int new_i = (*itr)[0] + i;
         int new_j = (*itr)[1] + j;
-        DFS(new_i, new_j);
-    }
 
-    /* La fantasia
-    for (auto itr = spaces.begin(); itr != spaces.end();)
-    {
-        int new_i = (*itr)[0] + i;
-        int new_j = (*itr)[1] + j;
         if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size())
         {
             itr = spaces.erase(itr);
             continue;
         }
 
-        if (grid[new_i][new_j].isWall())
-        {
-            itr = spaces.erase(itr);
-        } else
-        {
-            itr++;
-            DFS(new_i, new_j);
-        }
+        if (grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
+            walls.push_back(&grid[new_i][new_j]);
 
+        if (!grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
+            cells.push_back(&grid[new_i][new_j]);
+
+        ++itr;
     }
 
-    if (spaces.empty())
+    for (auto& cell : cells)
     {
-        int new_i = direct[0][0] + i;
-        int new_j = direct[0][1] + j;
+        cell->setWall(true);
+        cell->setVisited(true);
+    }
 
-        DFS(new_i, new_j);
-    }*/
+    if (!cells.empty())
+    {
+        cells[0]->setWall(false);
+        cells[0]->setVisited(false);
+        DFS(cells[0]->x, cells[0]->y);
+    }
+
+    if (!walls.empty())
+        walls[0]->setWall(false);
+
+    for (auto const& wall : walls)
+        DFS(wall->x, wall->y);
 }
 
 void Map::removeTrees()
@@ -311,7 +319,7 @@ void Map::createVerticalSymetry() {
     for (int i = 0; i < grid.size(); i++)
     {
         if (s_columns % 2 != 0)
-            grid[i].push_back(Cell(i, aux, false));
+            grid[i].push_back(Cell(i, aux, true)); ///< change
 
         for (int j = aux - 1; j >= 0; j--)
         {
