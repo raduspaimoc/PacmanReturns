@@ -47,10 +47,15 @@ void Map::showInfo()
 
 void Map::setWalls()
 {
-    DFS(0, 0);
+    DFS2(0, 0);
+    pruneTrees(0, 0);
+    //DFS(0, 0);
     createVerticalSymetry();
     //removeTrees();
     addMiddle();
+    float new_percent = countWalls();
+    printf("----| %f |----- \n", new_percent);
+
     // setWallsRec(0, 0);
   /*
    * addWalls();
@@ -75,6 +80,138 @@ void Map::setWalls()
     //addAloneWalls();
     //countAll();
     */
+}
+
+/*void Map::pruneTrees(int i, int j){
+  if(grid[i][j].isWall())
+    return;
+
+    std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+    std::vector<std::vector<int>> direct_all = { {0, 1}, {1, 0}, {1, 1}, {0, -1}, {-1, 0}, {-1, -1}, {1, -1}, {-1, 1} };
+    int next_i = -1, next_j = -1;
+    int final_i, final_j = 0;
+    int neighbors = 0;
+    for (auto itr = spaces.begin(); itr != spaces.end();)
+    {
+        int new_i = (*itr)[0] + i;
+        int new_j = (*itr)[1] + j;
+
+        if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
+        {
+            ++itr;
+            continue;
+        }
+
+        for (auto itr_2 = direct_all.begin(); itr_2 != direct_all.end();)
+        {
+            int i_i = (*itr)[0] + new_i;
+            int j_j = (*itr)[1] + new_j;
+
+            if (i_i < 0 || j_j < 0 || i_i >= grid.size() || j_j >= grid[i_i].size() || grid[i_i][j_j].isVisited())
+            {
+                ++itr_2;
+                continue;
+            }
+
+            if(countVisitedNeighbor(i_i, j_j) > neighbors){
+              final_i = i_i;
+              final_j = j_j;
+            }
+
+
+        }
+        ++itr;
+    }
+
+    grid[final_i][final_j].setWall(true);
+    pruneTrees(final_i, final_j);
+
+    /*if(cells >= 2)
+      return;
+
+    grid[i][j].setWall(true);
+
+    //if(cells < 2)
+    //  grid[i][j].setWall(true);
+
+      for (auto itr = spaces.begin(); itr != spaces.end();)
+      {
+          int new_i = (*itr)[0] + i;
+          int new_j = (*itr)[1] + j;
+          if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
+          {
+              ++itr;
+              continue;
+          }
+          if(!grid[i][j].isWall())
+            pruneTrees(i,j);
+      }
+
+}*/
+
+void Map::DFS2(int i, int j){
+  if(i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
+    return;
+  if (grid[i][j].isVisited())
+    return;
+
+  grid[i][j].setVisited(true);
+  std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+  std::vector<Cell*> cells;
+  std::vector<Cell*> walls;
+
+  int next_i = -1, next_j = -1;
+  int visited = 0;
+  for (auto itr = spaces.begin(); itr != spaces.end();)
+  {
+      int new_i = (*itr)[0] + i;
+      int new_j = (*itr)[1] + j;
+
+      if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
+      {
+          ++itr;
+          continue;
+      }
+
+      if(grid[i][j].isVisited())
+        visited++;
+
+      if (grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
+          walls.push_back(&grid[new_i][new_j]);
+
+      if (!grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
+          cells.push_back(&grid[new_i][new_j]);
+
+      ++itr;
+  }
+
+  /*if(visited == 3){
+    grid[i][j].setWall(true);
+    return;
+  }*/
+
+  for (int k = 0; k < cells.size(); k++)
+  {
+      Cell* cell = cells[k];
+      cell->setWall(true);
+      cell->setVisited(true);
+  }
+
+  if (!walls.empty())
+      walls[0]->setWall(false);
+
+  if (!cells.empty())
+  {
+      grid[i][j].setWall(false);
+      cells[0]->setWall(false);
+      cells[0]->setVisited(false);
+
+      DFS(cells[0]->x, cells[0]->y);
+  }
+
+  for (auto const& wall : walls)
+      DFS(wall->x, wall->y);
+
 }
 
 float Map::countWalls(){

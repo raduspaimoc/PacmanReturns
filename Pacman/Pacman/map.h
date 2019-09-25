@@ -28,6 +28,8 @@ struct Map
         float countWalls();
         void finalVerticalSymetryCheck();
         void DFS(int i, int j);
+        void DFS2(int i, int j);
+        void pruneTrees(int i, int j);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
