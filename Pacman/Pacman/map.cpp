@@ -221,26 +221,20 @@ Cell* Map::getPairCell(Cell cell)
 bool Map::isMiddle(int i, int j){
   int height_middle = grid.size() / 2;
   int width_middle = grid[0].size() / 2;
-
-  if((i == height_middle && j == width_middle) ||
-     (i == height_middle - 1 && j == width_middle) ||
-     (i == height_middle - 2 && j == width_middle) ||
-     (i == height_middle && j == width_middle + 1) ||
-     (i == height_middle && j == width_middle - 1) ||
-     (i == height_middle && j == width_middle - 2) ||
-     (i == height_middle && j == width_middle + 2) ||
-     (i == height_middle - 1 && j == width_middle - 1) ||
-     (i == height_middle - 1 && j == width_middle - 2) ||
-     (i == height_middle - 1 && j == width_middle + 1) ||
-     (i == height_middle - 1 && j == width_middle + 2) ||
-     (i == height_middle + 1 && j == width_middle - 1) ||
-     (i == height_middle + 1 && j == width_middle - 2) ||
-     (i == height_middle + 1 && j == width_middle) ||
-     (i == height_middle + 1 && j == width_middle + 1) ||
-     (i == height_middle + 1 && j == width_middle + 2))
-     {
-       return true;
-     }
+  for (auto const& elem : middle_walls)
+  {
+      int i_offset = elem[0];
+      int j_offset = elem[1];
+      if((i == height_middle + i_offset) && (j == width_middle + j_offset))
+        return true;
+  }
+  for (auto const& elem : middle_empty_walls)
+  {
+      int i_offset = elem[0];
+      int j_offset = elem[1];
+      if((i == height_middle + i_offset) && (j == width_middle + j_offset))
+        return true;
+  }
   return false;
 }
 
@@ -248,28 +242,20 @@ void Map::addMiddle()
 {
     int height_middle = grid.size() / 2;
     int width_middle = grid[0].size() / 2;
+    for (auto const& elem : middle_empty_walls)
+    {
+        int i_offset = elem[0];
+        int j_offset = elem[1];
+        grid[height_middle + i_offset][width_middle + j_offset].setWall(false);
 
 
-    grid[height_middle][width_middle].setWall(false);
-    grid[height_middle - 1][width_middle].setWall(false);
-    grid[height_middle - 2][width_middle].setWall(false);
-    grid[height_middle][width_middle - 1].setWall(false);
-    grid[height_middle][width_middle + 1].setWall(false);
-
-    grid[height_middle - 1][width_middle - 1].setWall(true);
-    grid[height_middle - 1][width_middle - 2].setWall(true);
-    grid[height_middle - 1][width_middle + 1].setWall(true);
-    grid[height_middle - 1][width_middle + 2].setWall(true);
-
-    //map[height_middle][width_middle] = 'X';
-    grid[height_middle][width_middle - 2].setWall(true);
-    grid[height_middle][width_middle + 2].setWall(true);
-
-    grid[height_middle + 1][width_middle - 1].setWall(true);
-    grid[height_middle + 1][width_middle - 2].setWall(true);
-    grid[height_middle + 1][width_middle].setWall(true);
-    grid[height_middle + 1][width_middle + 1].setWall(true);
-    grid[height_middle + 1][width_middle + 2].setWall(true);
+    }
+    for (auto const& elem : middle_walls)
+    {
+        int i_offset = elem[0];
+        int j_offset = elem[1];
+        grid[height_middle + i_offset][width_middle + j_offset].setWall(true);
+    }
 }
 
 void Map::setWallsRec(int i, int j)
