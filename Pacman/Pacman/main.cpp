@@ -25,7 +25,6 @@ int main(int argc, char const *argv[])
     }
 
     s_map = Map(s_rows, s_columns/2);
-    s_verga = 0;
     Graphics graph;
 
     s_map.setWalls();
