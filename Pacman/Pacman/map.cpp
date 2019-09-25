@@ -47,14 +47,16 @@ void Map::showInfo()
 
 void Map::setWalls()
 {
-    DFS2(0, 0);
-    pruneTrees(0, 0);
-    //DFS(0, 0);
+    //DFS2(0, 0);
+    //pruneTrees(0, 0);
+    DFS(0, 0);
     createVerticalSymetry();
     removeTrees();
     addMiddle();
-    float new_percent = countWalls();
-    printf("----| %f |----- \n", new_percent);
+    cleanMiddle();
+    addAloneWalls();
+    //float new_percent = countWalls();
+    //printf("----| %f |----- \n", new_percent);
 
     // setWallsRec(0, 0);
   /*
@@ -567,6 +569,14 @@ bool Map::isMiddle(int i, int j)
         return true;
   }
   return false;
+}
+
+void Map::cleanMiddle(){
+  int height_middle = grid.size() / 2;
+  int width_middle = grid[0].size() / 2;
+  for(int i = 1; i < height_middle; i++){
+    grid[i][width_middle].setWall(false);
+  }
 }
 
 void Map::addMiddle()
