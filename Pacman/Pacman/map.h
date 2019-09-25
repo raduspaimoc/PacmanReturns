@@ -22,6 +22,8 @@ struct Map
         void createVerticalSymetry();
         int countVisitedNeighbor(int i, int j);
         Cell* getPairCell(Cell cell);
+        float countWalls();
+        void finalVerticalSymetryCheck();
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
