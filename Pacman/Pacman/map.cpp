@@ -53,18 +53,21 @@ void Map::setWalls()
     createVerticalSymetry();
     removeTrees();
     addMiddle();
+<<<<<<< HEAD
     cleanMiddle();
     addAloneWalls();
     //float new_percent = countWalls();
     //printf("----| %f |----- \n", new_percent);
+=======
+>>>>>>> b453babd7225811f71ee1bd14fdae8110a1a3acb
 
+    addAloneWalls();
     // setWallsRec(0, 0);
   /*
    * addWalls();
     createVerticalSymetry();
     addMiddle();
     removeTrees();
-    addAloneWalls();
     float percent = countWalls();
     bool addMore = percent < 0.35 ? true : false;
     printf("----| %f |-----\n", percent);
@@ -292,22 +295,14 @@ void Map::addAloneWalls(){
           if (alone && !grid[i][j].isWall())
           {
               grid[i][j].setWall(true);
-              grid[i][j].SetAdded(true);
               printf("Añado i: %d, j: %d\n", i, j);
 
-              Cell& toDelete = grid[i][j];
+              Cell toDelete = grid[i][j];
               Cell* pair = getPairCell(toDelete);
               printf("Miro par i: %d, j: %d\n", pair->x, pair->y);
 
-              //toDelete.setWall(false);
-              //toDelete.SetDeleted(true);
               if (!isMiddle(pair->x, pair->y) && !grid[pair->x][pair->y].isWall())
-              {
                   grid[pair->x][pair->y].setWall(true);
-                  grid[pair->x][pair->y].SetAdded(true);
-                  //pair->setWall(false);
-                  //pair->SetDeleted(true);
-              }
           }
 
       }
@@ -531,7 +526,7 @@ void Map::createVerticalSymetry() {
             int new_y = aux + std::abs(j - aux) - 1;
 
             if (s_columns % 2 != 0)
-                new_x++;
+                new_y++;
 
             grid[i].push_back(Cell(new_x, new_y, grid[i][j].isWall()));
         }
