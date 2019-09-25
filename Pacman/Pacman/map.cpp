@@ -45,8 +45,40 @@ void Map::setWalls()
     addMiddle();
     removeTrees();
     addAloneWalls();
-    printf("Second iteration ---------\n" );
-    addAloneWalls();
+    float percent = countWalls();
+    bool addMore = percent < 0.35 ? true : false;
+    printf("----| %f |-----\n", percent);
+    while(addMore){
+      addWalls();
+      addMiddle();
+      finalVerticalSymetryCheck();
+      removeTrees();
+      addAloneWalls();
+      float new_percent = countWalls();
+      printf("----| %f |----- es o no es: %d\n", new_percent, (int)new_percent == (int)percent);
+      if((int) new_percent == (int)percent)
+        addMore = false;
+    }
+    //addAloneWalls();
+    //countAll();
+}
+
+float Map::countWalls(){
+  int walls = 0;
+  int empty = 0;
+  for (size_t i = 0; i < grid.size(); i++)
+  {
+      for (size_t j = 0; j < grid[0].size(); j++)
+      {
+        if(grid[i][j].isWall()){
+          walls++;
+        } else {
+          empty++;
+        }
+      }
+  }
+  return (float)walls/(walls+empty);
+  //rintf("Total: %d, Walls: %d, Percent: %f, Empty: %d, Percent: %f, Difference: %d\n", walls+empty, walls, (float)walls/(walls+empty), empty,(float)empty/(walls+empty), walls-empty);
 }
 
 void Map::addWalls(){
@@ -193,6 +225,16 @@ void Map::removeTrees()
     }
 }
 
+void Map::finalVerticalSymetryCheck(){
+  for (size_t i = 0; i < grid.size(); i++) {
+    for (size_t j = 0; j < grid[0].size()/2; j++) {
+      Cell& cell = grid[i][j];
+      Cell* pair = getPairCell(cell);
+      pair->setWall(cell.isWall());
+    }
+  }
+}
+
 void Map::createVerticalSymetry() {
     int aux = grid[0].size();
     for (int i = 0; i < grid.size(); i++)
@@ -218,9 +260,11 @@ Cell* Map::getPairCell(Cell cell)
     return &grid[cell.x][s_columns - cell.y - 1];
 }
 
-bool Map::isMiddle(int i, int j){
+bool Map::isMiddle(int i, int j)
+{
   int height_middle = grid.size() / 2;
   int width_middle = grid[0].size() / 2;
+
   for (auto const& elem : middle_walls)
   {
       int i_offset = elem[0];
