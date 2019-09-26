@@ -56,52 +56,6 @@ void Map::setWalls()
     addAloneWalls();
 }
 
-float Map::countWalls(){
-  int walls = 0;
-  int empty = 0;
-  for (size_t i = 0; i < grid.size(); i++)
-  {
-      for (size_t j = 0; j < grid[0].size(); j++)
-      {
-        if(grid[i][j].isWall()){
-          walls++;
-        } else {
-          empty++;
-        }
-      }
-  }
-  return (float)walls/(walls+empty);
-  //rintf("Total: %d, Walls: %d, Percent: %f, Empty: %d, Percent: %f, Difference: %d\n", walls+empty, walls, (float)walls/(walls+empty), empty,(float)empty/(walls+empty), walls-empty);
-}
-
-void Map::addWalls(){
-    for (size_t i = 0; i < grid.size(); i++)
-    {
-        for (size_t j = 0; j < grid[0].size(); j++)
-        {
-            if (isMiddle(i, j))
-                continue;
-
-            if ((j + 1 == grid[0].size() - 1) || (j + 2 >= grid[0].size()) || (j + 3 >= grid[0].size()))
-                continue;
-
-            if (grid[i][j].isWall() && grid[i][j + 3].isWall())
-                grid[i][j + 2].setWall(true);
-
-            if (grid[i][j].isWall() && grid[i][j + 2].isWall())
-                grid[i][j + 1].setWall(true);
-
-
-           /*if((i + 1 == grid.size()- 1) || (i + 2) >= grid.size() || (i + 3 >= grid.size()))
-             continue;
-           if(grid[i][j].isWall() && grid[i+3][j].isWall())
-                grid[i+1][j].setWall(true);
-           if(grid[i][j].isWall() && grid[i+2][j].isWall())
-                grid[i+1][j].setWall(true);*/
-        }
-    }
-}
-
 void Map::addAloneWalls(){
   for (int i = 0; i < grid.size(); i++)
   {
@@ -173,10 +127,10 @@ void Map::DFS(Cell* cell)
             cells.push_back(&grid[new_i][new_j]);
     }
 
-    for(auto& cell: cells)
+    for(auto& l_cell: cells)
     {
-        cell->setWall(true);
-        cell->setVisited(true);
+        l_cell->setWall(true);
+        l_cell->setVisited(true);
     }
 
     if (!cells.empty())
@@ -260,7 +214,6 @@ void Map::removeTrees()
                 continue;
 
             Utils::RandomResize(good, walls - 2);
-            int sizea = good.size() - (walls - 2);
             for (auto& toDelete : good)
             {
                 Cell* pair = getPairCell(toDelete);
@@ -317,7 +270,6 @@ void Map::CheckTreesRec(Cell* cell)
         return;
 
     Utils::RandomResize(good, walls - 2);
-    int sizea = good.size() - (walls - 2);
     for (auto& toDelete : good)
     {
         Cell* pair = getPairCell(toDelete);
@@ -417,24 +369,6 @@ void Map::addMiddle()
     }
 }
 
-int Map::countVisitedNeighbor(int i, int j){
-    int count = 0;
-
-    for (int k = 0; k < 4; ++k)
-    {
-        int ni = i + direct[k][0];
-        int nj = j + direct[k][1];
-        //out of boundary
-        if (ni < 0 || nj < 0 || ni >= grid.size() || nj >= grid[0].size())
-          continue;
-
-        if (!grid[ni][nj].isWall())
-          count++;
-    }
-
-    return count;
-}
-
 void Map::reset()
 {
     for (auto& row : grid)
@@ -457,9 +391,9 @@ void Map::reset()
 
 std::ostream& operator<<(std::ostream& os, const Map& map)
 {
-    for (auto row : map.grid)
+    for (const auto& row : map.grid)
     {
-      for (auto column : row)
+      for (const auto& column : row)
         os << column;
 
       os << '\n';

@@ -18,9 +18,15 @@ int main(int argc, char const *argv[])
     cout << "Enter the number of rows: ";
     cin >> s_rows;
 
-    if (s_columns < 20 || s_rows < 20)
+    if (s_columns < 10 || s_rows < 10)
     {
         printf("Min dimension is 20x20\n");
+        return 0;
+    }
+
+    if (s_columns > 100 || s_rows > 100)
+    {
+        printf("Max dimension is 100x100\n");
         return 0;
     }
 
