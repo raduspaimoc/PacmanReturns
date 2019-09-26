@@ -26,27 +26,7 @@ void Graphics::display()
             if (cell->isWall() && !cell->isAdded())
                 continue;
 
-            //if (cell->isVisited() && !cell->isWall())
-                //glColor3f(0.5, 0.5, 0.5);
-            //else if (!cell->isVisited() && !cell->isWall())
                 glColor3f(0.0, 0.0, 0.0);
-//            else if (cell->isAdded())
-  //              glColor3f(0.0, 1.0, 0.5);
-
-            // Scope: debug the steps to prune trees and walls added
-            /*if(grid[real_i][j].isVisited())
-                glColor3f(0.5, 0.5, 0.5);
-            else
-                glColor3f(0.0, 0.0, 0.0);
-
-            if (grid[real_i][j].isDeleted())
-                glColor3f(0.0, 1.0, 0.5);
-                */
-            /*else if (grid[real_i][j].isAdded())
-                glColor3f(0.0, 1.0, 0.5);
-            else
-                glColor3f(0.8, 0.8, 0.8);*/
-
 
 
             glBegin(GL_QUADS);
