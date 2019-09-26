@@ -47,78 +47,13 @@ void Map::showInfo()
 
 void Map::setWalls()
 {
-    DFS(0, 0);
+    DFS(&grid[0][0]);
     createVerticalSymetry();
     removeTrees();
     addMiddle();
 
     cleanMiddle();
     addAloneWalls();
-}
-
-void Map::DFS2(int i, int j){
-  if(i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
-    return;
-  if (grid[i][j].isVisited())
-    return;
-
-  grid[i][j].setVisited(true);
-  std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
-  std::vector<Cell*> cells;
-  std::vector<Cell*> walls;
-
-  int next_i = -1, next_j = -1;
-  int visited = 0;
-  for (auto itr = spaces.begin(); itr != spaces.end();)
-  {
-      int new_i = (*itr)[0] + i;
-      int new_j = (*itr)[1] + j;
-
-      if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
-      {
-          ++itr;
-          continue;
-      }
-
-      if(grid[i][j].isVisited())
-        visited++;
-
-      if (grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
-          walls.push_back(&grid[new_i][new_j]);
-
-      if (!grid[new_i][new_j].isWall() && !grid[new_i][new_j].isVisited())
-          cells.push_back(&grid[new_i][new_j]);
-
-      ++itr;
-  }
-
-  /*if(visited == 3){
-    grid[i][j].setWall(true);
-    return;
-  }*/
-
-  for (int k = 0; k < cells.size(); k++)
-  {
-      Cell* cell = cells[k];
-      cell->setWall(true);
-      cell->setVisited(true);
-  }
-
-  if (!walls.empty())
-      walls[0]->setWall(false);
-
-  if (!cells.empty())
-  {
-      grid[i][j].setWall(false);
-      cells[0]->setWall(false);
-      cells[0]->setVisited(false);
-
-      DFS(cells[0]->x, cells[0]->y);
-  }
-
-  for (auto const& wall : walls)
-      DFS(wall->x, wall->y);
-
 }
 
 float Map::countWalls(){
@@ -211,27 +146,23 @@ void Map::addAloneWalls(){
   }
 }
 
-void Map::DFS(int i, int j)
+void Map::DFS(Cell* cell)
 {
-    if (i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
+    if (cell->isVisited())
         return;
 
-    if (grid[i][j].isVisited())
-        return;
+    cell->setVisited(true);
 
-    grid[i][j].setVisited(true);
-
-    std::vector<std::vector<int>> directions = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
+    std::vector<int8_t> directions = { 0, 1, 2, 3 };
     std::vector<Cell*> cells;
     std::vector<Cell*> walls;
 
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
+    shuffle(directions.begin(), directions.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 
     for (auto& direction : directions)
     {
-        int new_i = direction[0] + i;
-        int new_j = direction[1] + j;
+        int8_t new_i = direct[direction][0] + cell->x;
+        int8_t new_j = direct[direction][1] + cell->y;
 
         if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
             continue;
@@ -242,24 +173,25 @@ void Map::DFS(int i, int j)
             cells.push_back(&grid[new_i][new_j]);
     }
 
-    for (int k = 0; k < cells.size(); k++)
+    for(auto& cell: cells)
     {
-        cells[k]->setWall(true);
-        cells[k]->setVisited(true);
+        cell->setWall(true);
+        cell->setVisited(true);
     }
 
     if (!cells.empty())
     {
-        grid[i][j].setWall(false);
+        cell->setWall(false);
         cells[0]->setWall(false);
         cells[0]->setVisited(false);
 
-        DFS(cells[0]->x, cells[0]->y);
+        DFS(cells[0]);
+        cells.clear();
     }
 
-    for (auto const& wall : walls)
+    for (auto& wall : walls)
         if (!wall->isVisited())
-            DFS(wall->x, wall->y);
+            DFS(wall);
 }
 
 int Map::getWallCount(Cell* cell)
