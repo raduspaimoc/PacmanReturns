@@ -53,15 +53,13 @@ void Map::setWalls()
     createVerticalSymetry();
     removeTrees();
     addMiddle();
-<<<<<<< HEAD
+
     cleanMiddle();
     addAloneWalls();
     //float new_percent = countWalls();
     //printf("----| %f |----- \n", new_percent);
-=======
->>>>>>> b453babd7225811f71ee1bd14fdae8110a1a3acb
 
-    addAloneWalls();
+    //addAloneWalls();
     // setWallsRec(0, 0);
   /*
    * addWalls();
@@ -569,8 +567,11 @@ bool Map::isMiddle(int i, int j)
 void Map::cleanMiddle(){
   int height_middle = grid.size() / 2;
   int width_middle = grid[0].size() / 2;
-  for(int i = 1; i < height_middle; i++){
+  for(int i = 1; i < grid.size()-1; i++){
     grid[i][width_middle].setWall(false);
+    if(i == height_middle+1){
+      grid[i][width_middle].setWall(true);
+    }
   }
 }
 
