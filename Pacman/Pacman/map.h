@@ -12,7 +12,6 @@ struct Map
 
         void showInfo();
         void setWalls();
-        void setWallsRec(int i, int j);
         void addMiddle();
         void removeTrees();
         void reset();
@@ -28,10 +27,8 @@ struct Map
         void CheckTreesRec(Cell* cell);
 
         float countWalls();
-        void finalVerticalSymetryCheck();
         void DFS(int i, int j);
         void DFS2(int i, int j);
-        void pruneTrees(int i, int j);
         void cleanMiddle();
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);

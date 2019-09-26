@@ -47,8 +47,6 @@ void Map::showInfo()
 
 void Map::setWalls()
 {
-    //DFS2(0, 0);
-    //pruneTrees(0, 0);
     DFS(0, 0);
     createVerticalSymetry();
     removeTrees();
@@ -56,101 +54,7 @@ void Map::setWalls()
 
     cleanMiddle();
     addAloneWalls();
-    //float new_percent = countWalls();
-    //printf("----| %f |----- \n", new_percent);
-
-    //addAloneWalls();
-    // setWallsRec(0, 0);
-  /*
-   * addWalls();
-    createVerticalSymetry();
-    addMiddle();
-    removeTrees();
-    float percent = countWalls();
-    bool addMore = percent < 0.35 ? true : false;
-    printf("----| %f |-----\n", percent);
-    while(addMore){
-      addWalls();
-      addMiddle();
-      finalVerticalSymetryCheck();
-      removeTrees();
-      addAloneWalls();
-      float new_percent = countWalls();
-      printf("----| %f |----- es o no es: %d\n", new_percent, (int)new_percent == (int)percent);
-      if((int) new_percent == (int)percent)
-        addMore = false;
-    }
-    //addAloneWalls();
-    //countAll();
-    */
 }
-
-/*void Map::pruneTrees(int i, int j){
-  if(grid[i][j].isWall())
-    return;
-
-    std::vector<std::vector<int>> spaces = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
-    std::vector<std::vector<int>> direct_all = { {0, 1}, {1, 0}, {1, 1}, {0, -1}, {-1, 0}, {-1, -1}, {1, -1}, {-1, 1} };
-    int next_i = -1, next_j = -1;
-    int final_i, final_j = 0;
-    int neighbors = 0;
-    for (auto itr = spaces.begin(); itr != spaces.end();)
-    {
-        int new_i = (*itr)[0] + i;
-        int new_j = (*itr)[1] + j;
-
-        if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
-        {
-            ++itr;
-            continue;
-        }
-
-        for (auto itr_2 = direct_all.begin(); itr_2 != direct_all.end();)
-        {
-            int i_i = (*itr)[0] + new_i;
-            int j_j = (*itr)[1] + new_j;
-
-            if (i_i < 0 || j_j < 0 || i_i >= grid.size() || j_j >= grid[i_i].size() || grid[i_i][j_j].isVisited())
-            {
-                ++itr_2;
-                continue;
-            }
-
-            if(countVisitedNeighbor(i_i, j_j) > neighbors){
-              final_i = i_i;
-              final_j = j_j;
-            }
-
-
-        }
-        ++itr;
-    }
-
-    grid[final_i][final_j].setWall(true);
-    pruneTrees(final_i, final_j);
-
-    /*if(cells >= 2)
-      return;
-
-    grid[i][j].setWall(true);
-
-    //if(cells < 2)
-    //  grid[i][j].setWall(true);
-
-      for (auto itr = spaces.begin(); itr != spaces.end();)
-      {
-          int new_i = (*itr)[0] + i;
-          int new_j = (*itr)[1] + j;
-          if (new_i < 0 || new_j < 0 || new_i >= grid.size() || new_j >= grid[new_i].size() || grid[new_i][new_j].isVisited())
-          {
-              ++itr;
-              continue;
-          }
-          if(!grid[i][j].isWall())
-            pruneTrees(i,j);
-      }
-
-}*/
 
 void Map::DFS2(int i, int j){
   if(i < 0 || j < 0 || i >= grid.size() || j >= grid[i].size())
@@ -324,8 +228,7 @@ void Map::DFS(int i, int j)
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     shuffle(directions.begin(), directions.end(), std::default_random_engine(seed));
 
-    int next_i = -1, next_j = -1;
-    for(auto& direction : directions)
+    for (auto& direction : directions)
     {
         int new_i = direction[0] + i;
         int new_j = direction[1] + j;
@@ -341,10 +244,8 @@ void Map::DFS(int i, int j)
 
     for (int k = 0; k < cells.size(); k++)
     {
-        Cell* cell = cells[k];
-        cell->setWall(true);
-        //cell->SetAdded(true);
-        cell->setVisited(true);
+        cells[k]->setWall(true);
+        cells[k]->setVisited(true);
     }
 
     if (!cells.empty())
@@ -357,7 +258,8 @@ void Map::DFS(int i, int j)
     }
 
     for (auto const& wall : walls)
-        DFS(wall->x, wall->y);
+        if (!wall->isVisited())
+            DFS(wall->x, wall->y);
 }
 
 int Map::getWallCount(Cell* cell)
@@ -465,7 +367,7 @@ void Map::CheckTreesRec(Cell* cell)
         if ((i_offset == -1 && cell->x == 0) ||
             (j_offset == -1 && cell->y == 0) ||
             (i_offset == 1 && cell->x == grid.size() - 1) ||
-            (j_offset == 1 && cell->y == grid[cell->y].size() - 1) ||
+            (j_offset == 1 && cell->y == grid[cell->x].size() - 1) ||
             isMiddle(cell->x + i_offset, cell->y + j_offset))
         {
             walls++;
@@ -500,17 +402,6 @@ void Map::CheckTreesRec(Cell* cell)
     }
 }
 
-void Map::finalVerticalSymetryCheck(){
-  for (size_t i = 0; i < grid.size(); i++) {
-    for (size_t j = 0; j < grid[0].size()/2; j++) {
-      Cell& cell = grid[i][j];
-      Cell* pair = getPairCell(cell);
-      if(!isMiddle(pair->x, pair->y))
-        pair->setWall(cell.isWall());
-    }
-  }
-}
-
 void Map::createVerticalSymetry() {
     int aux = grid[0].size();
     for (int i = 0; i < grid.size(); i++)
@@ -540,7 +431,6 @@ Cell* Map::getPairCell(Cell* cell)
 {
     return &grid[cell->x][s_columns - cell->y - 1];
 }
-
 
 bool Map::isMiddle(int i, int j)
 {
@@ -593,39 +483,6 @@ void Map::addMiddle()
         int j_offset = elem[1];
         grid[height_middle + i_offset][width_middle + j_offset].setWall(true);
     }
-}
-
-void Map::setWallsRec(int i, int j)
-{
-  std::vector<int> visitOrder = {0, 1, 2, 3};
-  //out of boundary
-  if (i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size())
-    return;
-
-  //visited, go back the the coming direction, return
-  if (!grid[i][j].isWall())
-    return;
-
-  //some neightbors are visited in addition to the coming direction, return
-  //this is fill some circles in maze
-  if (countVisitedNeighbor(i, j) > 1)
-      return;
-
-  grid[i][j].setWall(false);
-
-  //shuffle the visitOrder
-
-  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  shuffle (visitOrder.begin(), visitOrder.end(), std::default_random_engine(seed));
-
-//  shuffle(visitOrder, 4);
-
-  for (int k = 0; k < 4; ++k)
-  {
-      int ni = i + direct[visitOrder[k]][0];
-      int nj = j + direct[visitOrder[k]][1];
-      setWallsRec(ni, nj);
-  }
 }
 
 int Map::countVisitedNeighbor(int i, int j){
