@@ -9,6 +9,6 @@ Cell::Cell(int x, int y, bool wall) : x(x), y(y), flags( wall ? CellFlags::CELL_
 
 std::ostream& operator<<(std::ostream& os, const Cell& cell)
 {
-    os << ((cell.flags & Cell::CellFlags::CELL_FLAG_WALL) != 0 ? '0' : ' ');
+    os << ((cell.flags & CellFlags::CELL_FLAG_WALL) != 0 ? '0' : ' ');
     return os;
 }

@@ -15,6 +15,7 @@ struct Map
         void addMiddle();
         void removeTrees();
         void reset();
+        void initCells();
         void addAloneWalls();
         bool isMiddle(int i, int j);
         void createVerticalSymetry();

@@ -54,6 +54,31 @@ void Map::setWalls()
 
     cleanMiddle();
     addAloneWalls();
+
+    initCells();
+}
+
+void Map::initCells()
+{
+    std::vector<Cell*> emptyCells;
+
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if (!cell.isWall() && !isMiddle(cell.x, cell.y))
+            {
+                cell.setFlag(CellFlags::CELL_FLAG_FOOD);
+                emptyCells.push_back(&cell);
+            }
+        }
+    }
+
+    if (emptyCells.empty())
+        return;
+
+    Utils::RandomResize(emptyCells, 1);
+    emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
 }
 
 void Map::addAloneWalls(){

@@ -2,6 +2,17 @@
 
 #include <iostream>
 
+enum CellFlags
+{
+    CELL_FLAG_WALL = 0x01,
+    CELL_FLAG_FOOD = 0x02,
+    CELL_FLAG_DELETED = 0x04,
+    CELL_FLAG_ADDED = 0x08,
+    CELL_FLAG_VISITED = 0x10,
+    CELL_FLAG_PACMAN = 0x20,
+    CELL_FLAG_GHOST = 0x40
+};
+
 struct Cell
 {
     Cell(int x, int y);
@@ -11,17 +22,6 @@ struct Cell
     int x, y;
     unsigned int flags;
 public:
-
-    enum CellFlags
-    {
-        CELL_FLAG_WALL = 0x01,
-        CELL_FLAG_FOOD = 0x02,
-        CELL_FLAG_DELETED = 0x04,
-        CELL_FLAG_ADDED = 0x08,
-        CELL_FLAG_VISITED = 0x10,
-        CELL_FLAG_PACMAN = 0x20,
-        CELL_FLAG_GHOST = 0x40
-    };
 
     bool isWall() { return hasFlag(CellFlags::CELL_FLAG_WALL); };
     bool isDeleted() { return hasFlag(CellFlags::CELL_FLAG_DELETED); };
