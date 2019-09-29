@@ -3,7 +3,8 @@
 struct Graphics
 {
     public:
-        Graphics() { };
+        Graphics() = default;
         static void display();
         static void keyboard(unsigned char c, int x, int y);
+        static void idle();
 };

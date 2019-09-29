@@ -13,14 +13,20 @@ enum CellFlags
     CELL_FLAG_GHOST = 0x40
 };
 
+enum MovementFlags
+{
+    MOVEMENT_FLAG_MOVING = 0x01,
+    MOVEMENT_FLAG_STILL = 0x02,
+};
+
 struct Cell
 {
-    Cell(int x, int y);
-    Cell(int x, int y, bool wall);
+    Cell(float x, float y);
+    Cell(float x, float y, bool wall);
     Cell() : Cell(0, 0) {};
 
-    int x, y;
-    unsigned int flags;
+    float x, y;
+    unsigned int flags, movementFlags = 0;
 public:
 
     bool isWall() { return hasFlag(CellFlags::CELL_FLAG_WALL); };
@@ -32,6 +38,21 @@ public:
     void addFlag(unsigned int p_flags) { flags |= p_flags; };
     void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
     bool hasFlag(unsigned int p_Flag) { return (flags & p_Flag) != 0; };
+
+    void setMovementFlag(unsigned int p_flags) { movementFlags = p_flags; };
+    void addMovementFlag(unsigned int p_flags) { movementFlags |= p_flags; };
+    void removeMovementFlag(unsigned int p_flags) { movementFlags &= ~p_flags; };
+    bool hasMovementFlag(unsigned int p_Flag) { return (movementFlags & p_Flag) != 0; };
+
+    void setMoving(bool apply)
+    {
+        if (apply)
+            setMovementFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
+        else
+            setMovementFlag(MovementFlags::MOVEMENT_FLAG_STILL);
+    }
+
+    bool isMoving() { return hasMovementFlag(MovementFlags::MOVEMENT_FLAG_MOVING); }
 
     void setVisited(bool apply)
     {

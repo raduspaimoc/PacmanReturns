@@ -111,11 +111,9 @@ void Map::addAloneWalls(){
           if (alone && !grid[i][j].isWall())
           {
               grid[i][j].setWall(true);
-              printf("Añado i: %d, j: %d\n", i, j);
 
               Cell toDelete = grid[i][j];
               Cell* pair = getPairCell(toDelete);
-              printf("Miro par i: %d, j: %d\n", pair->x, pair->y);
 
               if (!isMiddle(pair->x, pair->y) && !grid[pair->x][pair->y].isWall())
                   grid[pair->x][pair->y].setWall(true);
@@ -402,9 +400,9 @@ void Map::reset()
         for (auto& cell : row)
         {
             bool wall = true;
-            if (cell.y % 2 == 0 && cell.x % 2 == 0)
+            if ((int) cell.y % 2 == 0 && (int) cell.x % 2 == 0)
                 wall = false;
-            if (cell.y % 2 == 1 && cell.x % 2 ==1)
+            if ((int) cell.y % 2 == 1 && (int) cell.x % 2 ==1)
                 wall = false;
 
             cell.setWall(wall);

@@ -62,10 +62,18 @@ void Graphics::display()
     glutSwapBuffers();
 }
 
+void Graphics::idle()
+{
+
+}
+
 void Graphics::keyboard(unsigned char c, int x, int y)
 {
-    s_map.reset();
-    s_map.setWalls();
+    if (c == ' ')
+    {
+        s_map.reset();
+        s_map.setWalls();
 
-    glutPostRedisplay();
+        glutPostRedisplay();
+    }
 }

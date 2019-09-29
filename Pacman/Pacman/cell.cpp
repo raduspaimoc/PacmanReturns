@@ -4,8 +4,8 @@
 #include <cstdarg>
 
 
-Cell::Cell(int x, int y) : x(x), y(y), flags(CellFlags::CELL_FLAG_WALL) { }
-Cell::Cell(int x, int y, bool wall) : x(x), y(y), flags( wall ? CellFlags::CELL_FLAG_WALL : 0) { }
+Cell::Cell(float x, float y) : x(x), y(y), flags(CellFlags::CELL_FLAG_WALL) { }
+Cell::Cell(float x, float y, bool wall) : x(x), y(y), flags( wall ? CellFlags::CELL_FLAG_WALL : 0) { }
 
 std::ostream& operator<<(std::ostream& os, const Cell& cell)
 {

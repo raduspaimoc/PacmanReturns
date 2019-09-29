@@ -31,13 +31,12 @@ int main(int argc, char const *argv[])
     }
 
     s_map = Map(s_rows, s_columns/2);
-    Graphics graph;
-
     s_map.setWalls();
 
     char fakeParam[] = "fake";
-    char *fakeargv[] = { fakeParam, NULL };
+    char *fakeargv[] = { fakeParam, nullptr };
     int fakeargc = 1;
+
     glutInit(&fakeargc, fakeargv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowPosition(50, 50);
@@ -45,8 +44,9 @@ int main(int argc, char const *argv[])
     glutCreateWindow("Pac man");
 
     s_map.showInfo();
-    glutDisplayFunc(graph.display);
-    glutKeyboardFunc(graph.keyboard);
+    glutDisplayFunc(Graphics::display);
+    glutKeyboardFunc(Graphics::keyboard);
+    glutIdleFunc(Graphics::idle);
 
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
