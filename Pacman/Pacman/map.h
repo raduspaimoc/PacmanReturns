@@ -15,18 +15,15 @@ struct Map
         void addMiddle();
         void removeTrees();
         void reset();
-        void addWalls();
         void addAloneWalls();
         bool isMiddle(int i, int j);
         void createVerticalSymetry();
-        int countVisitedNeighbor(int i, int j);
 
         Cell* getPairCell(Cell cell);
         Cell* getPairCell(Cell* cell);
         int getWallCount(Cell* cell);
         void CheckTreesRec(Cell* cell);
 
-        float countWalls();
         void DFS(Cell* cell);
         void cleanMiddle();
 

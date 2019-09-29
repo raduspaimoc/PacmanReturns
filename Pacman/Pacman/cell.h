@@ -10,8 +10,6 @@ struct Cell
 
     int x, y;
     unsigned int flags;
-    bool wall, deleted, added, visited; ///< Fucking awful, TODO: implement flags
-
 public:
 
     enum CellFlags
@@ -20,23 +18,49 @@ public:
         CELL_FLAG_FOOD = 0x02,
         CELL_FLAG_DELETED = 0x04,
         CELL_FLAG_ADDED = 0x08,
-        CELL_FLAG_VISITED = 0x10
+        CELL_FLAG_VISITED = 0x10,
+        CELL_FLAG_PACMAN = 0x20,
+        CELL_FLAG_GHOST = 0x40
     };
 
-    bool isWall();
-    bool isDeleted() { return deleted; };
-    bool isAdded() { return added; };
-    bool isVisited() { return visited; };
+    bool isWall() { return hasFlag(CellFlags::CELL_FLAG_WALL); };
+    bool isDeleted() { return hasFlag(CellFlags::CELL_FLAG_DELETED); };
+    bool isAdded() { return hasFlag(CellFlags::CELL_FLAG_ADDED); };
+    bool isVisited() { return hasFlag(CellFlags::CELL_FLAG_VISITED); };
 
     void setFlag(unsigned int p_flags) { flags = p_flags; };
     void addFlag(unsigned int p_flags) { flags |= p_flags; };
     void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
-    bool hasFlag(unsigned int p_Flag) { return flags & p_Flag; };
+    bool hasFlag(unsigned int p_Flag) { return (flags & p_Flag) != 0; };
 
-    void setVisited(bool apply) { visited = apply; };
-    void setWall(bool apply) { wall = apply; };
-    void SetDeleted(bool apply) { deleted = apply; };
-    void SetAdded(bool apply) { added = apply; };
+    void setVisited(bool apply)
+    {
+        if (apply)
+            addFlag(CellFlags::CELL_FLAG_VISITED);
+        else
+            removeFlag(CellFlags::CELL_FLAG_VISITED);
+    };
+    void setWall(bool apply)
+    {
+        if (apply)
+            addFlag(CellFlags::CELL_FLAG_WALL);
+        else
+            removeFlag(CellFlags::CELL_FLAG_WALL);
+    };
+    void SetDeleted(bool apply)
+    {
+        if (apply)
+            addFlag(CellFlags::CELL_FLAG_DELETED);
+        else
+            removeFlag(CellFlags::CELL_FLAG_DELETED);
+    };
+    void SetAdded(bool apply)
+    {
+        if (apply)
+            addFlag(CellFlags::CELL_FLAG_DELETED);
+        else
+            removeFlag(CellFlags::CELL_FLAG_DELETED);
+    };
 
     bool isHorizontalBorder(int size) { return size - 1 == x || x == 0; };
     bool isVerticalBorder(int size) { return size - 1 == y || y == 0; };
