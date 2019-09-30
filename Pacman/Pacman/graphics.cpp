@@ -91,13 +91,11 @@ void Graphics::idle()
   else
   {
     printf("T: %ld, LAST_t: %ld \n", t, last_t);
-    if(t - last_t > 1000){
+    if(t - last_t > 1500){
       printf("Entro en el deep web\n" );
       movePacman();
       last_t=t;
     }
-      //reboot(aux);
-      aux++;
   }
 
 
@@ -138,6 +136,7 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
         glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
 
         glEnd();
+
     } else {
         glColor3f(0.0, 0.0, 0.0);
         glBegin(GL_QUADS);
@@ -177,7 +176,14 @@ void Graphics::movePacman(){
   {
     int i_offset = (*itr)[0];
     int j_offset = (*itr)[1];
+    if ((i_offset + pacman->x < 0) || (j_offset + pacman->y < 0) || (i_offset + pacman->x >= grid.size()) || (j_offset + pacman->y >= grid[pacman->x].size()))
+    {
+        itr++;
+        continue;
+    }
+
     Cell * cell = &grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
+
     if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
     {
         printf("Pôs %f - %f\n", cell->x, cell->y);
