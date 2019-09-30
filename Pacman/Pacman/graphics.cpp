@@ -91,7 +91,7 @@ void Graphics::idle()
   else
   {
     printf("T: %ld, LAST_t: %ld \n", t, last_t);
-    if(t - last_t > 15){
+    if(t - last_t > 1000){
       printf("Entro en el deep web\n" );
       movePacman();
       last_t=t;
@@ -119,11 +119,11 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     if(cell->hasFlag(CellFlags::CELL_FLAG_PACMAN)){
         glBegin(GL_QUADS);
 
-        glVertex2i((int)cell->y * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
-        glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+        glVertex2i(cell->y * cell_width + MARGIN, fake_i * cell_height + MARGIN);
+        glVertex2i((cell->y + 1) * cell_width + MARGIN, fake_i * cell_height + MARGIN);
 
-        glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
-        glVertex2i((int)cell->y * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
+        glVertex2i((cell->y + 1) * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
+        glVertex2i(cell->y * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
 
         glEnd();
 
@@ -131,33 +131,34 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
 
         glBegin(GL_QUADS);
 
-        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + cell_height4);
-        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
 
-        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
-        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
 
         glEnd();
     } else {
-        /*int real_i = s_rows - i - 1;
-
-        if (grid[real_i][j].isWall())
-            continue;
-
-        if(grid[real_i][j].isDeleted())
-            glColor3f(0.5, 0.5, 0.5);
-        else if (grid[real_i][j].isAdded())
-            glColor3f(0.0, 1.0, 0.5);
-        else
-            glColor3f(0.8, 0.8, 0.8);*/
-        glColor3f(0.0, 1.0, 0.5);
+        glColor3f(0.0, 0.0, 0.0);
         glBegin(GL_QUADS);
 
-        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
-        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+        glVertex2i(cell->y * cell_width + MARGIN, fake_i * cell_height + MARGIN);
+        glVertex2i((cell->y + 1) * cell_width + MARGIN, fake_i * cell_height + MARGIN);
 
-        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
-        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+        glVertex2i((cell->y + 1) * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
+        glVertex2i(cell->y * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
+
+        glEnd();
+
+        glColor3f(0.0, 0.0, 0.0);
+
+        glBegin(GL_QUADS);
+
+        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
+
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
 
         glEnd();
     }
@@ -227,7 +228,7 @@ void Graphics::keyboard(unsigned char c, int x, int y)
     }
     else
     {
-      //movePacman();
+      movePacman();
       //glutPostRedisplay();
       //aux++;
       // direct = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
