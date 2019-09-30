@@ -114,37 +114,35 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     Cell* cell = cells[i];
     //int real_i = s_rows - i - 1;
     int fake_i = s_rows - cell->x - 1;
-    if (cell->isWall())
+    glColor3f(0.0, 0.0, 0.0);
+    if(!cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))    
+
+    glBegin(GL_QUADS);
+
+    glVertex2i((int)cell->y * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+    glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+
+    glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
+    glVertex2i((int)cell->y * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
+
+    glEnd();
+
+    if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
+        glColor3f(1.0, 0.5, 0.0);
+    else if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
+        glColor3f(0.0, 1.0, 1.0);
+    else
         continue;
 
-        glColor3f(0.0, 0.0, 0.0);
+  /*glBegin(GL_QUADS);
 
-        glBegin(GL_QUADS);
+  glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + cell_height4);
+  glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + cell_height4);
 
-        glVertex2i((int)cell->y * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
-        glVertex2i((cell->y + 1) * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+  glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
+  glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
 
-        glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
-        glVertex2i((int)cell->y * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
-
-        glEnd();
-
-        if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
-            glColor3f(1.0, 0.5, 0.0);
-        /*else if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
-            glColor3f(0.0, 1.0, 1.0);*/
-        else
-            continue;
-
-        glBegin(GL_QUADS);
-
-        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + cell_height4);
-        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + cell_height4);
-
-        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
-        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
-
-        glEnd();
+  glEnd();*/
   }
     glutSwapBuffers();
 }
