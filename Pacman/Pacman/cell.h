@@ -11,7 +11,7 @@ enum CellFlags
     CELL_FLAG_VISITED = 0x10,
     CELL_FLAG_PACMAN = 0x20,
     CELL_FLAG_GHOST = 0x40,
-    CELL_FLAG_EMPTY = 0x50
+    CELL_FLAG_EMPTY = 0x80
 };
 
 enum MovementFlags

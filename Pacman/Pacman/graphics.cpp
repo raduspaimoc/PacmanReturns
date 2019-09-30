@@ -90,13 +90,14 @@ void Graphics::idle()
     last_t=t;
   else
   {
-    if(t - last_t > 2){
+    printf("T: %ld, LAST_t: %ld \n", t, last_t);
+    if(t - last_t > 15){
       printf("Entro en el deep web\n" );
       movePacman();
+      last_t=t;
     }
-    //reboot(aux);
-    aux++;
-    last_t=t;
+      //reboot(aux);
+      aux++;
   }
 
 
@@ -115,34 +116,51 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     //int real_i = s_rows - i - 1;
     int fake_i = s_rows - cell->x - 1;
     glColor3f(0.0, 0.0, 0.0);
-    if(!cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))    
+    if(cell->hasFlag(CellFlags::CELL_FLAG_PACMAN)){
+        glBegin(GL_QUADS);
 
-    glBegin(GL_QUADS);
+        glVertex2i((int)cell->y * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+        glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
 
-    glVertex2i((int)cell->y * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
-    glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, (int)fake_i * cell_height + MARGIN);
+        glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
+        glVertex2i((int)cell->y * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
 
-    glVertex2i(((int)cell->y + 1) * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
-    glVertex2i((int)cell->y * cell_width + MARGIN, ((int)fake_i + 1) * cell_height + MARGIN);
+        glEnd();
 
-    glEnd();
-
-    if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
         glColor3f(1.0, 0.5, 0.0);
-    else if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
-        glColor3f(0.0, 1.0, 1.0);
-    else
-        continue;
 
-  /*glBegin(GL_QUADS);
+        glBegin(GL_QUADS);
 
-  glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + cell_height4);
-  glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + cell_height4);
 
-  glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
-  glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i((int)cell->y * cell_width + MARGIN + ( 2 * cell_width4), (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i((int)cell->y * cell_width + MARGIN + cell_width4, (int)fake_i * cell_height + MARGIN + (2 * cell_height4));
 
-  glEnd();*/
+        glEnd();
+    } else {
+        /*int real_i = s_rows - i - 1;
+
+        if (grid[real_i][j].isWall())
+            continue;
+
+        if(grid[real_i][j].isDeleted())
+            glColor3f(0.5, 0.5, 0.5);
+        else if (grid[real_i][j].isAdded())
+            glColor3f(0.0, 1.0, 0.5);
+        else
+            glColor3f(0.8, 0.8, 0.8);*/
+        glColor3f(0.0, 1.0, 0.5);
+        glBegin(GL_QUADS);
+
+        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+
+        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+        glVertex2i((int)cell->y * cell_width, (int)fake_i * cell_height);
+
+        glEnd();
+    }
   }
     glutSwapBuffers();
 }
