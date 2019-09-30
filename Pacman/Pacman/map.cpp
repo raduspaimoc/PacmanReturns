@@ -79,6 +79,10 @@ void Map::initCells()
 
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
+    pacman_x  = emptyCells[0]->x;
+    pacman_y  = emptyCells[0]->y;
+    //pacman = emptyCells[0];
+
 }
 
 void Map::addAloneWalls(){
