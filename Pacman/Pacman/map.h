@@ -31,6 +31,7 @@ struct Map
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
         int rows, columns;
+        //Cell* pacman;
         float pacman_x, pacman_y;
         std::vector<std::vector<Cell> > grid;
 };

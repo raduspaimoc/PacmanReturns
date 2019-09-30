@@ -1,0 +1,30 @@
+c++ main.cpp -lglut -lGLU -lGL -lm map.cpp cell.cpp graphics.cpp
+./a.out 20 40
+Enter the number of columns: Makefile:2: recipe for target 'run' failed
+c++ main.cpp -lglut -lGLU -lGL -lm map.cpp cell.cpp graphics.cpp
+./a.out 20 40
+Rows: 20 Columns: 20 
+Map: 
+  0    0 00 0    0  
+0 0 00   00   00 0 0
+0 0  00      00  0 0
+0 00 0000  0000 00 0
+  0    00  00    0  
+ 0  00 00  00 00  0 
+ 0   0 000000 0   0 
+ 0  00   00   00  0 
+  000  0 00 0  000  
+  00            00  
+ 00  00      00  00 
+  0 0000    0000 0  
+0       0  0       0
+00 00   0  0   00 00
+   0000  00  0000   
+   0   0    0   0   
+  0  0  0  0  0  0  
+0 0 0          0 0 0
+0   0 0      0 0   0
+00  0   0  0   0  00
+Makefile:2: recipe for target 'run' failed
+c++ main.cpp -lglut -lGLU -lGL -lm map.cpp cell.cpp graphics.cpp
+Makefile:2: recipe for target 'run' failed

@@ -10,6 +10,7 @@ struct Graphics
         static void idle();
         static void movePacman();
         static void redrawMap(std::vector<Cell*> cells);
+        static void reboot(int x);
         //static void redrawMap(Cell* pacman, Cell* cell);
 
 };
