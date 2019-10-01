@@ -67,7 +67,9 @@ void Graphics::display()
     }
 
     // prova
-    //s_map.pacman.set_position(s_map.pacman.x * cell_height + 50, s_map.pacman.y * cell_width + 50);
+    if(!s_map.pacman.set){
+        s_map.pacman.set_position((s_map.pacman.x * cell_height), (s_map.pacman.y * cell_width));
+    }
     s_map.pacman.draw();
 
     glutSwapBuffers();
@@ -95,6 +97,7 @@ void Graphics::idle()
   else
   {
     s_map.pacman.integrate(t-last_t);
+    last_t = t;
     //printf("T: %ld, LAST_t: %ld \n", t, last_t);
     //if(aux == 1){
     /*    if(t - last_t > 1000){
@@ -175,7 +178,7 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     glutSwapBuffers();
 }
 
-void Graphics::movePacman(){
+void Graphics::movePacman(int t){
 
   std::vector<std::vector<Cell> > grid = s_map.grid;
   Cell* pacman = &grid[(int)s_map.pacman_x][(int)s_map.pacman_y];;
@@ -210,14 +213,14 @@ void Graphics::movePacman(){
 
         printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
         //CELL_FLAG_EMPTY
-        s_map.pacman_x = cell->x;
-        s_map.pacman_y = cell->y;
+        //s_map.pacman_x = cell->x;
+        //s_map.pacman_y = cell->y;
 
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
         //s_map.pacman.init_movement(cell->x * cell_height + 50, cell->y * cell_width + 50, 1500);
 
-        s_map.pacman.init_movement(cell->x, cell->y, 1500);
+        s_map.pacman.init_movement(cell->x * cell_height, cell->y * cell_width, 1000);
 
         /*std::vector<Cell*> toRedraw;
         toRedraw.push_back(pacman);
@@ -240,6 +243,7 @@ void Graphics::movePacman(){
     }
     itr++;
   }
+  glutTimerFunc(1000, movePacman, 0);
 }
 
 void Graphics::keyboard(unsigned char c, int x, int y)
@@ -258,7 +262,7 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 
         glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
         glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));*/
-      movePacman();
+      movePacman(0);
       //glutPostRedisplay();
       //aux++;
       // direct = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };

@@ -7,6 +7,7 @@ struct Character {
     float vx,vy; //-- Velocity vector
     int state = QUIET;
     long time_remaining;
+    bool set = false;
 
     Character();
     Character(float x, float y, int r, int c);
