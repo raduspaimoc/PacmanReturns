@@ -91,11 +91,15 @@ void Graphics::idle()
   else
   {
     printf("T: %ld, LAST_t: %ld \n", t, last_t);
-    if(t - last_t > 1500){
-      printf("Entro en el deep web\n" );
-      movePacman();
-      last_t=t;
-    }
+    //if(aux == 1){
+        if(t - last_t > 2000){
+            printf("Entro en el deep web\n" );
+            movePacman();
+            last_t=t;
+        }
+        //aux++;
+    //}
+
   }
 
 
@@ -113,7 +117,7 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     Cell* cell = cells[i];
     //int real_i = s_rows - i - 1;
     int fake_i = s_rows - cell->x - 1;
-    glColor3f(0.0, 0.0, 0.0);
+
     if(cell->hasFlag(CellFlags::CELL_FLAG_PACMAN)){
         glBegin(GL_QUADS);
 
@@ -161,6 +165,7 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
 
         glEnd();
     }
+    cell->removeFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
   }
     glutSwapBuffers();
 }
@@ -184,14 +189,16 @@ void Graphics::movePacman(){
 
     Cell * cell = &grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
 
-    if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
+    if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL) && !cell->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING) && !pacman->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING))
     {
         printf("Pôs %f - %f\n", cell->x, cell->y);
 
         pacman->addFlag(CellFlags::CELL_FLAG_EMPTY);
+        pacman->addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
         pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);
 
         cell->addFlag(CellFlags::CELL_FLAG_PACMAN);
+        cell->addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
         if(cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
           cell->removeFlag(CellFlags::CELL_FLAG_FOOD);
 
