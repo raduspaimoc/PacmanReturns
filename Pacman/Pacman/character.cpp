@@ -38,8 +38,43 @@ void Character::integrate(long t){
         x = x + vx*(float)time_remaining;
         y = y + vy*(float)time_remaining;
         state=QUIET;
+        draw();
+        //last_t = 0;
     }
 }
+
+/*void Character::emptyCell(){
+    Cell* cell = visited;
+    float cell_width = (float)WIDTH / (float)c;
+    float cell_height = (float)HEIGHT / (float)r;
+    float cell_width4 = cell_width / 4;
+    float cell_height4 = cell_height / 4;
+
+    int fake_i = r - cell->x - 1;
+
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+
+    glVertex2i(cell->y * cell_width + MARGIN, fake_i * cell_height + MARGIN);
+    glVertex2i((cell->y + 1) * cell_width + MARGIN, fake_i * cell_height + MARGIN);
+
+    glVertex2i((cell->y + 1) * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
+    glVertex2i(cell->y * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
+
+    glEnd();
+
+    glColor3f(0.0, 0.0, 0.0);
+
+    glBegin(GL_QUADS);
+
+    glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
+    glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
+
+    glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
+    glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
+
+    glEnd();
+}*/
 
 
 //[WIP]
@@ -49,30 +84,12 @@ void Character::draw() {
     float cell_height = (float)HEIGHT / (float)r;
     float cell_width4 = cell_width / 4;
     float cell_height4 = cell_height / 4;
+    //float j = 0;
+    //if(this->y > 0)
     float j = this->y;
-    //float i = this->x;
-    //int i = r - this->x - 1;
-    float i = this->x - cell_height;
-    //i = i / cell_height;
-    //i = i - cell_height ;
-    //i = ((r * cell_height)  - (i * cell_height) - cell_height - MARGIN);
-    //i = i * cell_height;
-    //int i = r - this->x - 1;
+    float i = (r * cell_height)  - (this->x) - cell_height;
+
     glColor3f(0.0, 0.0, 0.0);
-
-
-
-   /* glVertex2i(j * cell_width + MARGIN, i * cell_height + MARGIN);
-    glVertex2i((j + 1) * cell_width + MARGIN, i * cell_height + MARGIN);
-
-    glVertex2i((j + 1) * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
-    glVertex2i(j * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
-
-    glVertex2i(j * cell_width + MARGIN + cell_width4, i * cell_height + MARGIN + cell_height4);
-    glVertex2i(j * cell_width + MARGIN + ( 2 * cell_width4), i * cell_height + MARGIN + cell_height4);
-
-    glVertex2i(j * cell_width + MARGIN + ( 2 * cell_width4), i * cell_height + MARGIN + (2 * cell_height4));
-    glVertex2i(j * cell_width + MARGIN + cell_width4, i* cell_height + MARGIN + (2 * cell_height4));*/
 
     if (!set){
         glColor3f(0.0, 0.0, 0.0);
@@ -88,6 +105,20 @@ void Character::draw() {
         glEnd();
         set = true;
     }
+
+    /*if(state == QUIET){
+        glColor3f(0.0, 0.0, 0.0);
+
+        glBegin(GL_QUADS);
+
+        glVertex2i(j + cell_width4 + MARGIN, i + cell_height4 + MARGIN);
+        glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + cell_height4 + MARGIN);
+
+        glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + (2 * cell_height4) + MARGIN);
+        glVertex2i(j + cell_width4 + MARGIN, i+ (2 * cell_height4) + MARGIN);
+
+        glEnd();
+    }*/
 
 
     glColor3f(1.0, 0.5, 0.0);

@@ -8,7 +8,7 @@
 #include "Utils.h"
 
 long last_t = 0;
-int aux = 1;
+//int aux = 1;
 
 void Graphics::display()
 {
@@ -47,8 +47,8 @@ void Graphics::display()
 
             glEnd();
 
-            /*if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
-                glColor3f(1.0, 0.5, 0.0);*/
+            if (cell->hasFlag(CellFlags::CELL_FLAG_EMPTY))
+                glColor3f(0.0, 0.0, 0.0);
             if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
                 glColor3f(0.0, 1.0, 1.0);
             else
@@ -75,16 +75,16 @@ void Graphics::display()
     glutSwapBuffers();
 }
 
-void Graphics::reboot(int x){
+/*void Graphics::reboot(int x){
   std::vector<Cell*> toRedraw;
   std::vector<std::vector<Cell> > grid = s_map.grid;
-  Cell* cell = &grid[(int)s_map.pacman_x][(int)s_map.pacman_y + aux];
+  Cell* cell = &grid[(int)s_map.pacman_x][(int)s_map.pacman_y];
   cell->addFlag(CellFlags::CELL_FLAG_PACMAN);
   toRedraw.push_back(cell);
   redrawMap(toRedraw);
   s_map.pacman_x = cell->x;
   s_map.pacman_y = cell->y;
-}
+}*/
 
 void Graphics::idle()
 {
@@ -114,7 +114,9 @@ void Graphics::idle()
   glutPostRedisplay();
 }
 
-void Graphics::redrawMap(  std::vector<Cell*> cells){
+
+
+/*void Graphics::redrawMap(  std::vector<Cell*> cells){
 
   float cell_width = (float)WIDTH / (float)s_columns;
   float cell_height = (float)HEIGHT / (float)s_rows;
@@ -176,7 +178,7 @@ void Graphics::redrawMap(  std::vector<Cell*> cells){
     cell->removeFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
   }
     glutSwapBuffers();
-}
+}*/
 
 void Graphics::movePacman(int t){
 
@@ -213,14 +215,15 @@ void Graphics::movePacman(int t){
 
         printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
         //CELL_FLAG_EMPTY
-        //s_map.pacman_x = cell->x;
-        //s_map.pacman_y = cell->y;
+        s_map.pacman_x = cell->x;
+        s_map.pacman_y = cell->y;
 
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
         //s_map.pacman.init_movement(cell->x * cell_height + 50, cell->y * cell_width + 50, 1500);
 
         s_map.pacman.init_movement(cell->x * cell_height, cell->y * cell_width, 1000);
+        //s_map.pacman.setCell(cell);
 
         /*std::vector<Cell*> toRedraw;
         toRedraw.push_back(pacman);
