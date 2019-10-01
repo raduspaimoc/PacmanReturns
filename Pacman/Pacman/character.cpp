@@ -1,5 +1,6 @@
 #include "character.h"
 #include <GL/glut.h>
+#include <iostream>
 //#include "ShareDefines.h"
 
 #define WIDTH 1000
@@ -40,6 +41,43 @@ void Character::integrate(long t){
     }
 }
 
+
+//[WIP]
+/*void Character::draw() {
+
+    float cell_width = (float)WIDTH / (float)c;
+    float cell_height = (float)HEIGHT / (float)r;
+    float cell_width4 = cell_width / 4;
+    float cell_height4 = cell_height / 4;
+    float j = this->y;
+    //float i = this->x;
+    float i = (r - ((this->x - MARGIN / cell_height)) - 1) * cell_height + MARGIN;
+
+    glColor3f(0.0, 0.0, 0.0);
+
+    glBegin(GL_QUADS);
+
+    glVertex2i(j, i * cell_height + MARGIN);
+    glVertex2i(j + cell_width, i);
+
+    glVertex2i(j + cell_width, i + cell_height);
+    glVertex2i(j, i + cell_height);
+
+    glEnd();
+
+    glColor3f(1.0, 0.5, 0.0);
+
+    glBegin(GL_QUADS);
+
+    glVertex2i(j + cell_width4, i + cell_height4);
+    glVertex2i(j + ( 2 * cell_width4), i + cell_height4);
+
+    glVertex2i(j + ( 2 * cell_width4), i + (2 * cell_height4));
+    glVertex2i(j + cell_width4, i+ (2 * cell_height4));
+
+    glEnd();
+}*/
+
 void Character::draw() {
     int j = this->y;
     //int i = this->x;
@@ -51,13 +89,10 @@ void Character::draw() {
 
     /*glColor3f(1.0, 0.5, 0.0);
     glBegin(GL_QUADS);
-
     glVertex2i(y * cell_width + MARGIN + cell_width4, x * cell_height + MARGIN + cell_height4);
     glVertex2i(y * cell_width + MARGIN + ( 2 * cell_width4), x * cell_height + MARGIN + cell_height4);
-
     glVertex2i(y * cell_width + MARGIN + ( 2 * cell_width4), x * cell_height + MARGIN + (2 * cell_height4));
     glVertex2i(y * cell_width + MARGIN + cell_width4, x * cell_height + MARGIN + (2 * cell_height4));
-
     glEnd();*/
     glColor3f(0.0, 0.0, 0.0);
 

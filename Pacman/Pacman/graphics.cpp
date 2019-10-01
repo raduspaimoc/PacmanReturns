@@ -67,6 +67,7 @@ void Graphics::display()
     }
 
     // prova
+    //s_map.pacman.set_position(s_map.pacman.x * cell_height + 50, s_map.pacman.y * cell_width + 50);
     s_map.pacman.draw();
 
     glutSwapBuffers();
@@ -93,20 +94,21 @@ void Graphics::idle()
     last_t=t;
   else
   {
+    s_map.pacman.integrate(t-last_t);
     //printf("T: %ld, LAST_t: %ld \n", t, last_t);
     //if(aux == 1){
-        if(t - last_t > 1000){
+    /*    if(t - last_t > 1000){
             printf("Entro en el deep web\n" );
             movePacman();
             last_t=t;
-        }
+        }*/
         //aux++;
     //}
 
   }
 
-
-  //glutPostRedisplay();
+  /* A lo mejor falta */
+  glutPostRedisplay();
 }
 
 void Graphics::redrawMap(  std::vector<Cell*> cells){
@@ -211,10 +213,16 @@ void Graphics::movePacman(){
         s_map.pacman_x = cell->x;
         s_map.pacman_y = cell->y;
 
-        std::vector<Cell*> toRedraw;
+        float cell_width = (float)WIDTH / (float)s_columns;
+        float cell_height = (float)HEIGHT / (float)s_rows;
+        //s_map.pacman.init_movement(cell->x * cell_height + 50, cell->y * cell_width + 50, 1500);
+
+        s_map.pacman.init_movement(cell->x, cell->y, 1500);
+
+        /*std::vector<Cell*> toRedraw;
         toRedraw.push_back(pacman);
         toRedraw.push_back(cell);
-        redrawMap(toRedraw);
+        redrawMap(toRedraw);*/
 
 
         //pacman = cell;
@@ -250,7 +258,6 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 
         glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
         glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));*/
-
       movePacman();
       //glutPostRedisplay();
       //aux++;
