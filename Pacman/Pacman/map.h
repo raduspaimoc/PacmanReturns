@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "cell.h"
+#include "character.h"
 
 struct Map
 {
@@ -32,6 +33,7 @@ struct Map
 
         int rows, columns;
         //Cell* pacman;
+        Character pacman;
         float pacman_x, pacman_y;
         std::vector<std::vector<Cell> > grid;
 };

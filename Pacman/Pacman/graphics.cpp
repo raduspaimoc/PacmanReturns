@@ -47,9 +47,9 @@ void Graphics::display()
 
             glEnd();
 
-            if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
-                glColor3f(1.0, 0.5, 0.0);
-            else if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
+            /*if (cell->hasFlag(CellFlags::CELL_FLAG_PACMAN))
+                glColor3f(1.0, 0.5, 0.0);*/
+            if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
                 glColor3f(0.0, 1.0, 1.0);
             else
                 continue;
@@ -65,6 +65,9 @@ void Graphics::display()
             glEnd();
         }
     }
+
+    // prova
+    s_map.pacman.draw();
 
     glutSwapBuffers();
 }
@@ -203,6 +206,7 @@ void Graphics::movePacman(){
           cell->removeFlag(CellFlags::CELL_FLAG_FOOD);
 
 
+        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
         //CELL_FLAG_EMPTY
         s_map.pacman_x = cell->x;
         s_map.pacman_y = cell->y;
@@ -241,6 +245,12 @@ void Graphics::keyboard(unsigned char c, int x, int y)
     }
     else
     {
+        /*glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
+
+        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
+        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));*/
+
       movePacman();
       //glutPostRedisplay();
       //aux++;

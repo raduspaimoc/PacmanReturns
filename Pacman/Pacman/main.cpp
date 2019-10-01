@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
     s_map.showInfo();
     glutDisplayFunc(Graphics::display);
     glutKeyboardFunc(Graphics::keyboard);
-    glutIdleFunc(Graphics::idle);
+    //glutIdleFunc(Graphics::idle);
 
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);

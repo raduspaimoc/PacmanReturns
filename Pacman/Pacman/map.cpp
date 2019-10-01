@@ -8,9 +8,12 @@
 #include "map.h"
 #include "ShareDefines.h"
 #include "Utils.h"
+//#include "character.h
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
+  pacman_y = pacman_x = 0;
+  pacman = Character();
   for (size_t i = 0; i < r; i++) {
 
     std::vector<Cell> v;
@@ -82,6 +85,7 @@ void Map::initCells()
     //pacman = emptyCells[0];
     pacman_x  = emptyCells[0]->x;
     pacman_y  = emptyCells[0]->y;
+    pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
     //pacman = emptyCells[0];
 
 }
