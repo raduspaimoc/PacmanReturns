@@ -90,9 +90,9 @@ void Graphics::idle()
     last_t=t;
   else
   {
-    printf("T: %ld, LAST_t: %ld \n", t, last_t);
+    //printf("T: %ld, LAST_t: %ld \n", t, last_t);
     //if(aux == 1){
-        if(t - last_t > 2000){
+        if(t - last_t > 1000){
             printf("Entro en el deep web\n" );
             movePacman();
             last_t=t;
@@ -103,7 +103,7 @@ void Graphics::idle()
   }
 
 
-  glutPostRedisplay();
+  //glutPostRedisplay();
 }
 
 void Graphics::redrawMap(  std::vector<Cell*> cells){
