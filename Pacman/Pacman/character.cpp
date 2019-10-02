@@ -27,6 +27,8 @@ void Character::init_movement(float destination_x, float destination_y, float du
 }
 
 void Character::integrate(long t){
+    float cell_width = (float)WIDTH / (float)c;
+    float cell_height = (float)HEIGHT / (float)r;
     if(state==MOVE && t<time_remaining)
     {
         x = x + vx* (float)t;
@@ -38,8 +40,16 @@ void Character::integrate(long t){
         x = x + vx*(float)time_remaining;
         y = y + vy*(float)time_remaining;
         state=QUIET;
-        visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
-        visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
+
+        if(hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN)){
+            visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
+            visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
+        } else {
+            x = (float)grid_x * cell_height;
+            y = (float)grid_y * cell_width;
+        }
+
+
         //draw();
         //last_t = 0;
     }
