@@ -38,7 +38,8 @@ void Character::integrate(long t){
         x = x + vx*(float)time_remaining;
         y = y + vy*(float)time_remaining;
         state=QUIET;
-        //visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
+        visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
+        visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         //draw();
         //last_t = 0;
     }

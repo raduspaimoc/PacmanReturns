@@ -106,8 +106,8 @@ void Graphics::idle()
 
 void Graphics::movePacman(int t){
 
-  std::vector<std::vector<Cell> > grid = s_map.grid;
-  Cell* pacman = &grid[(int)s_map.pacman_x][(int)s_map.pacman_y];;
+  //std::vector<std::vector<Cell>>* grid = &s_map.grid;
+  Cell* pacman = &s_map.grid[(int)s_map.pacman_x][(int)s_map.pacman_y];;
   static std::vector<std::vector<int>> movements = direct;
       shuffle(movements.begin(), movements.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 
@@ -115,45 +115,45 @@ void Graphics::movePacman(int t){
   {
     int i_offset = (*itr)[0];
     int j_offset = (*itr)[1];
-    if ((i_offset + pacman->x < 0) || (j_offset + pacman->y < 0) || (i_offset + pacman->x >= grid.size()) || (j_offset + pacman->y >= grid[pacman->x].size()))
+    if ((i_offset + pacman->x < 0) || (j_offset + pacman->y < 0) || (i_offset + pacman->x >= s_map.grid.size()) || (j_offset + pacman->y >= s_map.grid[pacman->x].size()))
     {
         itr++;
         continue;
     }
 
-    Cell cell = grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
+    Cell* cell = &s_map.grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
 
-    if(!cell.hasFlag(CellFlags::CELL_FLAG_WALL) && !cell.hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING) && !pacman->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING))
+    if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
     {
-        printf("Pôs %f - %f\n", cell.x, cell.y);
-
-        /*pacman->addFlag(CellFlags::CELL_FLAG_EMPTY);
-        pacman->addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
-        pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);*/
-        pacman->setFlag(CellFlags::CELL_FLAG_EMPTY);
-
-        //cell.addFlag(CellFlags::CELL_FLAG_EMPTY);
-        cell.setFlag(CellFlags::CELL_FLAG_EMPTY);
-        /*cell.SetEmpty(true);
-        cell.addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
-        if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
-          cell.removeFlag(CellFlags::CELL_FLAG_FOOD);*/
+        printf("Pôs %f - %f\n", cell->x, cell->y);
 
 
-        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell.x, cell.y);
+        //pacman->setFlag(CellFlags::CELL_FLAG_EMPTY);
+        //pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);
+
+
+        //cell->setFlag(CellFlags::CELL_FLAG_PACMAN);
+
+        /*pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);
+        pacman->addFlag(CellFlags::CELL_FLAG_EMPTY);
+        cell->addFlag(CellFlags::CELL_FLAG_PACMAN);*/
+
+
+
+
+
+        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
         //CELL_FLAG_EMPTY
-        s_map.pacman_x = cell.x;
-        s_map.pacman_y = cell.y;
+        s_map.pacman_x = cell->x;
+        s_map.pacman_y = cell->y;
 
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
         //s_map.pacman.init_movement(cell->x * cell_height + 50, cell->y * cell_width + 50, 1500);
-        grid[(int)cell.x][(int)cell.y] = cell;
+        //grid[(int)cell->x][(int)cell->y] = cell;
 
-        s_map.pacman.init_movement(cell.x * cell_height, cell.y * cell_width, 1000);
-        //s_map.pacman.setCell(cell);
-
-
+        s_map.pacman.init_movement(cell->x * cell_height, cell->y * cell_width, 1000);
+        s_map.pacman.setCell(cell);
         break;
     }
     itr++;
