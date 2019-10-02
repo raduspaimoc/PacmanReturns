@@ -84,6 +84,13 @@ public:
             removeFlag(CellFlags::CELL_FLAG_DELETED);
     };
 
+    void SetEmpty(bool apply){
+        if (apply)
+            addFlag(CellFlags::CELL_FLAG_EMPTY);
+        else
+            removeFlag(CellFlags::CELL_FLAG_EMPTY);
+    }
+
     bool isHorizontalBorder(int size) { return size - 1 == x || x == 0; };
     bool isVerticalBorder(int size) { return size - 1 == y || y == 0; };
     bool isBorder(int h_size, int v_size) { return isHorizontalBorder(h_size) || isVerticalBorder(v_size); };

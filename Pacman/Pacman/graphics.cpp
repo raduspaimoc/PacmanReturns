@@ -98,87 +98,11 @@ void Graphics::idle()
   {
     s_map.pacman.integrate(t-last_t);
     last_t = t;
-    //printf("T: %ld, LAST_t: %ld \n", t, last_t);
-    //if(aux == 1){
-    /*    if(t - last_t > 1000){
-            printf("Entro en el deep web\n" );
-            movePacman();
-            last_t=t;
-        }*/
-        //aux++;
-    //}
-
   }
 
   /* A lo mejor falta */
   glutPostRedisplay();
 }
-
-
-
-/*void Graphics::redrawMap(  std::vector<Cell*> cells){
-
-  float cell_width = (float)WIDTH / (float)s_columns;
-  float cell_height = (float)HEIGHT / (float)s_rows;
-  float cell_width4 = cell_width / 4;
-  float cell_height4 = cell_height / 4;
-
-  for(int i=0; i < cells.size(); i++){
-    Cell* cell = cells[i];
-    //int real_i = s_rows - i - 1;
-    int fake_i = s_rows - cell->x - 1;
-
-    if(cell->hasFlag(CellFlags::CELL_FLAG_PACMAN)){
-        glBegin(GL_QUADS);
-
-        glVertex2i(cell->y * cell_width + MARGIN, fake_i * cell_height + MARGIN);
-        glVertex2i((cell->y + 1) * cell_width + MARGIN, fake_i * cell_height + MARGIN);
-
-        glVertex2i((cell->y + 1) * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
-        glVertex2i(cell->y * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
-
-        glEnd();
-
-        glColor3f(1.0, 0.5, 0.0);
-
-        glBegin(GL_QUADS);
-
-        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
-
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
-        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
-
-        glEnd();
-
-    } else {
-        glColor3f(0.0, 0.0, 0.0);
-        glBegin(GL_QUADS);
-
-        glVertex2i(cell->y * cell_width + MARGIN, fake_i * cell_height + MARGIN);
-        glVertex2i((cell->y + 1) * cell_width + MARGIN, fake_i * cell_height + MARGIN);
-
-        glVertex2i((cell->y + 1) * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
-        glVertex2i(cell->y * cell_width + MARGIN, (fake_i + 1) * cell_height + MARGIN);
-
-        glEnd();
-
-        glColor3f(0.0, 0.0, 0.0);
-
-        glBegin(GL_QUADS);
-
-        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
-
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
-        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));
-
-        glEnd();
-    }
-    cell->removeFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
-  }
-    glutSwapBuffers();
-}*/
 
 void Graphics::movePacman(int t){
 
@@ -197,51 +121,39 @@ void Graphics::movePacman(int t){
         continue;
     }
 
-    Cell * cell = &grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
+    Cell cell = grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
 
-    if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL) && !cell->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING) && !pacman->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING))
+    if(!cell.hasFlag(CellFlags::CELL_FLAG_WALL) && !cell.hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING) && !pacman->hasFlag(MovementFlags::MOVEMENT_FLAG_MOVING))
     {
-        printf("Pôs %f - %f\n", cell->x, cell->y);
+        printf("Pôs %f - %f\n", cell.x, cell.y);
 
-        pacman->addFlag(CellFlags::CELL_FLAG_EMPTY);
+        /*pacman->addFlag(CellFlags::CELL_FLAG_EMPTY);
         pacman->addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
-        pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);
+        pacman->removeFlag(CellFlags::CELL_FLAG_PACMAN);*/
+        pacman->setFlag(CellFlags::CELL_FLAG_EMPTY);
 
-        cell->addFlag(CellFlags::CELL_FLAG_PACMAN);
-        cell->addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
-        if(cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
-          cell->removeFlag(CellFlags::CELL_FLAG_FOOD);
+        //cell.addFlag(CellFlags::CELL_FLAG_EMPTY);
+        cell.setFlag(CellFlags::CELL_FLAG_EMPTY);
+        /*cell.SetEmpty(true);
+        cell.addFlag(MovementFlags::MOVEMENT_FLAG_MOVING);
+        if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
+          cell.removeFlag(CellFlags::CELL_FLAG_FOOD);*/
 
 
-        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
+        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell.x, cell.y);
         //CELL_FLAG_EMPTY
-        s_map.pacman_x = cell->x;
-        s_map.pacman_y = cell->y;
+        s_map.pacman_x = cell.x;
+        s_map.pacman_y = cell.y;
 
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
         //s_map.pacman.init_movement(cell->x * cell_height + 50, cell->y * cell_width + 50, 1500);
+        grid[(int)cell.x][(int)cell.y] = cell;
 
-        s_map.pacman.init_movement(cell->x * cell_height, cell->y * cell_width, 1000);
+        s_map.pacman.init_movement(cell.x * cell_height, cell.y * cell_width, 1000);
         //s_map.pacman.setCell(cell);
 
-        /*std::vector<Cell*> toRedraw;
-        toRedraw.push_back(pacman);
-        toRedraw.push_back(cell);
-        redrawMap(toRedraw);*/
 
-
-        //pacman = cell;
-        //glutPostRedisplay();
-        //redrawMap(pacman, cell);
-        /*CELL_FLAG_WALL = 0x01,
-        CELL_FLAG_FOOD = 0x02,
-        CELL_FLAG_DELETED = 0x04,
-        CELL_FLAG_ADDED = 0x08,
-        CELL_FLAG_VISITED = 0x10,
-        CELL_FLAG_PACMAN = 0x20,
-        CELL_FLAG_GHOST = 0x40*/
-        printf("Sale del ghetto\n" );
         break;
     }
     itr++;
@@ -260,29 +172,6 @@ void Graphics::keyboard(unsigned char c, int x, int y)
     }
     else
     {
-        /*glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + cell_height4);
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + cell_height4);
-
-        glVertex2i(cell->y * cell_width + MARGIN + ( 2 * cell_width4), fake_i * cell_height + MARGIN + (2 * cell_height4));
-        glVertex2i(cell->y * cell_width + MARGIN + cell_width4, fake_i * cell_height + MARGIN + (2 * cell_height4));*/
       movePacman(0);
-      //glutPostRedisplay();
-      //aux++;
-      // direct = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };
-      //movePacman();
-      //glutPostRedisplay();
-
-
-      /*for (int i = 0; i < )
-      {
-        int i_offset = (*itr)[0];
-        int j_offset = (*itr)[1];
-        Cell* cell = &grid[s_map.pacman.x + i_offset][s_map.pacman.y + j_offset];
-        if(cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
-        {
-            movements.push_back(cell);
-        }
-        itr++;
-      }*/
     }
 }
