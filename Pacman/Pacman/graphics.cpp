@@ -107,7 +107,7 @@ void Graphics::idle()
 void Graphics::movePacman(int t){
 
   //std::vector<std::vector<Cell>>* grid = &s_map.grid;
-  Cell* pacman = &s_map.grid[(int)s_map.pacman_x][(int)s_map.pacman_y];;
+  Cell* pacman = &s_map.grid[(int)s_map.pacman.grid_x][(int)s_map.pacman.grid_y];;
   static std::vector<std::vector<int>> movements = direct;
       shuffle(movements.begin(), movements.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 
@@ -121,7 +121,7 @@ void Graphics::movePacman(int t){
         continue;
     }
 
-    Cell* cell = &s_map.grid[(int)s_map.pacman_x + i_offset][(int)s_map.pacman_y + j_offset];
+    Cell* cell = &s_map.grid[(int)s_map.pacman.grid_x + i_offset][(int)s_map.pacman.grid_y + j_offset];
 
     if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
     {
@@ -142,10 +142,10 @@ void Graphics::movePacman(int t){
 
 
 
-        printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
+        //printf("Pacman x: %f  y: %f --- CEll to move x: %f y: %f", s_map.pacman_x, s_map.pacman_y, cell->x, cell->y);
         //CELL_FLAG_EMPTY
-        s_map.pacman_x = cell->x;
-        s_map.pacman_y = cell->y;
+        s_map.pacman.grid_x = cell->x;
+        s_map.pacman.grid_y = cell->y;
 
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;

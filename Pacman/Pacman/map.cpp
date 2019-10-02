@@ -12,7 +12,8 @@
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
-  pacman_y = pacman_x = 0;
+  pacman.grid_y = pacman.grid_y = 0;
+  pacman.x = pacman_y = 0;
   pacman = Character();
   for (size_t i = 0; i < r; i++) {
 
@@ -86,6 +87,7 @@ void Map::initCells()
     pacman_x  = emptyCells[0]->x;
     pacman_y  = emptyCells[0]->y;
     pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
+    pacman.setGridXY(pacman_x, pacman_y);
     //pacman = emptyCells[0];
 
 }

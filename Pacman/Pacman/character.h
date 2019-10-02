@@ -5,6 +5,7 @@
 
 struct Character {
     float x, y;
+    int grid_x, grid_y;
     int r, c;
     float vx,vy; //-- Velocity vector
     int state = QUIET;
@@ -25,6 +26,11 @@ struct Character {
 
         void setCell(Cell* cell){
             visited = cell;
+        }
+
+        void setGridXY(int x, int y){
+            grid_x = x;
+            grid_y = y;
         }
 };
 
