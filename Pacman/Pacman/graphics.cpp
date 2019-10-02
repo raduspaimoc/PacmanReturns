@@ -17,7 +17,7 @@ void Graphics::display()
 
     std::vector<std::vector<Cell> > grid = s_map.grid;
 
-    s_map.showInfo();
+    //s_map.showInfo();
 
     float cell_width = (float)WIDTH / (float)s_columns;
     float cell_height = (float)HEIGHT / (float)s_rows;
@@ -99,7 +99,7 @@ void Graphics::idle()
   else
   {
     s_map.pacman.integrate(t-last_t);
-    //s_map.ghost.integrate(t-last_t);
+    s_map.ghost.integrate(t-last_t);
     last_t = t;
   }
 
@@ -183,26 +183,34 @@ void Graphics::keyboard(unsigned char c, int x, int y)
     else
     {
         //printf("C:: %c \n", c);
-        if(toupper(c) == UP && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
-            //printf("up \n");
+
+        if(toupper(c) == UP && s_map.ghost.grid_x - 1 > 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
+            /*printf("cell_height: %f , cell_width: %f", cell_height, cell_width);
+
+            printf("GRid_x %d grid_y %d, x: %f, y: %f, to_x: %f to_y: %f \n", s_map.ghost.grid_x - 1, s_map.ghost.grid_y, (s_map.ghost.x), (s_map.ghost.y), (s_map.ghost.x) * cell_height - cell_height, s_map.ghost.y * cell_width);
+            */
             s_map.ghost.grid_x--;
-            s_map.ghost.init_movement((s_map.ghost.x - 1) * cell_height, s_map.ghost.y * cell_width, 1000);
+            s_map.ghost.init_movement((s_map.ghost.x) - cell_height, s_map.ghost.y , 1000);
 
         }
-        if(toupper(c) == DOWN && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
-            //printf("down \n");
+        if(toupper(c) == DOWN && s_map.ghost.grid_x - 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
+            printf("down \n");
+            printf("cell_height: %f , cell_width: %f", cell_height, cell_width);
+
+            printf("GRid_x %d grid_y %d, x: %f, y: %f, to_x: %f to_y: %f \n", s_map.ghost.grid_x - 1, s_map.ghost.grid_y, (s_map.ghost.x), (s_map.ghost.y), (s_map.ghost.x) * cell_height - cell_height, s_map.ghost.y * cell_width);
+
             s_map.ghost.grid_x++;
-            s_map.ghost.init_movement((s_map.ghost.x + 1) * cell_height, s_map.ghost.y * cell_width, 1000);
+            s_map.ghost.init_movement((s_map.ghost.x + 1) + cell_height, s_map.ghost.y, 1000);
         }
-        if(toupper(c) == LEFT && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
+        if(toupper(c) == LEFT && s_map.ghost.grid_y - 1 > 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
             //printf("left \n");
             s_map.ghost.grid_y--;
-            s_map.ghost.init_movement(s_map.ghost.x  * cell_height, (s_map.ghost.y - 1) * cell_width, 1000);
+            s_map.ghost.init_movement(s_map.ghost.x, (s_map.ghost.y - 1) - cell_width, 1000);
         }
-        if(toupper(c) == RIGHT && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
+        if(toupper(c) == RIGHT && s_map.ghost.grid_y - 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
             //printf("right \n");
-            s_map.ghost.grid_x++;
-            s_map.ghost.init_movement(s_map.ghost.x  * cell_height, (s_map.ghost.y + 1) * cell_width, 1000);
+            s_map.ghost.grid_y++;
+            s_map.ghost.init_movement(s_map.ghost.x, (s_map.ghost.y + 1) + cell_width, 1000);
         }
       //movePacman(0);
     }
