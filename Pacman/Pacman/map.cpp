@@ -8,13 +8,14 @@
 #include "map.h"
 #include "ShareDefines.h"
 #include "Utils.h"
-//#include "character.h
+//#include "character.h"
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
   pacman.grid_y = pacman.grid_y = 0;
   pacman.x = pacman_y = 0;
   pacman = Character();
+  ghost = Character();
   for (size_t i = 0; i < r; i++) {
 
     std::vector<Cell> v;
@@ -83,11 +84,13 @@ void Map::initCells()
 
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
-    //pacman = emptyCells[0];
     pacman_x  = emptyCells[0]->x;
     pacman_y  = emptyCells[0]->y;
     pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
     pacman.setGridXY(pacman_x, pacman_y);
+    ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size());
+    ghost.setGridXY(grid.size() / 2, grid.size() / 2);
+    setFlags();
     //pacman = emptyCells[0];
 
 }

@@ -122,8 +122,10 @@ void Character::draw() {
         glEnd();
     }*/
 
-
-    glColor3f(1.0, 0.5, 0.0);
+    if(hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
+        glColor3f(1.0, 0.5, 0.0);
+    if(hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
+        glColor3f(1.0, 0.0, 0.0);
 
     glBegin(GL_QUADS);
 

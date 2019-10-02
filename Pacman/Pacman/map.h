@@ -33,7 +33,12 @@ struct Map
 
         int rows, columns;
         //Cell* pacman;
-        Character pacman;
+        Character pacman, ghost;
         float pacman_x, pacman_y;
         std::vector<std::vector<Cell> > grid;
+
+        void setFlags(){
+            pacman.setFlag(CharacterFlags::CHARACTER_FLAG_PACMAN);
+            ghost.setFlag(CharacterFlags::CHARACTER_FLAG_GHOST);
+        }
 };
