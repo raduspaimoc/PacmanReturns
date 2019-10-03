@@ -2,9 +2,6 @@
 #include "character.h"
 #include <GL/glut.h>
 
-#define MARGIN 20
-#define MARGIN_2 MARGIN * 2
-
 Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(r), columns(c), grid_x(x), grid_y(y), flags(flags)
 {
     float cell_width = (float) WIDTH / (float) s_columns;

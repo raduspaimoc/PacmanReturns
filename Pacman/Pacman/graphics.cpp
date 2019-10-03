@@ -37,11 +37,11 @@ void Graphics::display()
 
             glBegin(GL_QUADS);
 
-            glVertex2i(j * cell_width + MARGIN, i * cell_height + MARGIN);
-            glVertex2i((j + 1) * cell_width + MARGIN, i * cell_height + MARGIN);
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2, i * cell_height + MARGIN - HEIGHT_2);
+            glVertex2i((j + 1) * cell_width + MARGIN - WIDTH_2, i * cell_height + MARGIN - HEIGHT_2);
 
-            glVertex2i((j + 1) * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
-            glVertex2i(j * cell_width + MARGIN, (i + 1) * cell_height + MARGIN);
+            glVertex2i((j + 1) * cell_width + MARGIN - WIDTH_2, (i + 1) * cell_height + MARGIN - HEIGHT_2);
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2, (i + 1) * cell_height + MARGIN - HEIGHT_2);
 
             glEnd();
 
@@ -54,22 +54,22 @@ void Graphics::display()
 
             glBegin(GL_QUADS);
 
-            glVertex2i(j * cell_width + MARGIN + cell_width4, i * cell_height + MARGIN + cell_height4);
-            glVertex2i(j * cell_width + MARGIN + ( 2 * cell_width4), i * cell_height + MARGIN + cell_height4);
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + cell_width4 , i * cell_height + MARGIN + cell_height4 - HEIGHT_2);
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + ( 2 * cell_width4), i * cell_height + MARGIN + cell_height4 - HEIGHT_2);
 
-            glVertex2i(j * cell_width + MARGIN + ( 2 * cell_width4), i * cell_height + MARGIN + (2 * cell_height4));
-            glVertex2i(j * cell_width + MARGIN + cell_width4, i* cell_height + MARGIN + (2 * cell_height4));
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + ( 2 * cell_width4), i * cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
+            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + cell_width4, i* cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
 
             glEnd();
         }
     }
 
-    s_map.pacman.draw();
+   /* s_map.pacman.draw();
     s_map.ghost.draw();
 
     for (auto & auto_ghost : s_map.auto_ghosts)
         auto_ghost.draw();
-
+*/
     glutSwapBuffers();
 }
 

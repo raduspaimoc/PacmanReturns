@@ -46,8 +46,8 @@ int main(int argc, char const *argv[])
     s_map.showInfo();
     glutDisplayFunc(Graphics::display);
     glutKeyboardFunc(Graphics::keyboard);
-    glutIdleFunc(Graphics::idle);
-    glutTimerFunc(1000, Graphics::moveCharacters, glutGet(GLUT_ELAPSED_TIME));
+    // glutIdleFunc(Graphics::idle);
+    // glutTimerFunc(1000, Graphics::moveCharacters, glutGet(GLUT_ELAPSED_TIME));
 
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
