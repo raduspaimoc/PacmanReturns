@@ -8,12 +8,6 @@ enum CharacterFlags
     CHARACTER_FLAG_PACMAN = 0x01,
     CHARACTER_FLAG_GHOST = 0x02,
     CHARACTER_FLAG_AUTO_GHOST = 0x04,
-    /*CELL_FLAG_DELETED = 0x04,
-    CELL_FLAG_ADDED = 0x08,
-    CELL_FLAG_VISITED = 0x10,
-    CELL_FLAG_PACMAN = 0x20,
-    CELL_FLAG_GHOST = 0x40,
-    CELL_FLAG_EMPTY = 0x80*/
 };
 
 struct Character {
@@ -41,9 +35,6 @@ struct Character {
         void addFlag(unsigned int p_flags) { flags |= p_flags; };
         void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
         bool hasFlag(unsigned int p_Flag) { return (flags & p_Flag) != 0; };
-
-
-        //void emptyCell();
 
         void setCell(Cell* cell){
             visited = cell;

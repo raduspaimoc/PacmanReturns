@@ -8,7 +8,6 @@
 #include "map.h"
 #include "ShareDefines.h"
 #include "Utils.h"
-//#include "character.h"
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
@@ -85,15 +84,6 @@ void Map::initCells()
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
     initCharacters(emptyCells[0]->x, emptyCells[0]->y);
-
-    /*pacman_x  = emptyCells[0]->x;
-    pacman_y  = emptyCells[0]->y;
-    pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
-    pacman.setGridXY(pacman_x, pacman_y);
-    ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size());
-    ghost.setGridXY(grid.size() / 2, grid.size() / 2);
-    setFlags();*/
-    //pacman = emptyCells[0];
 
 }
 
@@ -286,7 +276,6 @@ void Map::removeTrees()
                 if (!isMiddle(pair->x, pair->y))
                 {
                     pair->setWall(false);
-                    //pair->SetDeleted(true);
                 }
             }
         }
