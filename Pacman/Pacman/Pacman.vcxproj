@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cell.h" />
+    <ClInclude Include="character.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="ShareDefines.h" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cell.cpp" />
+    <ClCompile Include="character.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
