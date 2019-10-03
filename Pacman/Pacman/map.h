@@ -28,7 +28,7 @@ struct Map
 
         void DFS(Cell* cell);
         void cleanMiddle();
-        void initCharacters(int x, int y);
+        void initCharacters(int pacman_x, int pacman_y);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 

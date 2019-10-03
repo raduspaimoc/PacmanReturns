@@ -5,15 +5,17 @@
 #define MARGIN 20
 #define MARGIN_2 MARGIN * 2
 
-Character::Character() {}
-Character::Character(float x, float y, int r, int c) : x(x), y(y), rows(r), columns(c) { }
+Character::Character(float x, float y, int r, int c) : x(x), y(y), rows(r), columns(c)
+{
+    float cell_width = (float) WIDTH / (float) s_columns;
+    float cell_height = (float) HEIGHT / (float) s_rows;
 
-void Character::set_position(float x, float y){
-    this->x = x;
-    this->y = y;
+    this->x = x * cell_width;
+    this->y = y * cell_height;
 }
 
-void Character::init_movement(float destination_x, float destination_y, float duration) {
+void Character::initMovement(float destination_x, float destination_y, float duration)
+{
     vx = (destination_x - x)/duration;
     vy = (destination_y - y)/duration;
     state = MOVE;
@@ -21,25 +23,29 @@ void Character::init_movement(float destination_x, float destination_y, float du
 
 }
 
-void Character::integrate(long t){
+void Character::integrate(long t)
+{
     float cell_width = (float) WIDTH / (float)columns;
     float cell_height = (float) HEIGHT / (float)rows;
-    if(state==MOVE && t<time_remaining)
+    if (state==MOVE && t<time_remaining)
     {
         x = x + vx* (float)t;
         y = y + vy* (float)t;
         time_remaining-=t;
     }
-    else if(state==MOVE && t>=time_remaining)
+    else if (state==MOVE && t>=time_remaining)
     {
         x = x + vx*(float)time_remaining;
         y = y + vy*(float)time_remaining;
         state=QUIET;
 
-        if(hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN)){
+        if (hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
+        {
             visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
-        } else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST)){
+        }
+        else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
+        {
             x = (float)grid_x * cell_height;
             y = (float)grid_y * cell_width;
         }
@@ -58,26 +64,11 @@ void Character::draw() {
 
     glColor3f(0.0, 0.0, 0.0);
 
-    if (!set){
-        glColor3f(0.0, 0.0, 0.0);
-
-        glBegin(GL_QUADS);
-
-        glVertex2i(j + MARGIN, i + MARGIN);
-        glVertex2i(j + cell_width + MARGIN, i + MARGIN);
-
-        glVertex2i(j + cell_width + MARGIN, i + cell_height + MARGIN);
-        glVertex2i(j + MARGIN, i + cell_height + MARGIN);
-
-        glEnd();
-        set = true;
-    }
-
-    if(hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
+    if (hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
         glColor3f(1.0, 0.5, 0.0);
-    if(hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
+    if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
         glColor3f(1.0, 0.0, 0.0);
-    if(hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
+    if (hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
         glColor3f(0.6, 0.0, 0.4);
 
     glBegin(GL_QUADS);
