@@ -23,8 +23,8 @@ struct Character
     Cell* visited;
     unsigned int flags;
 
-    Character() : Character(0.0f, 0.0f, 0, 0) { };
-    Character(float x, float y, int r, int c);
+    Character() : Character(0.0f, 0.0f, 0, 0, 0) { };
+    Character(float x, float y, int r, int c, unsigned int flags);
 
     public:
         void initMovement(float destination_x, float destination_y, float duration);
@@ -36,12 +36,6 @@ struct Character
         void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
         bool hasFlag(unsigned int p_Flag) { return (flags & p_Flag) != 0; };
         void setCell(Cell* cell) { visited = cell; };
-
-        void setGridXY(int x, int y)
-        {
-            grid_x = x;
-            grid_y = y;
-        }
 };
 
 

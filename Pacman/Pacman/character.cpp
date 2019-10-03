@@ -5,7 +5,7 @@
 #define MARGIN 20
 #define MARGIN_2 MARGIN * 2
 
-Character::Character(float x, float y, int r, int c) : x(x), y(y), rows(r), columns(c)
+Character::Character(float x, float y, int r, int c, unsigned int flags) : x(x), y(y), rows(r), columns(c), grid_x(x), grid_y(y), flags(flags)
 {
     float cell_width = (float) WIDTH / (float) s_columns;
     float cell_height = (float) HEIGHT / (float) s_rows;

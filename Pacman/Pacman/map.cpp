@@ -88,22 +88,12 @@ void Map::initCells()
 
 void Map::initCharacters(int pacman_x, int pacman_y)
 {
-    pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
-    pacman.setGridXY(pacman_x, pacman_y);
-
-    ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size());
-    ghost.setGridXY(grid.size() / 2, grid[0].size() / 2);
-
-    Character ghost1 = Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size());
-    ghost1.setGridXY(grid.size() / 2, (grid[0].size() / 2) - 1);
-
-    Character ghost2 = Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size());
-    ghost2.setGridXY(grid.size() / 2, (grid[0].size() / 2) + 1);
+    pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_PACMAN);
+    ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_GHOST);
 
     auto_ghosts.clear();
-    auto_ghosts.push_back(ghost1);
-    auto_ghosts.push_back(ghost2);
-    setFlags();
+    auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
+    auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
 }
 
 void Map::addAloneWalls(){

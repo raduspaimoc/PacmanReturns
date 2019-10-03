@@ -38,12 +38,4 @@ struct Map
         std::vector<Character> auto_ghosts;
         float pacman_x, pacman_y;
         std::vector<std::vector<Cell>> grid;
-
-        void setFlags(){
-            pacman.setFlag(CharacterFlags::CHARACTER_FLAG_PACMAN);
-            ghost.setFlag(CharacterFlags::CHARACTER_FLAG_GHOST);
-            for(int i=0; i < auto_ghosts.size(); i++){
-                auto_ghosts[i].setFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST);
-            }
-        }
 };
