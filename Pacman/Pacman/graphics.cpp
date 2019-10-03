@@ -86,8 +86,24 @@ void Graphics::idle()
     s_map.pacman.integrate(t-last_t);
     s_map.ghost.integrate(t-last_t);
 
+    int pacman_x = (int) s_map.pacman.x;
+    int pacman_y = (int) s_map.pacman.y;
+    int ghost_x = (int) s_map.ghost.x;
+    int ghost_y = (int) s_map.ghost.y;
+
+    if (pacman_x == ghost_x && pacman_y == ghost_y)
+        std::exit(0);
+
     for (auto & auto_ghost : s_map.auto_ghosts)
-      auto_ghost.integrate(t-last_t);
+    {
+        ghost_x = (int) s_map.ghost.x;
+        ghost_y = (int) s_map.ghost.y;
+
+        if (pacman_x == ghost_x && pacman_y == ghost_y)
+            std::exit(0);
+
+        auto_ghost.integrate(t-last_t);
+    }
 
     last_t = t;
   }
