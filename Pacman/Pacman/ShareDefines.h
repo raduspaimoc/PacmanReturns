@@ -6,10 +6,14 @@
 #define HEIGHT_2 HEIGHT * 2
 #define MARGIN 20
 #define MARGIN_2 MARGIN * 2
-#define UP 'W'
-#define DOWN 'S'
-#define LEFT 'A'
-#define RIGHT 'D'
+
+enum Directions : unsigned char
+{
+    UP = 'W',
+    DOWN = 'S',
+    LEFT = 'A',
+    RIGHT = 'D'
+};
 
 extern int s_columns, s_rows;
 extern Map s_map;

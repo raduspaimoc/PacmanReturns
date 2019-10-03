@@ -193,25 +193,25 @@ void Graphics::keyboard(unsigned char c, int x, int y)
     else
     {
         if (s_map.ghost.state == QUIET){
-            if(toupper(c) == UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
+            if(toupper(c) == Directions::UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
 
                 s_map.ghost.grid_x--;
                 s_map.ghost.init_movement((s_map.ghost.x) - cell_height, s_map.ghost.y , 1000);
 
             }
-            if(toupper(c) == DOWN && s_map.ghost.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
+            if(toupper(c) == Directions::DOWN && s_map.ghost.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
 
                 s_map.ghost.grid_x++;
                 s_map.ghost.init_movement((s_map.ghost.x + 1) + cell_height, s_map.ghost.y, 1000);
 
             }
-            if(toupper(c) == LEFT && s_map.ghost.grid_y - 1 >= 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
+            if(toupper(c) == Directions::LEFT && s_map.ghost.grid_y - 1 >= 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
 
                 s_map.ghost.grid_y--;
                 s_map.ghost.init_movement(s_map.ghost.x, (s_map.ghost.y - 1) - cell_width, 1000);
 
             }
-            if(toupper(c) == RIGHT && s_map.ghost.grid_y + 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
+            if(toupper(c) == Directions::RIGHT && s_map.ghost.grid_y + 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
 
                 s_map.ghost.grid_y++;
                 s_map.ghost.init_movement(s_map.ghost.x, (s_map.ghost.y + 1) + cell_width, 1000);
