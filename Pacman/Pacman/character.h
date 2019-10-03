@@ -1,3 +1,4 @@
+#pragma once
 #include "cell.h"
 
 #define MOVE 1
@@ -13,7 +14,7 @@ enum CharacterFlags
 struct Character {
     float x, y;
     int grid_x, grid_y;
-    int r, c;
+    int rows, columns;
     float vx,vy; //-- Velocity vector
     int state = QUIET;
     long time_remaining;

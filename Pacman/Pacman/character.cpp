@@ -1,14 +1,12 @@
+#include "ShareDefines.h"
 #include "character.h"
 #include <GL/glut.h>
-
-#define WIDTH 1000
-#define HEIGHT 1000
 
 #define MARGIN 20
 #define MARGIN_2 MARGIN * 2
 
 Character::Character() {}
-Character::Character(float x, float y, int r, int c) : x(x), y(y), r(r), c(c) { }
+Character::Character(float x, float y, int r, int c) : x(x), y(y), rows(r), columns(c) { }
 
 void Character::set_position(float x, float y){
     this->x = x;
@@ -24,8 +22,8 @@ void Character::init_movement(float destination_x, float destination_y, float du
 }
 
 void Character::integrate(long t){
-    float cell_width = (float)WIDTH / (float)c;
-    float cell_height = (float)HEIGHT / (float)r;
+    float cell_width = (float) WIDTH / (float)columns;
+    float cell_height = (float) HEIGHT / (float)rows;
     if(state==MOVE && t<time_remaining)
     {
         x = x + vx* (float)t;
@@ -50,13 +48,13 @@ void Character::integrate(long t){
 
 void Character::draw() {
 
-    float cell_width = (float)WIDTH / (float)c;
-    float cell_height = (float)HEIGHT / (float)r;
+    float cell_width = (float)WIDTH / (float)columns;
+    float cell_height = (float)HEIGHT / (float)rows;
     float cell_width4 = cell_width / 4;
     float cell_height4 = cell_height / 4;
 
     float j = this->y;
-    float i = (r * cell_height)  - (this->x) - cell_height;
+    float i = (rows * cell_height)  - (this->x) - cell_height;
 
     glColor3f(0.0, 0.0, 0.0);
 

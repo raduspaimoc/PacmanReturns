@@ -1,7 +1,7 @@
 #include "map.h"
 
-#define WIDTH 1000
-#define HEIGHT 1000
+#define WIDTH 700
+#define HEIGHT 700
 #define WIDTH_2 WIDTH * 2
 #define HEIGHT_2 HEIGHT * 2
 #define MARGIN 20
