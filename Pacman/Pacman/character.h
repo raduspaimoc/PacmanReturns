@@ -19,7 +19,6 @@ struct Character
     float vx,vy; //-- Velocity vector
     int state = QUIET;
     long time_remaining;
-    long last_t  = 0;
     Cell* visited;
     unsigned int flags;
 

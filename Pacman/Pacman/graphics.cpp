@@ -67,8 +67,8 @@ void Graphics::display()
     s_map.pacman.draw();
     s_map.ghost.draw();
 
-    for (int z=0; z < s_map.auto_ghosts.size(); z++)
-        s_map.auto_ghosts[z].draw();
+    for (auto & auto_ghost : s_map.auto_ghosts)
+        auto_ghost.draw();
 
     glutSwapBuffers();
 }
@@ -86,8 +86,8 @@ void Graphics::idle()
     s_map.pacman.integrate(t-last_t);
     s_map.ghost.integrate(t-last_t);
 
-    for (int i = 0; i < s_map.auto_ghosts.size() ; ++i)
-      s_map.auto_ghosts[i].integrate(t-last_t);
+    for (auto & auto_ghost : s_map.auto_ghosts)
+      auto_ghost.integrate(t-last_t);
 
     last_t = t;
   }

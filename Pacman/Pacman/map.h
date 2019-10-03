@@ -33,9 +33,7 @@ struct Map
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
         int rows, columns;
-        //Cell* pacman;
         Character pacman, ghost;
         std::vector<Character> auto_ghosts;
-        float pacman_x, pacman_y;
         std::vector<std::vector<Cell>> grid;
 };

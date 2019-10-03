@@ -12,7 +12,6 @@
 Map::Map(int r, int c) : rows(r), columns(c)
 {
   pacman.grid_y = pacman.grid_y = 0;
-  pacman.x = pacman_y = 0;
 
   for (size_t i = 0; i < r; i++) {
 
@@ -37,7 +36,7 @@ void Map::showInfo()
   printf("Rows: %zu Columns: %zu \n", grid.size(), grid[0].size());
   printf("Map: \n");
 
-  for (auto row : grid)
+  for (const auto& row : grid)
   {
       for (auto column : row)
           std::cout << column;
