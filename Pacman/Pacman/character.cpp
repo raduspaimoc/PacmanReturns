@@ -44,7 +44,7 @@ void Character::integrate(long t){
         if(hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN)){
             visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
-        } else {
+        } else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST)){
             x = (float)grid_x * cell_height;
             y = (float)grid_y * cell_width;
         }
@@ -136,6 +136,8 @@ void Character::draw() {
         glColor3f(1.0, 0.5, 0.0);
     if(hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
         glColor3f(1.0, 0.0, 0.0);
+    if(hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
+        glColor3f(0.6, 0.0, 0.4);
 
     glBegin(GL_QUADS);
 

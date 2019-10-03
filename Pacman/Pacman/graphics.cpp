@@ -69,10 +69,18 @@ void Graphics::display()
     // prova
     if(!s_map.pacman.set)
         s_map.pacman.set_position((s_map.pacman.x * cell_height), (s_map.pacman.y * cell_width));
-    if(!s_map.ghost.set)
+    if(!s_map.ghost.set){
         s_map.ghost.set_position((s_map.ghost.x * cell_height), (s_map.ghost.y * cell_width));
+        int aux = s_map.auto_ghosts.size();
+        for(int z=0; z < s_map.auto_ghosts.size(); z++){
+            s_map.auto_ghosts[z].set_position(s_map.auto_ghosts[z].x * cell_height, s_map.auto_ghosts[z].y * cell_width);
+        }
+    }
     s_map.pacman.draw();
     s_map.ghost.draw();
+    for(int z=0; z < s_map.auto_ghosts.size(); z++){
+        s_map.auto_ghosts[z].draw();
+    }
 
     glutSwapBuffers();
 }
@@ -100,11 +108,55 @@ void Graphics::idle()
   {
     s_map.pacman.integrate(t-last_t);
     s_map.ghost.integrate(t-last_t);
+    for (int i = 0; i < s_map.auto_ghosts.size() ; ++i) {
+      s_map.auto_ghosts[i].integrate(t-last_t);
+    }
     last_t = t;
   }
 
   /* A lo mejor falta */
   glutPostRedisplay();
+}
+
+void Graphics::moveAutoGhosts(){
+    for(int i=0; i < s_map.auto_ghosts.size(); i++){
+        Character* ghost = &s_map.auto_ghosts[i];
+        static std::vector<std::vector<int>> movements = direct;
+        shuffle(movements.begin(), movements.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+
+        for (auto itr = movements.begin(); itr != movements.end();) {
+            int i_offset = (*itr)[0];
+            int j_offset = (*itr)[1];
+            if ((i_offset + ghost->grid_x < 0) || (j_offset + ghost->grid_y < 0) || (i_offset + ghost->grid_x >= s_map.grid.size()) ||
+                (j_offset + ghost->grid_y >= s_map.grid[0].size())) {
+                itr++;
+                continue;
+            }
+
+            Cell *cell = &s_map.grid[(int) ghost->grid_x + i_offset][(int) ghost->grid_y + j_offset];
+
+            if (!cell->hasFlag(CellFlags::CELL_FLAG_WALL)) {
+
+                ghost->grid_x = cell->x;
+                ghost->grid_y = cell->y;
+
+                float cell_width = (float) WIDTH / (float) s_columns;
+                float cell_height = (float) HEIGHT / (float) s_rows;
+
+                ghost->init_movement(cell->x * cell_height, cell->y * cell_width, 1000);
+                //ghost.setCell(cell);
+
+                break;
+            }
+            itr++;
+        }
+    }
+}
+
+void Graphics::moveCharacters(int x){
+    movePacman(x);
+    moveAutoGhosts();
+    glutTimerFunc(1000, moveCharacters, 0);
 }
 
 void Graphics::movePacman(int t){
@@ -166,7 +218,7 @@ void Graphics::movePacman(int t){
     }
     itr++;
   }
-  glutTimerFunc(1000, movePacman, 0);
+  //glutTimerFunc(1000, movePacman, 0);
 }
 
 void Graphics::keyboard(unsigned char c, int x, int y)

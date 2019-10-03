@@ -84,15 +84,39 @@ void Map::initCells()
 
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
-    pacman_x  = emptyCells[0]->x;
+    initCharacters(emptyCells[0]->x, emptyCells[0]->y);
+
+    /*pacman_x  = emptyCells[0]->x;
     pacman_y  = emptyCells[0]->y;
     pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
     pacman.setGridXY(pacman_x, pacman_y);
     ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size());
     ghost.setGridXY(grid.size() / 2, grid.size() / 2);
-    setFlags();
+    setFlags();*/
     //pacman = emptyCells[0];
 
+}
+
+void Map::initCharacters(int x, int y){
+    pacman_x  = x;
+    pacman_y  = y;
+    pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size());
+    pacman.setGridXY(pacman_x, pacman_y);
+
+    Character ghost1, ghost2;
+    ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size());
+    ghost.setGridXY(grid.size() / 2, grid[0].size() / 2);
+
+    ghost1 = Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size());
+    ghost1.setGridXY(grid.size() / 2, (grid[0].size() / 2) - 1);
+
+    ghost2 = Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size());
+    ghost2.setGridXY(grid.size() / 2, (grid[0].size() / 2) + 1);
+
+    auto_ghosts.clear();
+    auto_ghosts.push_back(ghost1);
+    auto_ghosts.push_back(ghost2);
+    setFlags();
 }
 
 void Map::addAloneWalls(){

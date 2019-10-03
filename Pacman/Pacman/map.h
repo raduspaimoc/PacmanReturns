@@ -28,17 +28,22 @@ struct Map
 
         void DFS(Cell* cell);
         void cleanMiddle();
+        void initCharacters(int x, int y);
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
         int rows, columns;
         //Cell* pacman;
         Character pacman, ghost;
+        std::vector<Character> auto_ghosts;
         float pacman_x, pacman_y;
-        std::vector<std::vector<Cell> > grid;
+        std::vector<std::vector<Cell>> grid;
 
         void setFlags(){
             pacman.setFlag(CharacterFlags::CHARACTER_FLAG_PACMAN);
             ghost.setFlag(CharacterFlags::CHARACTER_FLAG_GHOST);
+            for(int i=0; i < auto_ghosts.size(); i++){
+                auto_ghosts[i].setFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST);
+            }
         }
 };
