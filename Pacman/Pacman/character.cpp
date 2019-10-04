@@ -7,8 +7,8 @@ Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(
     float cell_width = (float) WIDTH / (float) s_columns;
     float cell_height = (float) HEIGHT / (float) s_rows;
 
-    this->x = x * cell_width;
-    this->y = y * cell_height;
+    this->x = (x * cell_width) - WIDTH_2;
+    this->y = y * cell_height - HEIGHT_2;
 }
 
 void Character::initMovement(float destination_x, float destination_y, float duration)
@@ -68,7 +68,18 @@ void Character::draw() {
     if (hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
         glColor3f(0.6, 0.0, 0.4);
 
-    glBegin(GL_QUADS);
+    /*quadratic = gluNewQuadric();
+    if( !quadratic){
+        throw new PROGRAM_EXCEPTION( "Cannot initialize quadartic", NULL);
+    }
+    gluQuadricNormals(quadratic, GLU_SMOOTH);
+//gluQuadricDrawStyle( quadratic, GLU_FILL);
+    gluQuadricTexture(quadratic, GL_TRUE);*/
+    glPushMatrix();
+    glTranslatef(x + (2 * cell_width4), DEPTH, y  + (2 * cell_height4));
+    gluSphere( gluNewQuadric(), cell_width4, 10, 10); // Tried r = 0.02f, 0.2f, 2.0f, 20.0f, none works
+    glPopMatrix();
+    /*glBegin(GL_QUADS);
 
     glVertex2i(j + cell_width4 + MARGIN, i + cell_height4 + MARGIN);
     glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + cell_height4 + MARGIN);
@@ -76,5 +87,5 @@ void Character::draw() {
     glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + (2 * cell_height4) + MARGIN);
     glVertex2i(j + cell_width4 + MARGIN, i+ (2 * cell_height4) + MARGIN);
 
-    glEnd();
+    glEnd();*/
 }

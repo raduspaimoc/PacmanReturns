@@ -135,8 +135,8 @@ void Graphics::display()
         }
     }
 
-   /* s_map.pacman.draw();
-    s_map.ghost.draw();
+   s_map.pacman.draw();
+   /* s_map.ghost.draw();
 
     for (auto & auto_ghost : s_map.auto_ghosts)
         auto_ghost.draw();
