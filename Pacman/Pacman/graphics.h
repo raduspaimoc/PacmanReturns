@@ -10,5 +10,5 @@ struct Graphics
         static void movePacman(int x);
         static void moveAutoGhosts();
         static void moveCharacters(int x);
-
+        static void PositionObserver(float alpha,float beta,int radi);
 };

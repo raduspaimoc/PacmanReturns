@@ -2,10 +2,12 @@
 
 #define WIDTH 700
 #define HEIGHT 700
+#define DEPTH 20
 #define WIDTH_2 WIDTH / 2
 #define HEIGHT_2 HEIGHT / 2
 #define MARGIN 20
 #define MARGIN_2 MARGIN * 2
+#define PI 3.1416
 
 enum Directions : unsigned char
 {

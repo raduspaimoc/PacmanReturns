@@ -8,12 +8,27 @@
 #include "Utils.h"
 
 long last_t = 0;
-
+int anglealpha = -90;
+int anglebeta = 0;
 
 void Graphics::display()
 {
-    glClearColor(0, 0, 255, 255);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(255, 255, 255, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    PositionObserver(anglealpha,anglebeta,450);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-WIDTH*0.6,WIDTH*0.6,-HEIGHT*0.6,HEIGHT*0.6,10,2000);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glPolygonMode(GL_FRONT,GL_FILL);
+    glPolygonMode(GL_BACK,GL_LINE);
+
 
     std::vector<std::vector<Cell> > grid = s_map.grid;
 
@@ -30,20 +45,76 @@ void Graphics::display()
             int real_i = s_rows - i - 1;
 
             Cell* cell = &grid[real_i][j];
+
             if (cell->isWall())
-                continue;
+            {
 
-            glColor3f(0.0, 0.0, 0.0);
+                glColor3f(0, 0, 0);
 
-            glBegin(GL_QUADS);
+                glBegin(GL_QUADS);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
 
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2, i * cell_height + MARGIN - HEIGHT_2);
-            glVertex2i((j + 1) * cell_width + MARGIN - WIDTH_2, i * cell_height + MARGIN - HEIGHT_2);
+                glEnd();
 
-            glVertex2i((j + 1) * cell_width + MARGIN - WIDTH_2, (i + 1) * cell_height + MARGIN - HEIGHT_2);
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2, (i + 1) * cell_height + MARGIN - HEIGHT_2);
+                glBegin(GL_QUADS);
 
-            glEnd();
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+
+                glEnd();
+
+
+                glBegin(GL_QUADS);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+
+                glEnd();
+
+
+                glBegin(GL_QUADS);
+
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+
+                glEnd();
+
+                glColor3f(0.0, 0.0, 255); // Superior part
+                glBegin(GL_QUADS);
+
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH,  i * cell_height - HEIGHT_2);
+
+
+
+
+
+                glEnd();
+            }
+            else
+            {
+                glColor3f(0.15, 0.15, 0.15);
+                glBegin(GL_QUADS);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+
+                glEnd();
+            }
+
+            /*
 
             if (cell->hasFlag(CellFlags::CELL_FLAG_EMPTY))
                 glColor3f(0.0, 0.0, 0.0);
@@ -60,7 +131,7 @@ void Graphics::display()
             glVertex2i(j * cell_width + MARGIN - WIDTH_2 + ( 2 * cell_width4), i * cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
             glVertex2i(j * cell_width + MARGIN - WIDTH_2 + cell_width4, i* cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
 
-            glEnd();
+            glEnd();*/
         }
     }
 
@@ -198,6 +269,17 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 
         glutPostRedisplay();
     }
+    else if (c=='i' && anglebeta<=(90-4))
+        anglebeta=(anglebeta+3);
+    else if (c=='k' && anglebeta>=(-90+4))
+        anglebeta=anglebeta-3;
+    else if (c=='j')
+        anglealpha=(anglealpha+3)%360;
+    else if (c=='l')
+        anglealpha=(anglealpha-3+360)%360;
+
+    glutPostRedisplay();
+    /*
     else
     {
         if (s_map.ghost.state == QUIET){
@@ -226,6 +308,44 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 
             }
         }
+    }*/
+}
 
+void Graphics::PositionObserver(float alpha,float beta,int radi)
+{
+    float x,y,z;
+    float upx,upy,upz;
+    float modul;
+
+    x = (float)radi*cos(alpha*2*PI/360.0)*cos(beta*2*PI/360.0);
+    y = (float)radi*sin(beta*2*PI/360.0);
+    z = (float)radi*sin(alpha*2*PI/360.0)*cos(beta*2*PI/360.0);
+
+    if (beta>0)
+    {
+        upx=-x;
+        upz=-z;
+        upy=(x*x+z*z)/y;
     }
+    else if(beta==0)
+    {
+        upx=0;
+        upy=1;
+        upz=0;
+    }
+    else
+    {
+        upx=x;
+        upz=z;
+        upy=-(x*x+z*z)/y;
+    }
+
+
+    modul=sqrt(upx*upx+upy*upy+upz*upz);
+
+    upx=upx/modul;
+    upy=upy/modul;
+    upz=upz/modul;
+
+    gluLookAt(x,y,z,    0.0, 0.0, 0.0,     upx,upy,upz);
 }

@@ -38,10 +38,11 @@ int main(int argc, char const *argv[])
     int fakeargc = 1;
 
     glutInit(&fakeargc, fakeargv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(WIDTH + MARGIN_2, HEIGHT + MARGIN_2);
     glutCreateWindow("Pac man");
+    glEnable(GL_DEPTH_TEST);
 
     s_map.showInfo();
     glutDisplayFunc(Graphics::display);
