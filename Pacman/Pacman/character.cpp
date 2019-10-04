@@ -76,7 +76,7 @@ void Character::draw() {
 //gluQuadricDrawStyle( quadratic, GLU_FILL);
     gluQuadricTexture(quadratic, GL_TRUE);*/
     glPushMatrix();
-    glTranslatef(x + (2 * cell_width4), DEPTH, y  + (2 * cell_height4));
+    glTranslatef(y + (2 * cell_width4), DEPTH, -x  + (2 * cell_height4) - 1*cell_height);
     gluSphere( gluNewQuadric(), cell_width4, 10, 10); // Tried r = 0.02f, 0.2f, 2.0f, 20.0f, none works
     glPopMatrix();
     /*glBegin(GL_QUADS);
