@@ -3,6 +3,7 @@
 #define WIDTH 700
 #define HEIGHT 700
 #define DEPTH 20
+#define DEPTH_2 20 / 2
 #define WIDTH_2 WIDTH / 2
 #define HEIGHT_2 HEIGHT / 2
 #define MARGIN 20
