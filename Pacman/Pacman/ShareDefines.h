@@ -4,6 +4,9 @@
 #define HEIGHT 700
 #define DEPTH 20
 #define DEPTH_2 20 / 2
+#define DEPTH_4 20 / 4
+#define DEPTH_4_3 20 / 4 * 3
+
 #define WIDTH_2 WIDTH / 2
 #define HEIGHT_2 HEIGHT / 2
 #define MARGIN 20

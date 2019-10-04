@@ -48,7 +48,6 @@ void Graphics::display()
 
             if (cell->isWall())
             {
-                /*
                 glColor3f(0.0, 0.0, 255); // Superior part
                 glBegin(GL_QUADS);
 
@@ -94,64 +93,66 @@ void Graphics::display()
                 glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                glEnd();*/
+                glEnd();
             }
             else
             {
+                // Ground
                 glColor3f(0.15, 0.15, 0.15);
                 glBegin(GL_QUADS);
-                glVertex3i(j * cell_width - WIDTH_2, -DEPTH_2, i * cell_height - HEIGHT_2);
-                glVertex3i(j * cell_width - WIDTH_2, -DEPTH_2, (i + 1) * cell_height - HEIGHT_2);
-                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH_2, (i + 1) * cell_height - HEIGHT_2);
-                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH_2, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
 
                 glEnd();
 
-                glColor3f(0, 1, 0); // Superior part
+                if (!cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
+                    continue;
+
+                // Superior part
+                glColor3f(0, 1, 0);
                 glBegin(GL_QUADS);
 
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_2,  i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_4_3,  i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i * cell_height - HEIGHT_2 + cell_height4);
 
                 glEnd();
 
                 glBegin(GL_QUADS);
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), -DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-
-                glEnd();
-/*
-                glBegin(GL_QUADS);
-
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i * cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + cell_height4);
 
                 glEnd();
 
-
                 glBegin(GL_QUADS);
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
+                glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i* cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + cell_height4);
 
                 glEnd();
 
 
                 glBegin(GL_QUADS);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i * cell_height - HEIGHT_2 + (2 * cell_width4));
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + (2 * cell_width4));
 
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + cell_height4);
-                glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glVertex3i(j * cell_width - WIDTH_2 + cell_width4, -DEPTH_2, i * cell_height - HEIGHT_2 + (2 * cell_height4));
-                glEnd();*/
+                glEnd();
 
+                glBegin(GL_QUADS);
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + (2 * cell_width4));
+                glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + (2 * cell_width4));
+                glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i* cell_height - HEIGHT_2 + (2 * cell_width4));
+                glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i* cell_height - HEIGHT_2 + (2 * cell_width4));
+
+                glEnd();
             }
 
             /*
@@ -162,16 +163,7 @@ void Graphics::display()
                 glColor3f(0.0, 1.0, 1.0);
             else
                 continue;
-
-            glBegin(GL_QUADS);
-
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + cell_width4 , i * cell_height + MARGIN + cell_height4 - HEIGHT_2);
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + ( 2 * cell_width4), i * cell_height + MARGIN + cell_height4 - HEIGHT_2);
-
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + ( 2 * cell_width4), i * cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
-            glVertex2i(j * cell_width + MARGIN - WIDTH_2 + cell_width4, i* cell_height + MARGIN + (2 * cell_height4) - HEIGHT_2);
-
-            glEnd();*/
+*/
         }
     }
 
