@@ -336,8 +336,8 @@ void Graphics::GhostMovement(unsigned char c){
             Cell* cell = &s_map.grid[s_map.pacman.grid_x - 1][s_map.pacman.grid_y];
 
             s_map.ghost.grid_x--;
-            s_map.ghost.x = ((cell->x - 1 ) * cell_width);
-            s_map.ghost.y = (cell->y * cell_height);
+            /*s_map.ghost.x = ((cell->x - 1 ) * cell_width);
+            s_map.ghost.y = (cell->y * cell_height);*/
             printf("Ghost.x %f, Ghost.y %f\n", s_map.ghost.x, s_map.ghost.y);
 
             s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
