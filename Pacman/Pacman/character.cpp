@@ -9,6 +9,7 @@ Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(
 
     this->x = (x * cell_width) - WIDTH_2;
     this->y = y * cell_height - HEIGHT_2;
+    printf("Ghost pos x %f y %f \n", this->x, this->y);
 }
 
 void Character::initMovement(float destination_x, float destination_y, float duration)

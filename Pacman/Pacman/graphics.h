@@ -11,4 +11,5 @@ struct Graphics
         static void moveAutoGhosts();
         static void moveCharacters(int x);
         static void PositionObserver(float alpha,float beta,int radi);
+        static void GhostMovement(unsigned char c);
 };

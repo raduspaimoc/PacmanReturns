@@ -168,11 +168,11 @@ void Graphics::display()
     }
 
    s_map.pacman.draw();
-   /* s_map.ghost.draw();
+   s_map.ghost.draw();
 
     for (auto & auto_ghost : s_map.auto_ghosts)
         auto_ghost.draw();
-*/
+
     glutSwapBuffers();
 }
 
@@ -239,8 +239,11 @@ void Graphics::moveAutoGhosts(){
                 float cell_width = (float) WIDTH / (float) s_columns;
                 float cell_height = (float) HEIGHT / (float) s_rows;
 
-                ghost->initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
+                //ghost->initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
                 //ghost.setCell(cell);
+                //s_map.pacman.initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
+                ghost->initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+                //s_map.pacman.setCell(cell);
 
                 break;
             }
@@ -296,8 +299,6 @@ void Graphics::movePacman(int t){
 
 void Graphics::keyboard(unsigned char c, int x, int y)
 {
-    float cell_width = (float)WIDTH / (float)s_columns;
-    float cell_height = (float)HEIGHT / (float)s_rows;
     if (c == ' ')
     {
         s_map.reset();
@@ -313,38 +314,51 @@ void Graphics::keyboard(unsigned char c, int x, int y)
         anglealpha=(anglealpha+3)%360;
     else if (c=='l')
         anglealpha=(anglealpha-3+360)%360;
+    else
+        GhostMovement(c);
 
     glutPostRedisplay();
-    /*
-    else
-    {
-        if (s_map.ghost.state == QUIET){
-            if(toupper(c) == Directions::UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
 
-                s_map.ghost.grid_x--;
-                s_map.ghost.initMovement((s_map.ghost.x) - cell_height, s_map.ghost.y , 1000);
+}
 
-            }
-            if(toupper(c) == Directions::DOWN && s_map.ghost.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
+void Graphics::GhostMovement(unsigned char c){
+    float cell_width = (float)WIDTH / (float)s_columns;
+    float cell_height = (float)HEIGHT / (float)s_rows;
+    float cell_width4 = cell_width / 4;
+    float cell_height4 = cell_height / 4;
+    //s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+    if (s_map.ghost.state == QUIET){
+        if(toupper(c) == Directions::UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
 
-                s_map.ghost.grid_x++;
-                s_map.ghost.initMovement((s_map.ghost.x + 1) + cell_height, s_map.ghost.y, 1000);
+            Cell* cell = &s_map.grid[s_map.pacman.grid_x - 1][s_map.pacman.grid_y];
 
-            }
-            if(toupper(c) == Directions::LEFT && s_map.ghost.grid_y - 1 >= 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
+            s_map.ghost.grid_x--;
+            s_map.ghost.x = cell->x - 1  * cell_width;
+            s_map.ghost.y = cell->y * cell_height;
+            printf("Ghost.x %f, Ghost.y %f\n", s_map.ghost.x, s_map.ghost.y);
+            s_map.ghost.initMovement(cell->x * cell_width, cell->y * cell_height, 1000);
+            //s_map.ghost.initMovement((s_map.ghost.x) - cell_width4, s_map.ghost.y , 1000);
 
-                s_map.ghost.grid_y--;
-                s_map.ghost.initMovement(s_map.ghost.x, (s_map.ghost.y - 1) - cell_width, 1000);
-
-            }
-            if(toupper(c) == Directions::RIGHT && s_map.ghost.grid_y + 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
-
-                s_map.ghost.grid_y++;
-                s_map.ghost.initMovement(s_map.ghost.x, (s_map.ghost.y + 1) + cell_width, 1000);
-
-            }
         }
-    }*/
+        /*if(toupper(c) == Directions::DOWN && s_map.ghost.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
+
+            s_map.ghost.grid_x++;
+            s_map.ghost.initMovement((s_map.ghost.x + 1) + cell_width - WIDTH_2, s_map.ghost.y, 1000);
+
+        }
+        if(toupper(c) == Directions::LEFT && s_map.ghost.grid_y - 1 >= 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
+
+            s_map.ghost.grid_y--;
+            s_map.ghost.initMovement(s_map.ghost.x, (s_map.ghost.y - 1) - cell_height - HEIGHT_2, 1000);
+
+        }
+        if(toupper(c) == Directions::RIGHT && s_map.ghost.grid_y + 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
+
+            s_map.ghost.grid_y++;
+            s_map.ghost.initMovement(s_map.ghost.x, (s_map.ghost.y + 1) + cell_height - HEIGHT_2, 1000);
+
+        }*/
+    }
 }
 
 void Graphics::PositionObserver(float alpha,float beta,int radi)
