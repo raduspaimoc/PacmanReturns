@@ -42,11 +42,11 @@ void Character::integrate(long t)
             visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         }
-        else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
+        /*else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
         {
             x = (float)grid_x * cell_height;
             y = (float)grid_y * cell_width;
-        }
+        }*/
     }
 }
 
@@ -76,6 +76,7 @@ void Character::draw() {
     gluQuadricNormals(quadratic, GLU_SMOOTH);
 //gluQuadricDrawStyle( quadratic, GLU_FILL);
     gluQuadricTexture(quadratic, GL_TRUE);*/
+    glPopMatrix();
     glPushMatrix();
     glTranslatef(y + (2 * cell_width4), DEPTH, -x  + (2 * cell_height4) - 1*cell_height);
     gluSphere( gluNewQuadric(), cell_width4, 10, 10); // Tried r = 0.02f, 0.2f, 2.0f, 20.0f, none works

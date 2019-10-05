@@ -89,10 +89,11 @@ void Map::initCharacters(int pacman_x, int pacman_y)
 {
     pacman = Character(pacman_x, pacman_y, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_PACMAN);
     Character v_ghost = Character(grid.size() / 2, grid[0].size() / 2, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_GHOST);
-    v_ghost.setXY(grid.size()/2, grid[0].size() / 2);
+    //v_ghost.setXY(grid.size()/2, grid[0].size() / 2);
     ghost = v_ghost;
 
     auto_ghosts.clear();
+    //auto_ghosts.push_back(v_ghost);
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
 }
