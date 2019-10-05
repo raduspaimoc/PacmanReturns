@@ -281,7 +281,11 @@ void Graphics::movePacman(int t){
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
 
-        s_map.pacman.initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
+        /*
+         j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2
+        */
+        //s_map.pacman.initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
+        s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
         s_map.pacman.setCell(cell);
 
         break;
