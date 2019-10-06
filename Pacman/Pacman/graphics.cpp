@@ -6,9 +6,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "./jpeg-6b/jpeglib.h"
 #include "graphics.h"
-//#include "./jpeg-6b"
+#ifdef __cplusplus
+extern "C" {
+    #endif
+    #include <jpeglib.h>
+    #ifdef __cplusplus
+}
+#endif
 #include "ShareDefines.h"
 #include "Utils.h"
 
