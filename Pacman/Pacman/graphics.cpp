@@ -24,7 +24,7 @@ GLuint wall_texure, ground_texture;
 
 void Graphics::readTextures(){
     LoadTexture("pared3.jpg", 64, wall_texure);
-    //LoadTexture("ground.jpg", 32, ground_texture);
+    //LoadTexture("pared.jpg", 64, ground_texture);
 }
 
 void Graphics::display()
@@ -98,70 +98,48 @@ void Graphics::display()
 
             if (cell->isWall())
             {
-
-                glColor3f(0.0, 0.0, 255); // Superior part
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, wall_texure);
-                glBegin(GL_QUADS);
 
-                //glTexCoord3d(0,0,0);
-                //glTexCoord3d(1,0,0);
-                //glTexCoord3d(1,1,0);
-                //glTexCoord3d(0,1,0);
+                glColor3f(0.0, 0.0, 255); // Superior part
+                glBegin(GL_QUADS);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH,  i * cell_height - HEIGHT_2);
-                glDisable(GL_TEXTURE_2D);
+                glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH,  i * cell_height - HEIGHT_2);
                 glEnd();
 
                 glColor3f(0, 0, 0);
-
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, wall_texure);
                 glBegin(GL_QUADS);
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(0.0,4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                glDisable(GL_TEXTURE_2D);
+                glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glEnd();
 
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, wall_texure);
+
                 glBegin(GL_QUADS);
-
-                //glTexCoord3d(0,0,0);
-
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(0.0,4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0, 4.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glDisable(GL_TEXTURE_2D);
+                glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glEnd();
 
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, wall_texure);
                 glBegin(GL_QUADS);
-
-
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0, 4.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                glDisable(GL_TEXTURE_2D);
+                glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glEnd();
 
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, wall_texure);
                 glBegin(GL_QUADS);
-
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
-                glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                glDisable(GL_TEXTURE_2D);
+                glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glEnd();
+                glDisable(GL_TEXTURE_2D);
+
             }
             else
             {
