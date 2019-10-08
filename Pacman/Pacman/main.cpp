@@ -8,7 +8,6 @@
 #include "jpeglib.h"
 
 using namespace std;
-void displayVerga();
 int s_columns, s_rows;
 Map s_map;
 
@@ -55,57 +54,6 @@ int main(int argc, char const *argv[])
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
 
     glBindTexture(GL_TEXTURE_2D,0);
-    //Graphics::LoadTexture("pared.jpg",64);
     glutMainLoop();
-
-
-    /*glutInit(&fakeargc, fakeargv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowPosition(50, 50);
-    glutInitWindowSize(600, 600);
-    glutCreateWindow("Textures Hello World");
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-
-    glutDisplayFunc(displayVerga);
-
-    glBindTexture(GL_TEXTURE_2D,0);
-    Graphics::LoadTexture("pared.jpg",100);
-
-    glutMainLoop();*/
-
     return 0;
-}
-
-void displayVerga()
-{
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    gluLookAt(0,0,100,    0.0, 0.0, 0.0,     0.0, 1.0, 0.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-300,300,-300,300,10,500);
-
-    glMatrixMode(GL_MODELVIEW);
-
-    glClearColor(1.0,1.0,1.0,0.0);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
-    glPolygonMode(GL_FRONT,GL_FILL);
-    glPolygonMode(GL_BACK,GL_LINE);
-
-
-    glBindTexture(GL_TEXTURE_2D,0);
-    glBegin(GL_QUADS);
-    glTexCoord2f(-4.0,0.0); glVertex3i(-200,0,0);
-    glTexCoord2f(4.0,0.0); glVertex3i(200,0,0);
-    glTexCoord2f(4.0,4.0); glVertex3i(200,200,0);
-    glTexCoord2f(-4.0,4.0); glVertex3i(-200,200,0);
-    glEnd();
-
-    glutSwapBuffers();
-
 }

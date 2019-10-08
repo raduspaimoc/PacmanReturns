@@ -9,7 +9,6 @@ Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(
 
     this->x = (x * cell_width) - WIDTH_2;
     this->y = y * cell_height - HEIGHT_2;
-    printf("Ghost pos x %f y %f \n", this->x, this->y);
 }
 
 void Character::initMovement(float destination_x, float destination_y, float duration)
@@ -23,8 +22,6 @@ void Character::initMovement(float destination_x, float destination_y, float dur
 
 void Character::integrate(long t)
 {
-    float cell_width = (float) WIDTH / (float)columns;
-    float cell_height = (float) HEIGHT / (float)rows;
     if (state==MOVE && t<time_remaining)
     {
         x = x + vx* (float)t;
@@ -42,11 +39,6 @@ void Character::integrate(long t)
             visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         }
-        /*else if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
-        {
-            x = (float)grid_x * cell_height;
-            y = (float)grid_y * cell_width;
-        }*/
     }
 }
 
@@ -69,25 +61,9 @@ void Character::draw() {
     if (hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
         glColor3f(0.6, 0.0, 0.4);
 
-    /*quadratic = gluNewQuadric();
-    if( !quadratic){
-        throw new PROGRAM_EXCEPTION( "Cannot initialize quadartic", NULL);
-    }
-    gluQuadricNormals(quadratic, GLU_SMOOTH);
-//gluQuadricDrawStyle( quadratic, GLU_FILL);
-    gluQuadricTexture(quadratic, GL_TRUE);*/
     glPopMatrix();
     glPushMatrix();
     glTranslatef(y + (2 * cell_width4), DEPTH, -x  + (2 * cell_height4) - 1*cell_height);
     gluSphere( gluNewQuadric(), cell_width4, 10, 10); // Tried r = 0.02f, 0.2f, 2.0f, 20.0f, none works
     glPopMatrix();
-    /*glBegin(GL_QUADS);
-
-    glVertex2i(j + cell_width4 + MARGIN, i + cell_height4 + MARGIN);
-    glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + cell_height4 + MARGIN);
-
-    glVertex2i(j + ( 2 * cell_width4) + MARGIN, i + (2 * cell_height4) + MARGIN);
-    glVertex2i(j + cell_width4 + MARGIN, i+ (2 * cell_height4) + MARGIN);
-
-    glEnd();*/
 }

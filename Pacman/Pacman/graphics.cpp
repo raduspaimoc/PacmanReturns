@@ -20,11 +20,18 @@ extern "C" {
 long last_t = 0;
 int anglealpha = -90;
 int anglebeta = 0;
-GLuint wall_texure, ground_texture;
+
+enum eTextures
+{
+    Wall = 0,
+    Ground,
+};
 
 void Graphics::readTextures(){
-    LoadTexture("pared3.jpg", 64, wall_texure);
-    //LoadTexture("pared.jpg", 64, ground_texture);
+    glBindTexture(GL_TEXTURE_2D,eTextures::Wall);
+    LoadTexture("pared3.jpg", 64);
+    glBindTexture(GL_TEXTURE_2D,eTextures::Ground);
+    LoadTexture("pared.jpg", 64);
 }
 
 void Graphics::display()
@@ -56,38 +63,6 @@ void Graphics::display()
 
     readTextures();
 
-    /*int dim = 32;
-    unsigned char *buffer;
-    unsigned char *buffer2;
-    int width,height;
-    long i,j;
-    long k,h;
-
-    readJPEG("pared.jpg",&buffer,&width,&height);
-
-    buffer2=(unsigned char*)malloc(dim*dim*3);
-
-    //-- The texture pattern is subsampled so that its dimensions become dim x dim --
-    for(i=0;i<dim;i++)
-        for(j=0;j<dim;j++)
-        {
-            k=i*height/dim;
-            h=j*width/dim;
-
-            buffer2[3*(i*dim+j)]=buffer[3*(k*width +h)];
-            buffer2[3*(i*dim+j)+1]=buffer[3*(k*width +h)+1];
-            buffer2[3*(i*dim+j)+2]=buffer[3*(k*width +h)+2];
-
-        }
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,dim,dim,0,GL_RGB,GL_UNSIGNED_BYTE,buffer2);*/
-
-
-
     for (int i = 0; i < s_rows; i++)
     {
         for (int j = 0; j < s_columns; j++)
@@ -99,7 +74,7 @@ void Graphics::display()
             if (cell->isWall())
             {
                 glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, wall_texure);
+                glBindTexture(GL_TEXTURE_2D, eTextures::Wall);
 
                 glColor3f(0.0, 0.0, 255); // Superior part
                 glBegin(GL_QUADS);
@@ -108,6 +83,7 @@ void Graphics::display()
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH,  i * cell_height - HEIGHT_2);
                 glEnd();
+                glDisable(GL_TEXTURE_2D);
 
                 glColor3f(0, 0, 0);
                 glBegin(GL_QUADS);
@@ -138,27 +114,24 @@ void Graphics::display()
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glEnd();
-                glDisable(GL_TEXTURE_2D);
 
             }
             else
             {
                 // Ground
                 glColor3f(0.15, 0.15, 0.15);
-                //glEnable(GL_TEXTURE_2D);
-                //glBindTexture(GL_TEXTURE_2D, ground_texture);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, eTextures::Ground);
                 glBegin(GL_QUADS);
 
-                //glTexCoord3d(0,0,0);
-                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-                //glTexCoord3d(1,0,0);
-                glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                //glTexCoord3d(1,1,0);
-                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-                //glTexCoord3d(0,1,0);
-                glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+
+                glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+                glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
+                glTexCoord2f(1.0, 0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
 
                 glEnd();
+                glDisable(GL_TEXTURE_2D);
 
                 if (!cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
                     continue;
@@ -207,16 +180,6 @@ void Graphics::display()
 
                 glEnd();
             }
-
-            /*
-
-            if (cell->hasFlag(CellFlags::CELL_FLAG_EMPTY))
-                glColor3f(0.0, 0.0, 0.0);
-            if (cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
-                glColor3f(0.0, 1.0, 1.0);
-            else
-                continue;
-*/
         }
     }
 
@@ -226,8 +189,6 @@ void Graphics::display()
     for (auto & auto_ghost : s_map.auto_ghosts)
         auto_ghost.draw();
 
-    //free(buffer);
-    //free(buffer2);
     glutSwapBuffers();
 }
 
@@ -279,7 +240,7 @@ void Graphics::readJPEG(char *filename,unsigned char **image,int *width, int *he
     jpeg_finish_decompress(&cinfo);
 }
 
-void Graphics::LoadTexture(char *filename,int dim, GLuint t)
+void Graphics::LoadTexture(char *filename,int dim)
 {
     unsigned char *buffer;
     unsigned char *buffer2;
@@ -304,7 +265,6 @@ void Graphics::LoadTexture(char *filename,int dim, GLuint t)
 
         }
 
-    glBindTexture(GL_TEXTURE_2D, t);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
