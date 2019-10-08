@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
     char *fakeargv[] = { fakeParam, nullptr };
     int fakeargc = 1;
 
-    /*glutInit(&fakeargc, fakeargv);
+    glutInit(&fakeargc, fakeargv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(WIDTH + MARGIN_2, HEIGHT + MARGIN_2);
@@ -55,11 +55,11 @@ int main(int argc, char const *argv[])
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
 
     glBindTexture(GL_TEXTURE_2D,0);
-    Graphics::LoadTexture("pared.jpg",64);
+    //Graphics::LoadTexture("pared.jpg",64);
     glutMainLoop();
-*/
 
-    glutInit(&fakeargc, fakeargv);
+
+    /*glutInit(&fakeargc, fakeargv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50, 50);
     glutInitWindowSize(600, 600);
@@ -70,9 +70,9 @@ int main(int argc, char const *argv[])
     glutDisplayFunc(displayVerga);
 
     glBindTexture(GL_TEXTURE_2D,0);
-    Graphics::LoadTexture("pared.jpg",64);
+    Graphics::LoadTexture("pared.jpg",100);
 
-    glutMainLoop();
+    glutMainLoop();*/
 
     return 0;
 }

@@ -7,5 +7,5 @@ file(GLOB pacman_SRC "*.h" "*.cpp")
 
 
 add_executable(cmake_hello ${pacman_SRC})
-set_property(TARGET cmake_hello PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# set_property(TARGET cmake_hello PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 target_link_libraries(cmake_hello ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
