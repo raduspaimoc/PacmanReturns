@@ -112,6 +112,7 @@ void Graphics::display()
                 glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH,  i * cell_height - HEIGHT_2);
+                glDisable(GL_TEXTURE_2D);
                 glEnd();
 
                 glColor3f(0, 0, 0);
@@ -123,7 +124,7 @@ void Graphics::display()
                 glTexCoord2f(0.0,4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-
+                glDisable(GL_TEXTURE_2D);
                 glEnd();
 
                 glEnable(GL_TEXTURE_2D);
@@ -136,7 +137,7 @@ void Graphics::display()
                 glTexCoord2f(0.0,4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0, 4.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
-
+                glDisable(GL_TEXTURE_2D);
                 glEnd();
 
                 glEnable(GL_TEXTURE_2D);
@@ -148,7 +149,7 @@ void Graphics::display()
                 glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0, 4.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
-
+                glDisable(GL_TEXTURE_2D);
                 glEnd();
 
                 glEnable(GL_TEXTURE_2D);
@@ -159,6 +160,7 @@ void Graphics::display()
                 glTexCoord2f(0.0,4.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(4.0, 4.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
+                glDisable(GL_TEXTURE_2D);
                 glEnd();
             }
             else
