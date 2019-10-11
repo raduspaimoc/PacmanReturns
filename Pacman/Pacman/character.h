@@ -1,5 +1,6 @@
 #pragma once
 #include "cell.h"
+#include <GL/glut.h>
 
 #define MOVE 1
 #define QUIET 2
@@ -21,6 +22,7 @@ struct Character
     long time_remaining;
     Cell* visited;
     unsigned int flags;
+    GLfloat dir[3];
 
     Character() : Character(0.0f, 0.0f, 0, 0, 0) { };
     Character(float x, float y, int r, int c, unsigned int flags);

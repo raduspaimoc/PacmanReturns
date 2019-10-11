@@ -77,8 +77,7 @@ void Graphics::display()
     glLightf(GL_LIGHT1,GL_LINEAR_ATTENUATION,0.0);
     glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.0);
 
-    GLfloat dir[3] = {s_map.ghost.vy, 0, -s_map.ghost.vx};
-    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, dir);
+    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, s_map.ghost.dir);
 
     glEnable(GL_LIGHT1);
 
@@ -466,6 +465,9 @@ void Graphics::GhostMovement(unsigned char c){
             s_map.ghost.grid_y = cell->y;
             s_map.ghost.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
 
+            s_map.ghost.dir[0] = 0;
+            s_map.ghost.dir[1] = 0;
+            s_map.ghost.dir[2] = 1;
         }
         if(toupper(c) == Directions::DOWN && s_map.ghost.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.ghost.grid_x + 1][s_map.ghost.grid_y].isWall()) {
 
@@ -474,6 +476,9 @@ void Graphics::GhostMovement(unsigned char c){
             s_map.ghost.grid_y = cell->y;
             s_map.ghost.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
 
+            s_map.ghost.dir[0] = 0;
+            s_map.ghost.dir[1] = 0;
+            s_map.ghost.dir[2] = -1;
         }
         if(toupper(c) == Directions::LEFT && s_map.ghost.grid_y + 1 >= 0 && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y + 1].isWall()) {
 
@@ -482,6 +487,9 @@ void Graphics::GhostMovement(unsigned char c){
             s_map.ghost.grid_y = cell->y;
             s_map.ghost.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
 
+            s_map.ghost.dir[0] = 1;
+            s_map.ghost.dir[1] = 0;
+            s_map.ghost.dir[2] = 0;
         }
         if(toupper(c) == Directions::RIGHT && s_map.ghost.grid_y - 1 < s_map.grid[0].size() && !s_map.grid[s_map.ghost.grid_x][s_map.ghost.grid_y - 1].isWall()) {
 
@@ -490,6 +498,9 @@ void Graphics::GhostMovement(unsigned char c){
             s_map.ghost.grid_y = cell->y;
             s_map.ghost.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
 
+            s_map.ghost.dir[0] = -1;
+            s_map.ghost.dir[1] = 0;
+            s_map.ghost.dir[2] = 0;
         }
     }
 }

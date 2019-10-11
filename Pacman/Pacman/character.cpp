@@ -9,6 +9,9 @@ Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(
 
     this->x = (x * cell_width) - WIDTH_2;
     this->y = y * cell_height - HEIGHT_2;
+    this->dir[0] = 0;
+    this->dir[1] = 0;
+    this->dir[2] = 1;
 }
 
 void Character::initMovement(float destination_x, float destination_y, float duration)
