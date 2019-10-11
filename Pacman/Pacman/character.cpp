@@ -49,17 +49,23 @@ void Character::draw() {
     float cell_width4 = cell_width / 4;
     float cell_height4 = cell_height / 4;
 
-    float j = this->y;
-    float i = (rows * cell_height)  - (this->x) - cell_height;
-
-    glColor3f(0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    GLfloat material[4] = {0.0, 0.0, 0.0, 1.0};
 
     if (hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
-        glColor3f(1.0, 0.5, 0.0);
+    {
+        material[0]=1.0; material[1]=0.5; material[2]=0.0; material[3]=1.0;
+    }
     if (hasFlag(CharacterFlags::CHARACTER_FLAG_GHOST))
-        glColor3f(1.0, 0.0, 0.0);
+    {
+        material[0]=1.0; material[1]=0.0; material[2]=0.0; material[3]=1.0;
+    }
     if (hasFlag(CharacterFlags::CHARACTER_FLAG_AUTO_GHOST))
-        glColor3f(0.6, 0.0, 0.4);
+    {
+        material[0]=0.6; material[1]=0.0; material[2]=0.4; material[3]=1.0;
+    }
+
+    glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE, material);
 
     glPopMatrix();
     glPushMatrix();

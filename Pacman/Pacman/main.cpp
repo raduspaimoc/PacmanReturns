@@ -43,6 +43,7 @@ int main(int argc, char const *argv[])
     glutInitWindowSize(WIDTH + MARGIN_2, HEIGHT + MARGIN_2);
     glutCreateWindow("Pac man");
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
 
     s_map.showInfo();
     glutDisplayFunc(Graphics::display);

@@ -36,6 +36,10 @@ void Graphics::readTextures(){
 
 void Graphics::display()
 {
+    GLint position[4];
+    GLfloat color[4];
+    GLfloat material[4];
+
     glClearColor(255, 255, 255, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -52,6 +56,31 @@ void Graphics::display()
     glPolygonMode(GL_FRONT,GL_FILL);
     glPolygonMode(GL_BACK,GL_LINE);
 
+
+    position[0]=0; position[1]=0; position[2]=0; position[3]=1;
+    glLightiv(GL_LIGHT0,GL_POSITION,position);
+
+    color[0]=0.1; color[1]=0.1; color[2]=0.1; color[3]=1;
+    glLightfv(GL_LIGHT0,GL_DIFFUSE,color);
+    glEnable(GL_LIGHT0);
+
+    // spot
+    position[0]=s_map.ghost.y; position[1]=DEPTH; position[2]=-s_map.ghost.x; position[3]=1;
+    glLightiv(GL_LIGHT1,GL_POSITION,position);
+
+    color[0]=1; color[1]=1; color[2]=1; color[3]=1;
+    glLightfv(GL_LIGHT1,GL_DIFFUSE,color);
+    glLightf (GL_LIGHT1, GL_SPOT_CUTOFF,90.0f);
+    glLightf (GL_LIGHT1, GL_SPOT_EXPONENT, 1.0f);
+
+    glLightf(GL_LIGHT1,GL_CONSTANT_ATTENUATION,1.0);
+    glLightf(GL_LIGHT1,GL_LINEAR_ATTENUATION,0.0);
+    glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.0);
+
+    GLfloat dir[3] = {s_map.ghost.vy, 0, -s_map.ghost.vx};
+    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, dir);
+
+    glEnable(GL_LIGHT1);
 
     std::vector<std::vector<Cell> > grid = s_map.grid;
 
@@ -71,13 +100,16 @@ void Graphics::display()
 
             Cell* cell = &grid[real_i][j];
 
+            material[0]=1.0; material[1]=1.0; material[2]=1.0; material[3]=1.0;
+            glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,material);
+
             if (cell->isWall())
             {
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, eTextures::Wall);
 
-                glColor3f(0.0, 0.0, 255); // Superior part
                 glBegin(GL_QUADS);
+                glNormal3f(0,1,0);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -85,8 +117,11 @@ void Graphics::display()
                 glEnd();
                 glDisable(GL_TEXTURE_2D);
 
-                glColor3f(0, 0, 0);
+                material[0]=0.0; material[1]=0.0; material[2]=0.0; material[3]=1.0;
+                glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,material);
+
                 glBegin(GL_QUADS);
+                glNormal3f(0,0,-1);
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -95,6 +130,7 @@ void Graphics::display()
 
 
                 glBegin(GL_QUADS);
+                glNormal3f(1,0,0);
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -102,6 +138,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
+                glNormal3f(0,0,1);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
@@ -109,6 +146,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
+                glNormal3f(-1,0,0);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
@@ -119,7 +157,6 @@ void Graphics::display()
             else
             {
                 // Ground
-                glColor3f(0.15, 0.15, 0.15);
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, eTextures::Ground);
                 glBegin(GL_QUADS);
@@ -137,7 +174,9 @@ void Graphics::display()
                     continue;
 
                 // Superior part
-                glColor3f(0, 1, 0);
+                material[0]=0.0; material[1]=1.0; material[2]=0.0; material[3]=1.0;
+                glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,material);
+
                 glBegin(GL_QUADS);
 
                 glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_4_3,  i * cell_height - HEIGHT_2 + (2 * cell_height4));
@@ -267,7 +306,7 @@ void Graphics::LoadTexture(char *filename,int dim)
 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,dim,dim,0,GL_RGB,GL_UNSIGNED_BYTE,buffer2);
 
     free(buffer);
@@ -382,10 +421,6 @@ void Graphics::movePacman(int t){
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
 
-        /*
-         j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2
-        */
-        //s_map.pacman.initMovement(cell->x * cell_height, cell->y * cell_width, 1000);
         s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
         s_map.pacman.setCell(cell);
 
@@ -422,12 +457,6 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 void Graphics::GhostMovement(unsigned char c){
     float cell_width = (float)WIDTH / (float)s_columns;
     float cell_height = (float)HEIGHT / (float)s_rows;
-    float cell_width4 = cell_width / 4;
-    float cell_height4 = cell_height / 4;
-    //s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
-    //int au = s_map.ghost.grid_x;
-    //int v = s_map.ghost.grid_y;
-    //Cell aux = s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y];
 
     if (s_map.ghost.state == QUIET){
         if(toupper(c) == Directions::UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){
