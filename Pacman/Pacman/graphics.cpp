@@ -65,7 +65,7 @@ void Graphics::display()
     glEnable(GL_LIGHT0);
 
     // spot
-    position[0]=s_map.ghost.y; position[1]=DEPTH; position[2]=-s_map.ghost.x; position[3]=1;
+    position[0]=s_map.pacman.y; position[1]=DEPTH*2; position[2]=-s_map.pacman.x; position[3]=1;
     glLightiv(GL_LIGHT1,GL_POSITION,position);
 
     color[0]=1; color[1]=1; color[2]=1; color[3]=1;
@@ -77,7 +77,7 @@ void Graphics::display()
     glLightf(GL_LIGHT1,GL_LINEAR_ATTENUATION,0.0);
     glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.0);
 
-    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, s_map.ghost.dir);
+    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, s_map.pacman.dir);
 
     glEnable(GL_LIGHT1);
 
@@ -120,7 +120,7 @@ void Graphics::display()
                 glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,material);
 
                 glBegin(GL_QUADS);
-                glNormal3f(0,0,-1);
+                glNormal3f(1,0,0);
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -129,7 +129,7 @@ void Graphics::display()
 
 
                 glBegin(GL_QUADS);
-                glNormal3f(1,0,0);
+                glNormal3f(0,0,1);
                 glTexCoord2f(0.0,0.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -137,7 +137,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
-                glNormal3f(0,0,1);
+                glNormal3f(0,0,-1);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i(j * cell_width - WIDTH_2, DEPTH, i * cell_height - HEIGHT_2);
@@ -160,7 +160,7 @@ void Graphics::display()
                 glBindTexture(GL_TEXTURE_2D, eTextures::Ground);
                 glBegin(GL_QUADS);
 
-
+                glNormal3f(0,1,0);
                 glTexCoord2f(0.0,0.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, i * cell_height - HEIGHT_2);
                 glTexCoord2f(0.0,1.0);glVertex3i(j * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
                 glTexCoord2f(1.0,1.0);glVertex3i((j + 1) * cell_width - WIDTH_2, -DEPTH, (i + 1) * cell_height - HEIGHT_2);
@@ -171,13 +171,12 @@ void Graphics::display()
 
                 if (!cell->hasFlag(CellFlags::CELL_FLAG_FOOD))
                     continue;
-
                 // Superior part
                 material[0]=0.0; material[1]=1.0; material[2]=0.0; material[3]=1.0;
                 glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,material);
 
                 glBegin(GL_QUADS);
-
+                glNormal3f(0,1,0);
                 glVertex3i(j * cell_width - WIDTH_2 + cell_width4, DEPTH_4_3,  i * cell_height - HEIGHT_2 + (2 * cell_height4));
                 glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + (2 * cell_height4));
                 glVertex3i(j * cell_width - WIDTH_2 + ( 2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + cell_height4);
@@ -186,6 +185,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
+                glNormal3f(1,0,0);
                 glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i * cell_height - HEIGHT_2 + (2 * cell_height4));
                 glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i * cell_height - HEIGHT_2 + (2 * cell_height4));
                 glVertex3i(j * cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i * cell_height - HEIGHT_2 + cell_height4);
@@ -194,6 +194,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
+                glNormal3f(0,0,-1);
                 glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4_3, i* cell_height - HEIGHT_2 + cell_height4);
                 glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
@@ -203,6 +204,7 @@ void Graphics::display()
 
 
                 glBegin(GL_QUADS);
+                glNormal3f(-1,0,0);
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + cell_height4);
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + cell_height4);
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i * cell_height - HEIGHT_2 + (2 * cell_width4));
@@ -211,6 +213,7 @@ void Graphics::display()
                 glEnd();
 
                 glBegin(GL_QUADS);
+                glNormal3f(0,0,1);
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4_3, i* cell_height - HEIGHT_2 + (2 * cell_width4));
                 glVertex3i(j* cell_width - WIDTH_2 + cell_width4, DEPTH_4, i* cell_height - HEIGHT_2 + (2 * cell_width4));
                 glVertex3i(j* cell_width - WIDTH_2 + (2 * cell_width4), DEPTH_4, i* cell_height - HEIGHT_2 + (2 * cell_width4));
