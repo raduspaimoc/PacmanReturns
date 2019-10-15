@@ -18,6 +18,10 @@ void Character::initMovement(float destination_x, float destination_y, float dur
 {
     vx = (destination_x - x)/duration;
     vy = (destination_y - y)/duration;
+    dir[0] = vy;
+    dir[1] = 0;
+    dir[2] = -vx;
+
     state = MOVE;
     time_remaining = (long) duration;
 
