@@ -64,14 +64,14 @@ void Graphics::display()
     glLightfv(GL_LIGHT0,GL_DIFFUSE,color);
     glEnable(GL_LIGHT0);
 
-    // spot
-    position[0]=s_map.pacman.y; position[1]=DEPTH*2; position[2]=-s_map.pacman.x; position[3]=1;
+    // spot pacman
+    position[0]=s_map.pacman.y; position[1]=DEPTH/2; position[2]=-s_map.pacman.x; position[3]=1;
     glLightiv(GL_LIGHT1,GL_POSITION,position);
 
     color[0]=1; color[1]=1; color[2]=1; color[3]=1;
     glLightfv(GL_LIGHT1,GL_DIFFUSE,color);
-    glLightf (GL_LIGHT1, GL_SPOT_CUTOFF,90.0f);
-    glLightf (GL_LIGHT1, GL_SPOT_EXPONENT, 1.0f);
+    glLightf (GL_LIGHT1, GL_SPOT_CUTOFF,45.0f);
+    glLightf (GL_LIGHT1, GL_SPOT_EXPONENT, 3.0f);
 
     glLightf(GL_LIGHT1,GL_CONSTANT_ATTENUATION,1.0);
     glLightf(GL_LIGHT1,GL_LINEAR_ATTENUATION,0.0);
@@ -80,6 +80,23 @@ void Graphics::display()
     glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, s_map.pacman.dir);
 
     glEnable(GL_LIGHT1);
+
+    // spot main ghost
+    position[0]=s_map.ghost.y; position[1]=DEPTH*2; position[2]=-s_map.ghost.x; position[3]=1;
+    glLightiv(GL_LIGHT2,GL_POSITION,position);
+
+    color[0]=1; color[1]=1; color[2]=1; color[3]=1;
+    glLightfv(GL_LIGHT2,GL_DIFFUSE,color);
+    glLightf (GL_LIGHT2, GL_SPOT_CUTOFF,45.0f);
+    glLightf (GL_LIGHT2, GL_SPOT_EXPONENT, 3.0f);
+
+    glLightf(GL_LIGHT2,GL_CONSTANT_ATTENUATION,1.0);
+    glLightf(GL_LIGHT2,GL_LINEAR_ATTENUATION,0.0);
+    glLightf(GL_LIGHT2,GL_QUADRATIC_ATTENUATION,0.0);
+
+    glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION, s_map.ghost.dir);
+
+    glEnable(GL_LIGHT2);
 
     std::vector<std::vector<Cell> > grid = s_map.grid;
 
