@@ -14,7 +14,6 @@ extern "C" {
     #ifdef __cplusplus
 }
 #endif
-#include "ShareDefines.h"
 #include "Utils.h"
 
 long last_t = 0;
@@ -29,9 +28,9 @@ enum eTextures
 
 void Graphics::readTextures(){
     glBindTexture(GL_TEXTURE_2D,eTextures::Wall);
-    LoadTexture("pared3.jpg", 64);
+    LoadTexture("../pared3.jpg", 64);
     glBindTexture(GL_TEXTURE_2D,eTextures::Ground);
-    LoadTexture("pared.jpg", 64);
+    LoadTexture("../pared.jpg", 64);
 }
 
 void Graphics::display()
@@ -440,8 +439,14 @@ void Graphics::movePacman(int t){
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
 
+        if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
+            s_map.total_food--;
+
         s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
         s_map.pacman.setCell(cell);
+
+        if(s_map.total_food == 0)
+            std::exit(0);
 
         break;
     }

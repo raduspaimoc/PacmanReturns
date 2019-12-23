@@ -6,7 +6,6 @@
 #include <GL/glut.h>
 
 #include "map.h"
-#include "ShareDefines.h"
 #include "Utils.h"
 
 Map::Map(int r, int c) : rows(r), columns(c)
@@ -63,6 +62,7 @@ void Map::setWalls()
 void Map::initCells()
 {
     std::vector<Cell*> emptyCells;
+    total_food = 0;
 
     for (auto& row : grid)
     {
@@ -71,6 +71,7 @@ void Map::initCells()
             if (!cell.isWall() && !isMiddle(cell.x, cell.y))
             {
                 cell.setFlag(CellFlags::CELL_FLAG_FOOD);
+                total_food++;
                 emptyCells.push_back(&cell);
             }
         }
@@ -426,6 +427,21 @@ void Map::reset()
             cell.setVisited(false);
         }
     }
+}
+
+std::vector<Cell> Map::getCellsWithFood(){
+    std::vector<Cell> cellsWithFood;
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD)){
+                cellsWithFood.push_back(cell);
+            }
+        }
+    }
+    return cellsWithFood;
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Map& map)

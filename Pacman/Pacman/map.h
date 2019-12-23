@@ -11,6 +11,12 @@ struct Map
         Map(int r, int c);
         Map() : Map(0, 0) { };
 
+        int rows, columns;
+        int total_food;
+        Character pacman, ghost;
+        std::vector<Character> auto_ghosts;
+        std::vector<std::vector<Cell>> grid;
+
         void showInfo();
         void setWalls();
         void addMiddle();
@@ -32,8 +38,32 @@ struct Map
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
-        int rows, columns;
-        Character pacman, ghost;
-        std::vector<Character> auto_ghosts;
-        std::vector<std::vector<Cell>> grid;
+        std::vector<Cell> getCellsWithFood();
+
+
+
+        bool pacmanWins(){
+            return total_food == 0;
+        }
+
+        bool pacmanLoses(){
+
+            int pacman_x = (int) s_map.pacman.x;
+            int pacman_y = (int) s_map.pacman.y;
+            int ghost_x = (int) s_map.ghost.x;
+            int ghost_y = (int) s_map.ghost.y;
+
+            if (pacman_x == ghost_x && pacman_y == ghost_y)
+                return true;
+
+            for (auto & auto_ghost : s_map.auto_ghosts)
+            {
+                ghost_x = (int) s_map.ghost.x;
+                ghost_y = (int) s_map.ghost.y;
+
+                if (pacman_x == ghost_x && pacman_y == ghost_y)
+                    return true;
+            }
+            return false;
+        }
 };
