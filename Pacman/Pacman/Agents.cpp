@@ -10,9 +10,9 @@
 #include <algorithm>
 #include  <iterator>
 
-Agents::Agents(Character c) : pacman(c)
+/*Agents::Agents() :
 {
-    /*pacman.grid_y = pacman.grid_y = 0;
+    pacman.grid_y = pacman.grid_y = 0;
 
     for (size_t i = 0; i < r; i++) {
 
@@ -29,21 +29,25 @@ Agents::Agents(Character c) : pacman(c)
         }
 
         grid.push_back(v);
-    }*/
-};
+    }
+};*/
 
 
 double Agents::evaluationFunction(Map map) {
     double total_score = 0;
     std::vector<Character> auto_ghosts = map.auto_ghosts;
     auto_ghosts.push_back(map.ghost);
-
-    for (Cell cell : map.getCellsWithFood()) {
+    std::vector<Cell> cellsWithFood = map.getCellsWithFood();
+    int verg = cellsWithFood.size();
+    for (Cell cell : cellsWithFood) {
         if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
         {
-            int manhattan_distance = (this->pacman.grid_x - (int) cell.x) + abs(this->pacman.grid_y - (int) cell.y);
+            Character pacman = map.getAgent(0);
+            int manhattan_distance = (pacman.grid_x - (int) cell.x) + abs(pacman.grid_y - (int) cell.y);
             if(manhattan_distance == 0)
                 total_score += 100;
+            //else if (manhattan_distance == 1)
+            //    total_score += 75;
             else
                 total_score += 1.0/(manhattan_distance * manhattan_distance);
         }

@@ -8,8 +8,8 @@
 
 
 struct Agents {
-    Character pacman;
-    std::vector<Character> agents;
+    //Character pacman;
+    //std::vector<Character> agents;
 
 public:
         Agents(){};
