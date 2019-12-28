@@ -31,7 +31,6 @@ struct Character
         void initMovement(float destination_x, float destination_y, float duration);
         void integrate(long t);
         void draw();
-
         void setFlag(unsigned int p_flags) { flags = p_flags; };
         void addFlag(unsigned int p_flags) { flags |= p_flags; };
         void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };

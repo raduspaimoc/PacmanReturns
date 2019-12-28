@@ -6,12 +6,13 @@
 #include <GL/glut.h>
 
 #include "map.h"
-#include "ShareDefines.h"
 #include "Utils.h"
+#include "ShareDefines.h"
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
   pacman.grid_y = pacman.grid_y = 0;
+  total_food = 0;
 
   for (size_t i = 0; i < r; i++) {
 
@@ -71,6 +72,7 @@ void Map::initCells()
             if (!cell.isWall() && !isMiddle(cell.x, cell.y))
             {
                 cell.setFlag(CellFlags::CELL_FLAG_FOOD);
+                total_food++;
                 emptyCells.push_back(&cell);
             }
         }
@@ -96,6 +98,58 @@ void Map::initCharacters(int pacman_x, int pacman_y)
     //auto_ghosts.push_back(v_ghost);
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
+}
+
+bool Map::pacmanWins(){
+    return total_food == 0;
+}
+
+bool Map::pacmanLoses(){
+
+    int pacman_x = (int) s_map.pacman.x;
+    int pacman_y = (int) s_map.pacman.y;
+    int ghost_x = (int) s_map.ghost.x;
+    int ghost_y = (int) s_map.ghost.y;
+
+    if (pacman_x == ghost_x && pacman_y == ghost_y)
+        return true;
+
+    for (auto & auto_ghost : s_map.auto_ghosts)
+    {
+        ghost_x = (int) s_map.ghost.x;
+        ghost_y = (int) s_map.ghost.y;
+
+        if (pacman_x == ghost_x && pacman_y == ghost_y)
+            return true;
+    }
+    return false;
+}
+
+std::vector<Cell> Map::getCellsWithFood(){
+    std::vector<Cell> cellsWithFood;
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD)){
+                cellsWithFood.push_back(cell);
+            }
+        }
+    }
+    return cellsWithFood;
+
+}
+
+std::vector<Character> getAllAgents(){
+
+    std::vector<Character> all_characters;
+    all_characters.push_back(s_map.ghost);
+    all_characters.push_back(s_map.pacman);
+    all_characters.insert(all_characters.end(), std::begin(s_map.auto_ghosts), std::end(s_map.auto_ghosts));
+    //all_characters.push_back(s_map.auto_ghosts);
+    //= s_map.auto_ghosts;
+    //all_characters.push_back(s_map.pacman);
+    return all_characters;
 }
 
 void Map::addAloneWalls(){

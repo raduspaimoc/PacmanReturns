@@ -16,6 +16,7 @@ extern "C" {
 #endif
 #include "ShareDefines.h"
 #include "Utils.h"
+#include "Agents.h"
 
 long last_t = 0;
 int anglealpha = -90;
@@ -29,9 +30,9 @@ enum eTextures
 
 void Graphics::readTextures(){
     glBindTexture(GL_TEXTURE_2D,eTextures::Wall);
-    LoadTexture("pared3.jpg", 64);
+    LoadTexture("../pared3.jpg", 64);
     glBindTexture(GL_TEXTURE_2D,eTextures::Ground);
-    LoadTexture("pared.jpg", 64);
+    LoadTexture("../pared.jpg", 64);
 }
 
 void Graphics::display()
@@ -416,7 +417,32 @@ void Graphics::moveCharacters(int x){
 
 void Graphics::movePacman(int t){
 
-  Cell* pacman = &s_map.grid[(int)s_map.pacman.grid_x][(int)s_map.pacman.grid_y];;
+    /*std::vector<Character> all_characters = s_map.auto_ghosts;
+    all_characters.push_back(s_map.ghost);
+    all_characters.push_back(s_map.pacman);*/
+
+  Agents agents  = Agents();
+  //agents.pacman = s_map.pacman;
+  //agents.agents = all_characters;
+  std::vector<int> random_action = agents.getAction(s_map, 3);
+
+  float cell_height = (float)HEIGHT / (float)s_rows;
+  float cell_width = (float)WIDTH / (float)s_columns;
+
+    //std::shuffle( final_actions.begin(), final_actions.end(), final_actions);
+    //shuffle(final_actions.begin(), final_actions.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+    //std::vector<int> random_action = final_actions[0];
+
+
+  Cell* cell = &s_map.grid[(int)s_map.pacman.grid_x + random_action[0]][(int)s_map.pacman.grid_y + random_action[1]];
+  if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
+      s_map.total_food--;
+  s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+  s_map.pacman.setCell(cell);
+
+  if(s_map.total_food == 0)
+     std::exit(0);
+  /*Cell* pacman = &s_map.grid[(int)s_map.pacman.grid_x][(int)s_map.pacman.grid_y];;
   static std::vector<std::vector<int>> movements = direct;
       shuffle(movements.begin(), movements.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 
@@ -440,13 +466,19 @@ void Graphics::movePacman(int t){
         float cell_width = (float)WIDTH / (float)s_columns;
         float cell_height = (float)HEIGHT / (float)s_rows;
 
+        if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
+            s_map.total_food--;
+
         s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
         s_map.pacman.setCell(cell);
+
+        if(s_map.total_food == 0)
+            std::exit(0);
 
         break;
     }
     itr++;
-  }
+  }*/
 }
 
 void Graphics::keyboard(unsigned char c, int x, int y)
