@@ -43,11 +43,9 @@ double Agents::evaluationFunction(Map map) {
         if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
         {
             Character pacman = map.getAgent(0);
-            int manhattan_distance = (pacman.grid_x - (int) cell.x) + abs(pacman.grid_y - (int) cell.y);
+            int manhattan_distance = abs(pacman.grid_x - (int) cell.x) + abs(pacman.grid_y - (int) cell.y);
             if(manhattan_distance == 0)
                 total_score += 100;
-            //else if (manhattan_distance == 1)
-            //    total_score += 75;
             else
                 total_score += 1.0/(manhattan_distance * manhattan_distance);
         }
@@ -60,10 +58,6 @@ double Agents::evaluationFunction(Map map) {
             total_score -= 100;
         else
             total_score -= 1.0/(manhattan_distance * manhattan_distance);
-        /*if(manhattan_distance == 0)
-            total_score -= 100;
-        else
-            total_score -= 1.0/(manhattan_distance * manhattan_distance);*/
     }
 
     return total_score;
@@ -128,7 +122,8 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
     {
         int i_offset = (*itr)[0];
         int j_offset = (*itr)[1];
-        if ((i_offset + agentCell->x < 0) || (j_offset + agentCell->y < 0) || (i_offset + agentCell->x >= map.grid.size()) || (j_offset + agentCell->y >= map.grid[agentCell->x].size()))
+        if(agentCell)
+        if ((i_offset + agent.grid_x < 0) || (j_offset + agent.grid_y < 0) || (i_offset + agent.grid_x >= map.grid.size()) || (j_offset + agent.grid_y >= map.grid[agent.grid_x].size()))
         {
             itr++;
             continue;
@@ -137,7 +132,7 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
         // Work in progress generateactions for each agent
         Cell* cell = &map.grid[(int)agent.grid_x + i_offset][(int)agent.grid_y + j_offset];
 
-        if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
+        if(cell->flags != NULL && !cell->hasFlag(CellFlags::CELL_FLAG_WALL))
         {
             //final_movements
             //movements.erase(std::remove(movements.begin(), movements.end(), {i_offset, j_offset}), movements.end());

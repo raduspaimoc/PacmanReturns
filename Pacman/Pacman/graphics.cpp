@@ -418,7 +418,7 @@ std::vector<int> Graphics::getPacmanNextPos(){
 void Graphics::moveCharacters(int x){
     std::vector<int> random_action = getPacmanNextPos();
     movePacman(random_action);
-    moveAutoGhosts();
+    //moveAutoGhosts();
     glutTimerFunc(1000, moveCharacters, 0);
 }
 
