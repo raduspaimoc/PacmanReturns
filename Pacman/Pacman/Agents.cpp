@@ -52,19 +52,24 @@ double Agents::evaluationFunction(Map map) {
     for(Character ghost : auto_ghosts)
     {
         int manhattan_distance = (map.pacman.grid_x - (int) ghost.grid_x) + abs(map.pacman.grid_y - (int) ghost.grid_y);
-        if(manhattan_distance == 0)
+        if(manhattan_distance <= 1)
             total_score -= 100;
         else
             total_score -= 1.0/(manhattan_distance * manhattan_distance);
+        /*if(manhattan_distance == 0)
+            total_score -= 100;
+        else
+            total_score -= 1.0/(manhattan_distance * manhattan_distance);*/
     }
 
     return total_score;
 }
 
-Map Agents::getResult(Map map, std::vector<int> action){
+Map Agents::getResult(Map map, std::vector<int> action, int agent){
     //Cell* cell = &s_map.grid[(int)s_map.pacman.grid_x + random_action[0]][(int)s_map.pacman.grid_y + random_action[1]];
-    map.pacman.grid_x = map.pacman.grid_x + action[0];
-    map.pacman.grid_y = map.pacman.grid_y + action[1];
+    //map.pacman.grid_x = map.pacman.grid_x + action[0];
+    //map.pacman.grid_y = map.pacman.grid_y + action[1];
+    map.generateSuccesor(agent, action);
     return map;
 }
 
@@ -76,12 +81,12 @@ bool Agents::isTerminalState(int depth, Map map){
     return depth == 0 or map.pacmanWins() or map.pacmanLoses();
 }
 
-int Agents::maxValue(Map map, int depth, int alpha, int beta){
+int Agents::maxValue(Map map, int agent, int depth, int alpha, int beta){
     if(isTerminalState(depth, map))
         return  getUtility(map);
     int v = -INT_MAX;
-    for (std::vector<int> action : getLegalActions(map)){
-        v = std::max(v, minValue(getResult(map, action), depth, alpha, beta));
+    for (std::vector<int> action : getLegalActions(map, map.getAgent(agent))){
+        v = std::max(v, minValue(getResult(map, action, agent), 1, depth, alpha, beta));
         if(v > beta)
             return v;
         beta = std::max(alpha, v);
@@ -90,13 +95,16 @@ int Agents::maxValue(Map map, int depth, int alpha, int beta){
     //return 0;
 }
 
-int Agents::minValue(Map map, int depth, int alpha, int beta){
-    //gameState, agent, depth, alpha, beta
+int Agents::minValue(Map map, int agent, int depth, int alpha, int beta){
     if(isTerminalState(depth, map))
         return  getUtility(map);
     int v = INT_MAX;
-    for (std::vector<int> action : getLegalActions(map)){
-        v = std::min(v, maxValue(getResult(map, action), depth - 1, alpha, beta));
+    for (std::vector<int> action : getLegalActions(map, map.getAgent(agent))){
+        if(agent == 3){
+            v = std::min(v, maxValue(getResult(map, action, agent), 0, depth - 1, alpha, beta));
+        } else {
+            v = std::min(v, maxValue(getResult(map, action, agent), agent + 1, depth - 1, alpha, beta));
+        }
         if(v < alpha)
            return v;
        beta = std::min(beta, v);
@@ -110,7 +118,7 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
     Cell* agentCell = &map.grid[(int)agent.grid_x][(int)agent.grid_y];;
     static std::vector<std::vector<int>> movements = { {0, 1}, {0, -1}, {-1, 0}, {1, 0} };;
     shuffle(movements.begin(), movements.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
-    static std::vector<std::vector<int>> final_movements;
+    std::vector<std::vector<int>> final_movements;
 
     for (auto itr = movements.begin(); itr != movements.end();)
     {
@@ -123,12 +131,15 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
         }
 
         // Work in progress generateactions for each agent
-        Cell* cell = &map.grid[(int)map.pacman.grid_x + i_offset][(int)map.pacman.grid_y + j_offset];
+        Cell* cell = &map.grid[(int)agent.grid_x + i_offset][(int)agent.grid_y + j_offset];
 
         if(!cell->hasFlag(CellFlags::CELL_FLAG_WALL))
         {
+            //final_movements
+            //movements.erase(std::remove(movements.begin(), movements.end(), {i_offset, j_offset}), movements.end());
             final_movements.push_back({i_offset, j_offset});
-            break;
+            //break;
+            //movements.rem
         }
         itr++;
     }
@@ -140,8 +151,8 @@ std::vector<int> Agents::getAction(Map map, int depth){
         int u = 0;
         int v = -INT_MAX;
         int alpha =  -INT_MAX;
-        for (std::vector<int> action : getLegalActions(map)){
-            u = minValue(getResult(map, action), depth, alpha, INT_MAX);
+        for (std::vector<int> action : getLegalActions(map, map.getAgent(0))){
+            u = minValue(getResult(map, action, 0), 1, depth, alpha, INT_MAX);
             if(u == v){
                 final_actions.push_back(action);
             } else if (u >= v) {

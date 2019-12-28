@@ -16,14 +16,17 @@ Character::Character(float x, float y, int r, int c, unsigned int flags) : rows(
 
 void Character::initMovement(float destination_x, float destination_y, float duration)
 {
-    vx = (destination_x - x)/duration;
-    vy = (destination_y - y)/duration;
-    dir[0] = vy;
-    dir[1] = 0;
-    dir[2] = -vx;
 
-    state = MOVE;
-    time_remaining = (long) duration;
+    if(destination_x != 0 && destination_y != 0){
+        vx = (destination_x - x)/duration;
+        vy = (destination_y - y)/duration;
+        dir[0] = vy;
+        dir[1] = 0;
+        dir[2] = -vx;
+
+        state = MOVE;
+        time_remaining = (long) duration;
+    }
 
 }
 
@@ -43,6 +46,8 @@ void Character::integrate(long t)
 
         if (hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
         {
+            //if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
+            s_map.total_food--;
             visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         }

@@ -35,7 +35,9 @@ struct Character
         void addFlag(unsigned int p_flags) { flags |= p_flags; };
         void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
         bool hasFlag(unsigned int p_Flag) { return (flags & p_Flag) != 0; };
-        void setCell(Cell* cell) { visited = cell; };
+        void setCell(Cell* cell) {
+            visited = cell;
+        };
         void setXY(int x, int y){
             this->grid_x = x;
             this->grid_y = y;

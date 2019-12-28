@@ -11,8 +11,8 @@
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
-  pacman.grid_y = pacman.grid_y = 0;
-  total_food = 0;
+  //pacman.grid_y = pacman.grid_y = 0;
+  //total_food = 0;
 
   for (size_t i = 0; i < r; i++) {
 
@@ -150,6 +150,39 @@ std::vector<Character> getAllAgents(){
     //= s_map.auto_ghosts;
     //all_characters.push_back(s_map.pacman);
     return all_characters;
+}
+
+Character Map::getAgent(int agent){
+    if(agent == 0)
+        return pacman;
+    else if(agent == 1)
+        return ghost;
+    else if(agent == 2)
+        return auto_ghosts[0];
+    else
+        return auto_ghosts[1];
+}
+
+void Map::generateSuccesor(int agent, std::vector<int> action){
+   switch (agent) {
+       case 0:
+           pacman.grid_x = pacman.grid_x + action[0];
+           pacman.grid_y = pacman.grid_y + action[1];
+           break;
+       case 1:
+           ghost.grid_x = pacman.grid_x + action[0];
+           ghost.grid_y = pacman.grid_y + action[1];
+           break;
+       case 2:
+           auto_ghosts[0].grid_x = pacman.grid_x + action[0];
+           auto_ghosts[0].grid_y = pacman.grid_y + action[1];
+           break;
+       case 3:
+           auto_ghosts[1].grid_x = pacman.grid_x + action[0];
+           auto_ghosts[1].grid_y = pacman.grid_y + action[1];
+       default:
+           break;
+   }
 }
 
 void Map::addAloneWalls(){

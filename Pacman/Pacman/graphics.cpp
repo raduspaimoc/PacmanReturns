@@ -420,11 +420,12 @@ void Graphics::movePacman(int t){
     /*std::vector<Character> all_characters = s_map.auto_ghosts;
     all_characters.push_back(s_map.ghost);
     all_characters.push_back(s_map.pacman);*/
+    Map map = s_map;
 
   Agents agents  = Agents();
   //agents.pacman = s_map.pacman;
   //agents.agents = all_characters;
-  std::vector<int> random_action = agents.getAction(s_map, 3);
+  std::vector<int> random_action = agents.getAction(s_map, 2);
 
   float cell_height = (float)HEIGHT / (float)s_rows;
   float cell_width = (float)WIDTH / (float)s_columns;
@@ -435,10 +436,13 @@ void Graphics::movePacman(int t){
 
 
   Cell* cell = &s_map.grid[(int)s_map.pacman.grid_x + random_action[0]][(int)s_map.pacman.grid_y + random_action[1]];
-  if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
-      s_map.total_food--;
+  s_map.pacman.grid_x = cell->x;
+  s_map.pacman.grid_y = cell->y;
   s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
   s_map.pacman.setCell(cell);
+
+    //s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+    //s_map.pacman.setCell(cell);
 
   if(s_map.total_food == 0)
      std::exit(0);

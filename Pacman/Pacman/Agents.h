@@ -15,11 +15,11 @@ public:
         Agents(){};
         Agents(Character pacman);
         std::vector<int> getAction(Map map, int depth);
-        Map getResult(Map map, std::vector<int> action);
+        Map getResult(Map map, std::vector<int> action, int agent);
         double getUtility(Map map);
         bool isTerminalState(int depth, Map map);
-        int maxValue(Map map, int depth, int alpha, int beta);
-        int minValue(Map map, int depth, int alpha, int beta);
+        int maxValue(Map map, int agent, int depth, int alpha, int beta);
+        int minValue(Map map, int agent, int depth, int alpha, int beta);
         double evaluationFunction(Map map);
         std::vector<std::vector<int>> getLegalActions(Map map, Character agent);
 };

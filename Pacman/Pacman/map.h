@@ -32,6 +32,8 @@ struct Map
         void initCharacters(int pacman_x, int pacman_y);
         bool pacmanWins();
         bool pacmanLoses();
+        void generateSuccesor(int agent, std::vector<int> action);
+        Character getAgent(int agent);
         std::vector<Cell> getCellsWithFood();
 
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
