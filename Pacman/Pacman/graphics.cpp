@@ -372,8 +372,8 @@ void Graphics::moveAutoGhosts(){
 
             if (!cell->hasFlag(CellFlags::CELL_FLAG_WALL)) {
 
-                ghost->grid_x = cell->x;
-                ghost->grid_y = cell->y;
+                ghost->grid_x = (int) cell->x;
+                ghost->grid_y = (int) cell->y;
 
                 float cell_width = (float) WIDTH / (float) s_columns;
                 float cell_height = (float) HEIGHT / (float) s_rows;

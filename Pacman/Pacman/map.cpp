@@ -112,9 +112,11 @@ void Map::checkGameState(long t, long last_t){
 
     if (pacman_x == ghost_x && pacman_y == ghost_y)
         std::exit(0);
-    //printf("pacman_x %d. pacman_y %d. ghost.grid_x %d. ghost.grid_y %d \n", s_map.pacman.grid_x, s_map.pacman.grid_y,  s_map.ghost.grid_x, s_map.ghost.grid_x);
-    if (s_map.pacman.grid_x == s_map.ghost.grid_x && s_map.pacman.grid_y == s_map.ghost.grid_x)
+    if (abs(pacman_x - ghost_x) <= 10 && abs(pacman_y - ghost_y) <= 10 )
         std::exit(0);
+    //printf("pacman_x %d. pacman_y %d. ghost.grid_x %d. ghost.grid_y %d \n", s_map.pacman.grid_x, s_map.pacman.grid_y,  s_map.ghost.grid_x, s_map.ghost.grid_x);
+    //if (s_map.pacman.grid_x == s_map.ghost.grid_x && s_map.pacman.grid_y == s_map.ghost.grid_x)
+    //    std::exit(0);
 
     for (auto & auto_ghost : s_map.auto_ghosts)
     {
@@ -124,8 +126,11 @@ void Map::checkGameState(long t, long last_t){
         if (pacman_x == ghost_x && pacman_y == ghost_y)
             std::exit(0);
 
-        if (s_map.pacman.grid_x == auto_ghost.grid_x && s_map.pacman.grid_y == auto_ghost.grid_y)
+        if (abs(pacman_x - ghost_x) <= 10 && abs(pacman_y - ghost_y) <= 10 )
             std::exit(0);
+
+        //if (s_map.pacman.grid_x == auto_ghost.grid_x && s_map.pacman.grid_y == auto_ghost.grid_y)
+        //    std::exit(0);
 
         auto_ghost.integrate(t-last_t);
     }
@@ -553,6 +558,7 @@ void Map::reset()
             cell.setVisited(false);
         }
     }
+    total_food = getCellsWithFood().size() - 1;
 }
 
 std::ostream& operator<<(std::ostream& os, const Map& map)

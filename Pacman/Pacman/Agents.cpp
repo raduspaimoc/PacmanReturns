@@ -196,7 +196,7 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
         // Work in progress generateactions for each agent
         Cell* cell = &map.grid[(int)agent.grid_x + i_offset][(int)agent.grid_y + j_offset];
 
-        if(cell->flags != NULL && !cell->hasFlag(CellFlags::CELL_FLAG_WALL))
+        if(cell != NULL && cell->flags != NULL && !cell->hasFlag(CellFlags::CELL_FLAG_WALL))
         {
             //final_movements
             //movements.erase(std::remove(movements.begin(), movements.end(), {i_offset, j_offset}), movements.end());
