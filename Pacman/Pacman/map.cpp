@@ -12,7 +12,7 @@
 Map::Map(int r, int c) : rows(r), columns(c)
 {
   //pacman.grid_y = pacman.grid_y = 0;
-  //total_food = 0;
+  total_food = 0;
 
   for (size_t i = 0; i < r; i++) {
 
@@ -81,6 +81,7 @@ void Map::initCells()
     if (emptyCells.empty())
         return;
 
+    total_food -= 1;
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
     initCharacters(emptyCells[0]->x, emptyCells[0]->y);
@@ -98,6 +99,36 @@ void Map::initCharacters(int pacman_x, int pacman_y)
     //auto_ghosts.push_back(v_ghost);
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
+}
+
+void Map::checkGameState(long t, long last_t){
+    s_map.pacman.integrate(t-last_t);
+    s_map.ghost.integrate(t-last_t);
+
+    int pacman_x = (int) s_map.pacman.x;
+    int pacman_y = (int) s_map.pacman.y;
+    int ghost_x = (int) s_map.ghost.x;
+    int ghost_y = (int) s_map.ghost.y;
+
+    if (pacman_x == ghost_x && pacman_y == ghost_y)
+        std::exit(0);
+    //printf("pacman_x %d. pacman_y %d. ghost.grid_x %d. ghost.grid_y %d \n", s_map.pacman.grid_x, s_map.pacman.grid_y,  s_map.ghost.grid_x, s_map.ghost.grid_x);
+    if (s_map.pacman.grid_x == s_map.ghost.grid_x && s_map.pacman.grid_y == s_map.ghost.grid_x)
+        std::exit(0);
+
+    for (auto & auto_ghost : s_map.auto_ghosts)
+    {
+        ghost_x = (int) auto_ghost.x;
+        ghost_y = (int) auto_ghost.y;
+
+        if (pacman_x == ghost_x && pacman_y == ghost_y)
+            std::exit(0);
+
+        if (s_map.pacman.grid_x == auto_ghost.grid_x && s_map.pacman.grid_y == auto_ghost.grid_y)
+            std::exit(0);
+
+        auto_ghost.integrate(t-last_t);
+    }
 }
 
 bool Map::pacmanWins(){
@@ -123,6 +154,15 @@ bool Map::pacmanLoses(){
             return true;
     }
     return false;
+}
+
+std::vector<Character> Map::getGhosts(){
+    std::vector<Character> ghosts;
+    ghosts.push_back(ghost);
+    for (Character ghos : auto_ghosts){
+        ghosts.push_back(ghos);
+    }
+    return ghosts;
 }
 
 std::vector<Cell> Map::getCellsWithFood(){

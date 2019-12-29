@@ -31,6 +31,69 @@
         grid.push_back(v);
     }
 };*/
+/*double Agents::betterEvaluationFunction(Map map){
+    std::vector<Cell> cellsWithFood = map.getCellsWithFood();
+    if(cellsWithFood.size() == 0)
+        return 10000;
+    double score = 0;
+    if(map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y + 1].hasFlag(CellFlags::CELL_FLAG_WALL) && map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y - 1].hasFlag(CellFlags::CELL_FLAG_WALL)
+       && map.grid[(int)map.pacman.grid_x + 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL))
+        score -= 100;
+    if(map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y + 1].hasFlag(CellFlags::CELL_FLAG_WALL) && map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y - 1].hasFlag(CellFlags::CELL_FLAG_WALL)
+       && map.grid[(int)map.pacman.grid_x - 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL))
+        score -= 100;
+    if(map.grid[(int)map.pacman.grid_x + 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL) && map.grid[(int)map.pacman.grid_x - 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL)
+       && map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y + 1].hasFlag(CellFlags::CELL_FLAG_WALL))
+        score -= 100;
+    if(map.grid[(int)map.pacman.grid_x + 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL) && map.grid[(int)map.pacman.grid_x - 1][(int)map.pacman.grid_y].hasFlag(CellFlags::CELL_FLAG_WALL)
+       && map.grid[(int)map.pacman.grid_x][(int)map.pacman.grid_y - 1].hasFlag(CellFlags::CELL_FLAG_WALL))
+        score -= 100;
+
+    for (Character character: map.getGhosts()){
+        int manhattan_distance = abs(map.pacman.grid_x - (int) character.x) + abs(map.pacman.grid_y - (int) character.y);
+        if(manhattan_distance < 2)
+            return -9999;
+    }
+
+    double minDis = 10000;
+    for (Cell food : cellsWithFood){
+        double manhattan_distance = abs(map.pacman.grid_x - (int) food.x) + abs(map.pacman.grid_y - (int) food.y);
+        minDis = std::min(minDis, manhattan_distance);
+    }
+
+    return score + 5000.0 / ((cellsWithFood.size()+ 1) - minDis);
+}*/
+
+double Agents::betterEvaluationFunction(Map map) {
+    double foodDistance = 9999999;
+    double ghostDistance = 9999999;
+    double averageDistance = 0;
+    double manhattan_distance;
+
+    for(Cell food : map.getCellsWithFood()){
+        manhattan_distance = abs(map.pacman.grid_x - (int) food.x) + abs(map.pacman.grid_y - (int) food.y);
+        foodDistance = std::min(manhattan_distance, foodDistance);
+    }
+
+    foodDistance += 1;
+    int foodCount = map.getCellsWithFood().size() + 1;
+
+    for (Character character: map.getGhosts()){
+        manhattan_distance = abs(map.pacman.grid_x - (int) character.x) + abs(map.pacman.grid_y - (int) character.y);
+        averageDistance += manhattan_distance;
+        ghostDistance = std::min(manhattan_distance, ghostDistance);
+    }
+
+    double currentScore = evaluationFunction(map) + 1;
+    if(ghostDistance < 2)
+        ghostDistance = -100;
+    else
+        ghostDistance = 0;
+
+    return ghostDistance + 1.0/foodDistance + currentScore;
+
+
+}
 
 
 double Agents::evaluationFunction(Map map) {
@@ -38,7 +101,7 @@ double Agents::evaluationFunction(Map map) {
     std::vector<Character> auto_ghosts = map.auto_ghosts;
     auto_ghosts.push_back(map.ghost);
     std::vector<Cell> cellsWithFood = map.getCellsWithFood();
-    int verg = cellsWithFood.size();
+    //int verg = cellsWithFood.size();
     for (Cell cell : cellsWithFood) {
         if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
         {
@@ -73,6 +136,7 @@ Map Agents::getResult(Map map, std::vector<int> action, int agent){
 
 double Agents::getUtility(Map map){
     return evaluationFunction(map);
+    //return betterEvaluationFunction(map);
 }
 
 bool Agents::isTerminalState(int depth, Map map){

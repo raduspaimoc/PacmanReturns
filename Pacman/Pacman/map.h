@@ -35,7 +35,8 @@ struct Map
         void generateSuccesor(int agent, std::vector<int> action);
         Character getAgent(int agent);
         std::vector<Cell> getCellsWithFood();
-
+        std::vector<Character> getGhosts();
+        void checkGameState(long t, long last_t);
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
         int rows, columns;

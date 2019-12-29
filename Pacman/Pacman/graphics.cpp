@@ -333,6 +333,8 @@ void Graphics::LoadTexture(char *filename,int dim)
     free(buffer2);
 }
 
+
+
 void Graphics::idle()
 {
   long t;
@@ -343,27 +345,7 @@ void Graphics::idle()
     last_t=t;
   else
   {
-    s_map.pacman.integrate(t-last_t);
-    s_map.ghost.integrate(t-last_t);
-
-    int pacman_x = (int) s_map.pacman.x;
-    int pacman_y = (int) s_map.pacman.y;
-    int ghost_x = (int) s_map.ghost.x;
-    int ghost_y = (int) s_map.ghost.y;
-
-    if (pacman_x == ghost_x && pacman_y == ghost_y)
-        std::exit(0);
-
-    for (auto & auto_ghost : s_map.auto_ghosts)
-    {
-        ghost_x = (int) s_map.ghost.x;
-        ghost_y = (int) s_map.ghost.y;
-
-        if (pacman_x == ghost_x && pacman_y == ghost_y)
-            std::exit(0);
-
-        auto_ghost.integrate(t-last_t);
-    }
+    s_map.checkGameState(t, last_t);
 
     last_t = t;
   }
@@ -418,7 +400,7 @@ std::vector<int> Graphics::getPacmanNextPos(){
 void Graphics::moveCharacters(int x){
     std::vector<int> random_action = getPacmanNextPos();
     movePacman(random_action);
-    //moveAutoGhosts();
+    moveAutoGhosts();
     glutTimerFunc(1000, moveCharacters, 0);
 }
 
@@ -517,6 +499,58 @@ void Graphics::keyboard(unsigned char c, int x, int y)
 void Graphics::GhostMovement(unsigned char c){
     float cell_width = (float)WIDTH / (float)s_columns;
     float cell_height = (float)HEIGHT / (float)s_rows;
+
+    /* To play with pacman
+    if (s_map.pacman.state == QUIET){
+        if(toupper(c) == Directions::UP && s_map.pacman.grid_x - 1 >= 0  && !s_map.grid[s_map.pacman.grid_x - 1][s_map.pacman.grid_y].isWall()){
+
+            Cell* cell = &s_map.grid[s_map.pacman.grid_x - 1][s_map.pacman.grid_y];
+            s_map.pacman.grid_x = cell->x;
+            s_map.pacman.grid_y = cell->y;
+            s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+            s_map.pacman.setCell(cell);
+
+            s_map.pacman.dir[0] = 0;
+            s_map.pacman.dir[1] = 0;
+            s_map.pacman.dir[2] = 1;
+        }
+        if(toupper(c) == Directions::DOWN && s_map.pacman.grid_x + 1 < s_map.grid.size() && !s_map.grid[s_map.pacman.grid_x + 1][s_map.pacman.grid_y].isWall()) {
+
+            Cell* cell = &s_map.grid[s_map.pacman.grid_x + 1][s_map.pacman.grid_y];
+            s_map.pacman.grid_x = cell->x;
+            s_map.pacman.grid_y = cell->y;
+            s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+            s_map.pacman.setCell(cell);
+
+            s_map.pacman.dir[0] = 0;
+            s_map.pacman.dir[1] = 0;
+            s_map.pacman.dir[2] = -1;
+        }
+        if(toupper(c) == Directions::LEFT && s_map.pacman.grid_y + 1 >= 0 && !s_map.grid[s_map.pacman.grid_x][s_map.pacman.grid_y + 1].isWall()) {
+
+            Cell* cell = &s_map.grid[s_map.pacman.grid_x][s_map.pacman.grid_y + 1];
+            s_map.pacman.grid_x = cell->x;
+            s_map.pacman.grid_y = cell->y;
+            s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+            s_map.pacman.setCell(cell);
+
+            s_map.pacman.dir[0] = 1;
+            s_map.pacman.dir[1] = 0;
+            s_map.pacman.dir[2] = 0;
+        }
+        if(toupper(c) == Directions::RIGHT && s_map.pacman.grid_y - 1 < s_map.grid[0].size() && !s_map.grid[s_map.pacman.grid_x][s_map.pacman.grid_y - 1].isWall()) {
+
+            Cell* cell = &s_map.grid[s_map.pacman.grid_x][s_map.pacman.grid_y - 1];
+            s_map.pacman.grid_x = cell->x;
+            s_map.pacman.grid_y = cell->y;
+            s_map.pacman.initMovement(cell->x * cell_width - WIDTH_2, cell->y * cell_height - HEIGHT_2, 1000);
+            s_map.pacman.setCell(cell);
+
+            s_map.pacman.dir[0] = -1;
+            s_map.pacman.dir[1] = 0;
+            s_map.pacman.dir[2] = 0;
+        }
+    }*/
 
     if (s_map.ghost.state == QUIET){
         if(toupper(c) == Directions::UP && s_map.ghost.grid_x - 1 >= 0  && !s_map.grid[s_map.ghost.grid_x - 1][s_map.ghost.grid_y].isWall()){

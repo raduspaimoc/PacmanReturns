@@ -21,5 +21,6 @@ public:
         int maxValue(Map map, int agent, int depth, int alpha, int beta);
         int minValue(Map map, int agent, int depth, int alpha, int beta);
         double evaluationFunction(Map map);
+        double betterEvaluationFunction(Map map);
         std::vector<std::vector<int>> getLegalActions(Map map, Character agent);
 };

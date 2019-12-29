@@ -47,8 +47,13 @@ void Character::integrate(long t)
         if (hasFlag(CharacterFlags::CHARACTER_FLAG_PACMAN))
         {
             //if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
-            s_map.total_food--;
-            visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
+            if(visited->hasFlag(CellFlags::CELL_FLAG_FOOD)){
+                s_map.total_food--;
+                printf("%d\n", s_map.total_food);
+                visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
+            }
+            if(s_map.total_food == 0)
+                std::exit(0);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         }
     }
