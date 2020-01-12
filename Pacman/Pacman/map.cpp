@@ -7,10 +7,12 @@
 
 #include "map.h"
 #include "Utils.h"
+#include "ShareDefines.h"
 
 Map::Map(int r, int c) : rows(r), columns(c)
 {
-  pacman.grid_y = pacman.grid_y = 0;
+  //pacman.grid_y = pacman.grid_y = 0;
+  total_food = 0;
 
   for (size_t i = 0; i < r; i++) {
 
@@ -80,6 +82,7 @@ void Map::initCells()
     if (emptyCells.empty())
         return;
 
+    total_food -= 1;
     Utils::RandomResize(emptyCells, 1);
     emptyCells[0]->setFlag(CellFlags::CELL_FLAG_PACMAN);
     initCharacters(emptyCells[0]->x, emptyCells[0]->y);
@@ -97,6 +100,148 @@ void Map::initCharacters(int pacman_x, int pacman_y)
     //auto_ghosts.push_back(v_ghost);
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) - 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
     auto_ghosts.push_back(Character(grid.size() / 2, (grid[0].size() / 2) + 1, grid.size(), grid[0].size(), CharacterFlags::CHARACTER_FLAG_AUTO_GHOST));
+}
+
+void Map::checkGameState(long t, long last_t){
+    s_map.pacman.integrate(t-last_t);
+    s_map.ghost.integrate(t-last_t);
+
+    int pacman_x = (int) s_map.pacman.x;
+    int pacman_y = (int) s_map.pacman.y;
+    int ghost_x = (int) s_map.ghost.x;
+    int ghost_y = (int) s_map.ghost.y;
+
+    if (pacman_x == ghost_x && pacman_y == ghost_y)
+        std::exit(0);
+    if (abs(pacman_x - ghost_x) <= 10 && abs(pacman_y - ghost_y) <= 10 )
+        std::exit(0);
+
+    for (auto & auto_ghost : s_map.auto_ghosts)
+    {
+        ghost_x = (int) auto_ghost.x;
+        ghost_y = (int) auto_ghost.y;
+
+        if (pacman_x == ghost_x && pacman_y == ghost_y)
+            std::exit(0);
+
+        if (abs(pacman_x - ghost_x) <= 10 && abs(pacman_y - ghost_y) <= 10 )
+            std::exit(0);
+
+        auto_ghost.integrate(t-last_t);
+    }
+}
+
+int Map::getTotalScore() {
+    return this->score;
+}
+
+bool Map::pacmanWins(){
+    return total_food == 0;
+}
+
+bool Map::pacmanLoses(){
+
+    int pacman_x = (int) s_map.pacman.x;
+    int pacman_y = (int) s_map.pacman.y;
+    int ghost_x = (int) s_map.ghost.x;
+    int ghost_y = (int) s_map.ghost.y;
+
+    if (pacman_x == ghost_x && pacman_y == ghost_y)
+        return true;
+
+    for (auto & auto_ghost : s_map.auto_ghosts)
+    {
+        ghost_x = (int) s_map.ghost.x;
+        ghost_y = (int) s_map.ghost.y;
+
+        if (pacman_x == ghost_x && pacman_y == ghost_y)
+            return true;
+    }
+    return false;
+}
+
+std::vector<Character> Map::getGhosts(){
+    std::vector<Character> ghosts;
+    ghosts.push_back(ghost);
+    for (Character ghos : auto_ghosts){
+        ghosts.push_back(ghos);
+    }
+    return ghosts;
+}
+
+std::vector<Cell> Map::getCellsWithFood(){
+    std::vector<Cell> cellsWithFood;
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD)){
+                cellsWithFood.push_back(cell);
+            }
+        }
+    }
+    return cellsWithFood;
+
+}
+
+std::vector<Cell> Map::getWalls(){
+    std::vector<Cell> cellWall;
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if(cell.hasFlag(CellFlags::CELL_FLAG_WALL)){
+                cellWall.push_back(cell);
+            }
+        }
+    }
+    return cellWall;
+
+}
+
+std::vector<Character> getAllAgents(){
+
+    std::vector<Character> all_characters;
+    all_characters.push_back(s_map.ghost);
+    all_characters.push_back(s_map.pacman);
+    all_characters.insert(all_characters.end(), std::begin(s_map.auto_ghosts), std::end(s_map.auto_ghosts));
+    //all_characters.push_back(s_map.auto_ghosts);
+    //= s_map.auto_ghosts;
+    //all_characters.push_back(s_map.pacman);
+    return all_characters;
+}
+
+Character Map::getAgent(int agent){
+    if(agent == 0)
+        return pacman;
+    else if(agent == 1)
+        return ghost;
+    else if(agent == 2)
+        return auto_ghosts[0];
+    else
+        return auto_ghosts[1];
+}
+
+void Map::generateSuccesor(int agent, std::vector<int> action){
+   switch (agent) {
+       case 0:
+           pacman.grid_x = pacman.grid_x + action[0];
+           pacman.grid_y = pacman.grid_y + action[1];
+           break;
+       case 1:
+           ghost.grid_x = pacman.grid_x + action[0];
+           ghost.grid_y = pacman.grid_y + action[1];
+           break;
+       case 2:
+           auto_ghosts[0].grid_x = pacman.grid_x + action[0];
+           auto_ghosts[0].grid_y = pacman.grid_y + action[1];
+           break;
+       case 3:
+           auto_ghosts[1].grid_x = pacman.grid_x + action[0];
+           auto_ghosts[1].grid_y = pacman.grid_y + action[1];
+       default:
+           break;
+   }
 }
 
 void Map::addAloneWalls(){
@@ -427,6 +572,7 @@ void Map::reset()
             cell.setVisited(false);
         }
     }
+    total_food = getCellsWithFood().size() - 1;
 }
 
 std::vector<Cell> Map::getCellsWithFood(){

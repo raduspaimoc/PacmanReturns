@@ -4,6 +4,7 @@
 #include "cell.h"
 #include "character.h"
 
+
 struct Map
 {
     public:
@@ -35,9 +36,23 @@ struct Map
         void DFS(Cell* cell);
         void cleanMiddle();
         void initCharacters(int pacman_x, int pacman_y);
-
+        bool pacmanWins();
+        bool pacmanLoses();
+        void generateSuccesor(int agent, std::vector<int> action);
+        Character getAgent(int agent);
+        std::vector<Cell> getCellsWithFood();
+        std::vector<Character> getGhosts();
+        void checkGameState(long t, long last_t);
+        std::vector<Cell> getWalls();
+        int getTotalScore();
         friend std::ostream& operator<<(std::ostream& os, const Map& map);
 
+        int rows, columns;
+        int total_food;
+        int score;
+        Character pacman, ghost;
+        std::vector<Character> auto_ghosts;
+        std::vector<std::vector<Cell>> grid;
         std::vector<Cell> getCellsWithFood();
 
 

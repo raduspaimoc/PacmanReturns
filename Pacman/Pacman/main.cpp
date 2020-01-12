@@ -6,6 +6,7 @@
 #include "ShareDefines.h"
 #include "graphics.h"
 #include "jpeglib.h"
+#include <thread>
 
 using namespace std;
 int s_columns, s_rows;
@@ -18,11 +19,11 @@ int main(int argc, char const *argv[])
     cout << "Enter the number of rows: ";
     cin >> s_rows;
 
-    if (s_columns < 10 || s_rows < 10)
+    /*if (s_columns < 10 || s_rows < 10)
     {
-        printf("Min dimension is 20x20\n");
+        printf("Min dimension is 10x10\n");
         return 0;
-    }
+    }*/
 
     if (s_columns > 100 || s_rows > 100)
     {
@@ -55,6 +56,8 @@ int main(int argc, char const *argv[])
     gluOrtho2D(0, WIDTH + MARGIN_2, 0, HEIGHT + MARGIN_2);
 
     glBindTexture(GL_TEXTURE_2D,0);
+    std::thread t1(Graphics::readPort);
     glutMainLoop();
+    t1.join();
     return 0;
 }
