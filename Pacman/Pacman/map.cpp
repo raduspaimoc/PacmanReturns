@@ -64,6 +64,7 @@ void Map::setWalls()
 void Map::initCells()
 {
     std::vector<Cell*> emptyCells;
+    total_food = 0;
 
     for (auto& row : grid)
     {
@@ -572,6 +573,21 @@ void Map::reset()
         }
     }
     total_food = getCellsWithFood().size() - 1;
+}
+
+std::vector<Cell> Map::getCellsWithFood(){
+    std::vector<Cell> cellsWithFood;
+    for (auto& row : grid)
+    {
+        for (auto& cell : row)
+        {
+            if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD)){
+                cellsWithFood.push_back(cell);
+            }
+        }
+    }
+    return cellsWithFood;
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Map& map)

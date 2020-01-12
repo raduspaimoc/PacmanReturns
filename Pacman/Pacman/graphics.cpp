@@ -25,7 +25,6 @@ extern "C" {
     #ifdef __cplusplus
 }
 #endif
-#include "ShareDefines.h"
 #include "Utils.h"
 #include "Agents.h"
 

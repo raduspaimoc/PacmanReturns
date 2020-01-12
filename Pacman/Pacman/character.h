@@ -1,4 +1,5 @@
 #pragma once
+#include "ShareDefines.h"
 #include "cell.h"
 #include <GL/glut.h>
 
@@ -11,6 +12,7 @@ enum CharacterFlags
     CHARACTER_FLAG_GHOST = 0x02,
     CHARACTER_FLAG_AUTO_GHOST = 0x04,
 };
+
 
 struct Character
 {
@@ -32,6 +34,14 @@ struct Character
         void initMovement(float destination_x, float destination_y, float duration);
         void integrate(long t);
         void draw();
+        void getAction(Map map, std::vector<std::vector<int>> actions, int depth);
+        void getResult();
+        void getUtility();
+        bool isTerminalState(int depth, Map map);
+        int maxValue();
+        int minValue();
+        double evaluationFunction(Map map);
+        std::vector<std::vector<int>> getLegalActions(Map map);
         void setFlag(unsigned int p_flags) { flags = p_flags; };
         void addFlag(unsigned int p_flags) { flags |= p_flags; };
         void removeFlag(unsigned int p_flags) { flags &= ~p_flags; };
