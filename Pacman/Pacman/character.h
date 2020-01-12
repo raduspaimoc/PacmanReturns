@@ -21,6 +21,7 @@ struct Character
     int state = QUIET;
     long time_remaining;
     Cell* visited;
+    Cell current_cell;
     unsigned int flags;
     GLfloat dir[3];
 

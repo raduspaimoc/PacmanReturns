@@ -9,6 +9,9 @@
 #include <random>
 #include <algorithm>
 #include  <iterator>
+#include <deque>          // std::deque
+#include <queue>          // std::queue
+#include <cmath>
 
 /*Agents::Agents() :
 {
@@ -65,6 +68,89 @@
 }*/
 
 double Agents::betterEvaluationFunction(Map map) {
+    int pac_x = map.pacman.grid_x;
+    int pac_y = map.pacman.grid_y;
+    int currentScore = map.getTotalScore();
+
+    if(map.pacmanLoses())
+        return -INT_MAX;
+
+    if(map.pacmanWins())
+        return INT_MAX;
+
+    std::vector<Cell> cellsWithFood = map.getCellsWithFood();
+    int distanceToClosestFood = INT_MAX;
+    for(Cell food : cellsWithFood){
+        int manhattan_distance = abs(pac_x - (int) food.x) + abs(pac_y - (int) food.y);
+        distanceToClosestFood = std::min(distanceToClosestFood, manhattan_distance);
+    }
+
+    int numberOfFoodLeft = cellsWithFood.size();
+
+    int distanceToClosestGhost = INT_MAX;
+    for(Character ghost  : map.getGhosts()){
+        int manhattan_distance = abs(pac_x - (int) ghost.grid_x) + abs(pac_y - (int) ghost.grid_y);
+        distanceToClosestGhost = std::min(distanceToClosestGhost, manhattan_distance);
+    }
+
+    double score =  1    * currentScore + \
+          -1.5 * distanceToClosestFood + \
+          -2    * (1./distanceToClosestGhost) + \
+          -4    * numberOfFoodLeft;
+    return score;
+
+   /*
+
+  # number of big dots
+  # if we only count the number fo them, he'll only care about
+  # them if he has the opportunity to eat one.
+  numberOfCapsulesLeft = len(currentGameState.getCapsules())
+
+  # number of foods left
+  numberOfFoodsLeft = len(foodlist)
+
+  # ghost distance
+
+  # active ghosts are ghosts that aren't scared.
+  scaredGhosts, activeGhosts = [], []
+  for ghost in currentGameState.getGhostStates():
+    if not ghost.scaredTimer:
+      activeGhosts.append(ghost)
+    else:
+      scaredGhosts.append(ghost)
+
+  def getManhattanDistances(ghosts):
+    return map(lambda g: util.manhattanDistance(pos, g.getPosition()), ghosts)
+
+  distanceToClosestActiveGhost = distanceToClosestScaredGhost = 0
+
+  if activeGhosts:
+    distanceToClosestActiveGhost = min(getManhattanDistances(activeGhosts))
+  else:
+    distanceToClosestActiveGhost = float("inf")
+  distanceToClosestActiveGhost = max(distanceToClosestActiveGhost, 5)
+
+  if scaredGhosts:
+    distanceToClosestScaredGhost = min(getManhattanDistances(scaredGhosts))
+  else:
+    distanceToClosestScaredGhost = 0 # I don't want it to count if there aren't any scared ghosts
+
+  outputTable = [["dist to closest food", -1.5*distanceToClosestFood],
+                 ["dist to closest active ghost", 2*(1./distanceToClosestActiveGhost)],
+                 ["dist to closest scared ghost", 2*distanceToClosestScaredGhost],
+                 ["number of capsules left", -3.5*numberOfCapsulesLeft],
+                 ["number of total foods left", 2*(1./numberOfFoodsLeft)]]
+
+  score = 1    * currentScore + \
+          -1.5 * distanceToClosestFood + \
+          -2    * (1./distanceToClosestActiveGhost) + \
+          -2    * distanceToClosestScaredGhost + \
+          -20 * numberOfCapsulesLeft + \
+          -4    * numberOfFoodsLeft
+  return score*/
+}
+
+/*double Agents::betterEvaluationFunction(Map map) {
     double foodDistance = 9999999;
     double ghostDistance = 9999999;
     double averageDistance = 0;
@@ -93,20 +179,18 @@ double Agents::betterEvaluationFunction(Map map) {
     return ghostDistance + 1.0/foodDistance + currentScore;
 
 
-}
+}*/
 
 
 double Agents::evaluationFunction(Map map) {
     double total_score = 0;
     std::vector<Character> auto_ghosts = map.auto_ghosts;
     auto_ghosts.push_back(map.ghost);
-    std::vector<Cell> cellsWithFood = map.getCellsWithFood();
-    //int verg = cellsWithFood.size();
-    for (Cell cell : cellsWithFood) {
+    for (Cell cell : map.getCellsWithFood()) {
         if(cell.hasFlag(CellFlags::CELL_FLAG_FOOD))
         {
             Character pacman = map.getAgent(0);
-            int manhattan_distance = abs(pacman.grid_x - (int) cell.x) + abs(pacman.grid_y - (int) cell.y);
+            int manhattan_distance = abs(pacman.current_cell.x - (int) cell.x) + abs(pacman.current_cell.y - (int) cell.y);
             if(manhattan_distance == 0)
                 total_score += 100;
             else
@@ -116,8 +200,9 @@ double Agents::evaluationFunction(Map map) {
 
     for(Character ghost : auto_ghosts)
     {
-        int manhattan_distance = (map.pacman.grid_x - (int) ghost.grid_x) + abs(map.pacman.grid_y - (int) ghost.grid_y);
-        if(manhattan_distance <= 1)
+        //double manhattan_distance = abs((map.pacman.x - ghost.x)) + abs(map.pacman.y - ghost.y);
+        double manhattan_distance = abs((map.pacman.current_cell.x - ghost.current_cell.x)) + abs(map.pacman.current_cell.y - ghost.current_cell.y);
+        if(manhattan_distance <= 2)
             total_score -= 100;
         else
             total_score -= 1.0/(manhattan_distance * manhattan_distance);
@@ -186,7 +271,7 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
     {
         int i_offset = (*itr)[0];
         int j_offset = (*itr)[1];
-        if(agentCell)
+        //if(agentCell)
         if ((i_offset + agent.grid_x < 0) || (j_offset + agent.grid_y < 0) || (i_offset + agent.grid_x >= map.grid.size()) || (j_offset + agent.grid_y >= map.grid[agent.grid_x].size()))
         {
             itr++;
@@ -194,8 +279,8 @@ std::vector<std::vector<int>> Agents::getLegalActions(Map map, Character agent){
         }
 
         // Work in progress generateactions for each agent
-        Cell* cell = &map.grid[(int)agent.grid_x + i_offset][(int)agent.grid_y + j_offset];
-
+        Cell* cell = &map.grid[agent.grid_x + i_offset][agent.grid_y + j_offset];
+        //bool available = (cell != NULL && cell->flags != NULL && cell->x!= NULL && cell->y!= NULL && cell->movementFlags!= NULL);
         if(cell != NULL && cell->flags != NULL && !cell->hasFlag(CellFlags::CELL_FLAG_WALL))
         {
             //final_movements

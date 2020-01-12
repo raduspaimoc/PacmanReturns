@@ -49,6 +49,7 @@ void Character::integrate(long t)
             //if(s_map.pacman.hasFlag(CELL_FLAG_FOOD))
             if(visited->hasFlag(CellFlags::CELL_FLAG_FOOD)){
                 s_map.total_food--;
+                s_map.score++;
                 printf("%d\n", s_map.total_food);
                 visited->removeFlag(CellFlags::CELL_FLAG_FOOD);
             }
@@ -56,6 +57,8 @@ void Character::integrate(long t)
                 std::exit(0);
             visited->addFlag(CellFlags::CELL_FLAG_EMPTY);
         }
+        //visited = s_map.grid[x][y];
+        current_cell = s_map.grid[grid_x][grid_y];
     }
 }
 
